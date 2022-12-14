@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "621150537402",
+    "project_id": "socialgaming-9de5e",
+    "storage_bucket": "socialgaming-9de5e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621150537402:android:9325cec606a7ba77366483",
+        "android_client_info": {
+          "package_name": "com.example.socialgaming"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "621150537402-nq17hna61cafecd93ba0och96ncu7bdl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.socialgaming",
+            "certificate_hash": "75c3cdcffcc930109194328d63e5222dc046a7b4"
+          }
+        },
+        {
+          "client_id": "621150537402-d2pti9benebfkh87dp1ms5vn04gg36cm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTN_Pl5qrlq2IdE7EgehUrJqmMvXx1FNs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "621150537402-d2pti9benebfkh87dp1ms5vn04gg36cm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
