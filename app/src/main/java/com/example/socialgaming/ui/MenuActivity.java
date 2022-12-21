@@ -1,5 +1,6 @@
 package com.example.socialgaming.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -13,6 +14,10 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.socialgaming.R;
 import com.example.socialgaming.databinding.MenuActivityBinding;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -47,7 +52,11 @@ public class MenuActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, controller, appBarConfiguration);
         NavigationUI.setupWithNavController(navigation, controller);
 
+
+
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
