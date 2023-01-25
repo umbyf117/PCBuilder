@@ -27,10 +27,10 @@ public class MenuActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private MenuActivityBinding binding;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         //inflate salva in memoria il menu e permette di aggiungere elementi alla actionbar
         binding = MenuActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -39,7 +39,8 @@ public class MenuActivity extends AppCompatActivity {
         binding.appbarMenu.floatButtonMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Boh", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(view, "Boh", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
 
@@ -47,16 +48,14 @@ public class MenuActivity extends AppCompatActivity {
         NavigationView navigation = binding.navView;
 
         appBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_home,
-                 R.id.nav_events, R.id.nav_ranks, R.id.nav_news).setOpenableLayout(drawer).build();
+                 R.id.nav_events, R.id.nav_ranks, R.id.nav_news)
+                .setOpenableLayout(drawer)
+                .build();
         NavController controller = Navigation.findNavController(this, R.id.navhost_fragment_content_menu);
         NavigationUI.setupActionBarWithNavController(this, controller, appBarConfiguration);
         NavigationUI.setupWithNavController(navigation, controller);
 
-
-
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -69,6 +68,5 @@ public class MenuActivity extends AppCompatActivity {
         NavController controller = Navigation.findNavController(this, R.id.navhost_fragment_content_menu);
         return NavigationUI.navigateUp(controller, appBarConfiguration) || super.onSupportNavigateUp();
     }
-
 
 }
