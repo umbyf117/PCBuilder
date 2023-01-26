@@ -1,149 +1,182 @@
 package com.example.socialgaming.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.util.Patterns;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.socialgaming.R;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.ApiException;
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
+import com.firebase.ui.auth.IdpResponse;
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
+import com.firebase.ui.auth.util.ExtraConstants;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.ActionCodeSettings;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LoginActivity extends Activity {
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-    private Button logBut;
-    private Button regBut;
-    private EditText em; //email
-    private EditText pw; //password
-    private SignInButton gsib;
-    private GoogleSignInClient gsic;
+public class LoginActivity extends AppCompatActivity {
+
+    // [START auth_fui_create_launcher]
+    // See: https://developer.android.com/training/basics/intents/result
+    private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
+            new FirebaseAuthUIActivityResultContract(),
+            new ActivityResultCallback<FirebaseAuthUIAuthenticationResult>() {
+                @Override
+                public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
+                    onSignInResult(result);
+                }
+            }
+    );
+    // [END auth_fui_create_launcher]
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+    }
 
-        em = findViewById(R.id.txtMail);
-        em.setAutofillHints(View.AUTOFILL_HINT_EMAIL_ADDRESS);
-        pw = findViewById(R.id.txtPassword);
-        pw.setAutofillHints(View.AUTOFILL_HINT_PASSWORD);
+    public void createSignInIntent() {
+        // [START auth_fui_create_intent]
+        // Choose authentication providers
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.PhoneBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build(),
+                new AuthUI.IdpConfig.FacebookBuilder().build(),
+                new AuthUI.IdpConfig.TwitterBuilder().build());
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail().build();
-        gsic = GoogleSignIn.getClient(this, gso);
-        findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId()){
-                    case R.id.sign_in_button:
-                        signIn();
-                        break;
-                }
+        // Create and launch sign-in intent
+        Intent signInIntent = AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .build();
+        signInLauncher.launch(signInIntent);
+        // [END auth_fui_create_intent]
+    }
+
+    // [START auth_fui_result]
+    private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
+        IdpResponse response = result.getIdpResponse();
+        if (result.getResultCode() == RESULT_OK) {
+            // Successfully signed in
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            // ...
+        } else {
+            // Sign in failed. If response is null the user canceled the
+            // sign-in flow using the back button. Otherwise check
+            // response.getError().getErrorCode() and handle the error.
+            // ...
+        }
+    }
+    // [END auth_fui_result]
+
+    public void signOut() {
+        // [START auth_fui_signout]
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // ...
+                    }
+                });
+        // [END auth_fui_signout]
+    }
+
+    public void delete() {
+        // [START auth_fui_delete]
+        AuthUI.getInstance()
+                .delete(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // ...
+                    }
+                });
+        // [END auth_fui_delete]
+    }
+
+    public void themeAndLogo() {
+        List<AuthUI.IdpConfig> providers = Collections.emptyList();
+
+        // [START auth_fui_theme_logo]
+        Intent signInIntent = AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .setLogo(R.drawable.logo)      // Set logo mipmap
+                .setTheme(R.style.Theme_Login)      // Set theme
+                .build();
+        signInLauncher.launch(signInIntent);
+        // [END auth_fui_theme_logo]
+    }
+
+    public void privacyAndTerms() {
+        List<AuthUI.IdpConfig> providers = Collections.emptyList();
+
+        // [START auth_fui_pp_tos]
+        Intent signInIntent = AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .setTosAndPrivacyPolicyUrls(
+                        "https://example.com/terms.html",
+                        "https://example.com/privacy.html")
+                .build();
+        signInLauncher.launch(signInIntent);
+        // [END auth_fui_pp_tos]
+    }
+
+    public void emailLink() {
+        // [START auth_fui_email_link]
+        ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
+                .setAndroidPackageName(
+                        /* yourPackageName= */ "...",
+                        /* installIfNotAvailable= */ true,
+                        /* minimumVersion= */ null)
+                .setHandleCodeInApp(true) // This must be set to true
+                .setUrl("https://google.com") // This URL needs to be whitelisted
+                .build();
+
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder()
+                        .enableEmailLinkSignIn()
+                        .setActionCodeSettings(actionCodeSettings)
+                        .build()
+        );
+        Intent signInIntent = AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .build();
+        signInLauncher.launch(signInIntent);
+        // [END auth_fui_email_link]
+    }
+
+    public void catchEmailLink() {
+        List<AuthUI.IdpConfig> providers = Collections.emptyList();
+
+        // [START auth_fui_email_link_catch]
+        if (AuthUI.canHandleIntent(getIntent())) {
+            if (getIntent().getExtras() == null) {
+                return;
             }
-        });
-
-
-
-        logBut = (Button) findViewById(R.id.logButton);
-        logBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(checkData()){
-                    Intent i = new Intent(LoginActivity.this, MenuActivity.class);
-                    startActivity(i);
-                }
+            String link = getIntent().getExtras().getString("email_link_sign_in");
+            if (link != null) {
+                Intent signInIntent = AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setEmailLink(link)
+                        .setAvailableProviders(providers)
+                        .build();
+                signInLauncher.launch(signInIntent);
             }
-        });
-
-        regBut = (Button) findViewById(R.id.regButton);
-        regBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(i);
-            }
-        });
-
-    }
-
-    private void signIn() {
-        Intent signInIntent = gsic.getSignInIntent();
-        startActivityForResult(signInIntent, 1);
-    }
-
-    protected void onStart(){
-        super.onStart();
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        updateUI(account);
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1){
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
         }
-    }
-
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask){
-        try{
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            updateUI(account);
-        }
-        catch(ApiException e){
-            Log.w("TAG", "signInResult:failed code="+ e.getStatusCode());
-            updateUI(null);
-        }
-
-    }
-
-    boolean isEmail(EditText text){
-        CharSequence email = text.getText().toString();
-        return(!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches());
-    }
-
-    boolean isPassword(EditText text){
-        CharSequence pw = text.getText().toString();
-        return(!TextUtils.isEmpty(pw) && !(pw.length()<8));
-    }
-
-    boolean isEmpty(EditText text){
-        CharSequence cs = text.getText().toString();
-        return TextUtils.isEmpty(cs);
-    }
-
-    boolean checkData(){
-        if(isEmpty(em) || !(isEmail(em))){
-            em.setError("Email address not valid");
-            return false;
-        }
-
-        if(isEmpty(pw) || pw.length()<8 || !(isPassword(pw))){
-            pw.setError("Password not valid");
-            return false;
-        }
-        return true;
-    }
-
-    public void updateUI(GoogleSignInAccount account){
-        if(account != null){
-            Toast.makeText(this, "You signed in successfully", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(this, MenuActivity.class));
-        }
-        else{
-            Toast.makeText(this, "You didn't sign in", Toast.LENGTH_LONG).show();
-        }
+        // [END auth_fui_email_link_catch]
     }
 }

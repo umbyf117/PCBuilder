@@ -20,6 +20,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.FirebaseApp;
 
 
 public class MenuActivity extends AppCompatActivity {
@@ -30,6 +31,9 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //FirebaseApp.initializeApp();
+
 
         //inflate salva in memoria il menu e permette di aggiungere elementi alla actionbar
         binding = MenuActivityBinding.inflate(getLayoutInflater());

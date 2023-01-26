@@ -18,17 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_computer" />
-
-    <ImageView
-        android:id="@+id/logo2"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:layout_constraintBottom_toBottomOf="@+id/logo1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/logo1"
-        app:srcCompat="@drawable/ic_baseline_videogame_asset_24" />
+        app:srcCompat="@drawable/logo" />
 
     <TextView
         android:id="@+id/txtLogin"
