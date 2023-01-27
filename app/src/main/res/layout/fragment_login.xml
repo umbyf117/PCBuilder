@@ -5,7 +5,7 @@
     android:id="@+id/login_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.LoginActivity">
+    tools:context=".view.LoginActivity">
 
     <ImageView
         android:id="@+id/logo"
@@ -126,7 +126,7 @@
         android:text="Don't have an account?"
         android:textColor="@color/text_light"
         app:layout_constraintBottom_toTopOf="@+id/guideBot"
-        app:layout_constraintEnd_toStartOf="@+id/regButton"
+        app:layout_constraintEnd_toStartOf="@+id/signup_text"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -162,7 +162,7 @@
         app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
     <TextView
-        android:id="@+id/regButton"
+        android:id="@+id/signup_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/register"

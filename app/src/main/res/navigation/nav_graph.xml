@@ -40,9 +40,9 @@
         tools:layout="@layout/fragment_news"/>
     <activity
         android:id="@+id/loginActivity"
-        android:name="com.example.socialgaming.ui.LoginActivity"
+        android:name="com.example.socialgaming.view.LoginActivity"
         android:label="login"
-        tools:layout="@layout/login_screen" />
+        tools:layout="@layout/fragment_login" />
     <action
         android:id="@+id/action_global_loginActivity"
         app:destination="@id/loginActivity" />

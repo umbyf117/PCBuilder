@@ -8,6 +8,11 @@
     <string name="confirmRegistration">Confirm Registration</string>
     <string name="forgetPassword">Forgot Password?</string>
     <string name="confirmPassword">Confirm Password:</string>
+    <string name="firestore_users_collection">users</string>
+    <string name="authentication_input_username_exist">Username already exists</string>
+    <string name="authentication_wrong_format_email">Email wrong format</string>
+    <string name="authentication_wrong_format_password">Password must be at least 8 characters</string>
+
 
     <string name="name">First Name:</string>
     <string name="lastname">Last Name:</string>
@@ -44,6 +49,7 @@
     <string name="news">News</string>
     <string name="home">Home</string>
     <string name="settings">Settings</string>
+    <string name="authentication_input_wrong_format_username">Username can only contain alphanumeric characters</string>
 
 
 </resources>
