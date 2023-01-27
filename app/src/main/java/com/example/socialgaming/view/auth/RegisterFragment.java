@@ -74,7 +74,7 @@ public class RegisterFragment extends Fragment {
                 String pass = passwordTextRegister.getText().toString();
                 String username = usernameTextRegister.getText().toString().trim();
                 if(checkCredentials(mail, pass, username))
-                    viewModel.login(mail, pass);
+                    viewModel.register(mail, pass, username);
 
             }
         });

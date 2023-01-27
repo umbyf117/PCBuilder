@@ -19,7 +19,7 @@ public class StringUtils {
 
     // Return true if correct
     public static boolean checkUsername(String username) {
-        return (Pattern.matches("^[a-z0-9]+$", username));
+        return (Pattern.matches("^[a-zA-Z0-9]+$", username));
     }
 
 }
