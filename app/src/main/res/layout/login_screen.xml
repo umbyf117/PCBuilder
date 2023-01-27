@@ -8,7 +8,7 @@
     tools:context=".ui.LoginActivity">
 
     <ImageView
-        android:id="@+id/logo1"
+        android:id="@+id/logo"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_marginTop="24dp"
@@ -30,7 +30,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/guideDx"
         app:layout_constraintStart_toStartOf="@+id/guideSx"
-        app:layout_constraintTop_toBottomOf="@+id/logo1" />
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideSx"
@@ -54,7 +54,7 @@
         app:layout_constraintGuide_end="24dp" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputMail"
+        android:id="@+id/textInputMailLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -67,30 +67,30 @@
 
 
         <EditText
-            android:id="@+id/txtMail"
+            android:id="@+id/txtMailLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints="emailAddress"
             android:background="@drawable/shape_round"
             android:hint="@string/mail"
-            android:autofillHints="emailAddress"
             android:inputType="textEmailAddress"
             tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputPass"
+        android:id="@+id/textInputPasswordLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
 
         app:layout_constraintEnd_toEndOf="@id/guideDx"
         app:layout_constraintStart_toEndOf="@id/guideSx"
-        app:layout_constraintTop_toBottomOf="@+id/textInputMail"
+        app:layout_constraintTop_toBottomOf="@+id/textInputMailLogin"
         app:passwordToggleEnabled="true"
         app:startIconDrawable="@drawable/ic_baseline_lock_24">
 
         <EditText
-            android:id="@+id/txtPassword"
+            android:id="@+id/txtPasswordLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="password"
@@ -102,7 +102,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/logButton"
+        android:id="@+id/loginButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -115,7 +115,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideDx"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideSx"
-        app:layout_constraintTop_toBottomOf="@+id/textInputPass"
+        app:layout_constraintTop_toBottomOf="@+id/textInputPasswordLogin"
         app:layout_constraintVertical_bias="0.019" />
 
     <TextView
@@ -131,7 +131,8 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="HardcodedText" />
 
 
     <com.google.android.gms.common.SignInButton
@@ -151,20 +152,19 @@
         android:layout_marginTop="8dp"
         android:layout_weight="1"
         android:clickable="true"
-        android:text="@string/forgpass"
+        android:text="@string/forgetPassword"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="@color/blue"
         app:layout_constraintEnd_toStartOf="@+id/guideDx"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="@+id/guideSx"
-        app:layout_constraintTop_toBottomOf="@+id/logButton" />
+        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
     <TextView
         android:id="@+id/regButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#3F8138"
         android:text="@string/register"
         android:textAllCaps="true"
         android:textColor="@color/blue"

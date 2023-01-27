@@ -42,7 +42,7 @@
         android:id="@+id/loginActivity"
         android:name="com.example.socialgaming.ui.LoginActivity"
         android:label="login"
-        tools:layout="@layout/login" />
+        tools:layout="@layout/login_screen" />
     <action
         android:id="@+id/action_global_loginActivity"
         app:destination="@id/loginActivity" />
