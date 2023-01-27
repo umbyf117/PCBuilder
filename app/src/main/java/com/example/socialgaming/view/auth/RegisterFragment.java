@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.socialgaming.R;
 import com.example.socialgaming.utils.StringUtils;
@@ -31,8 +32,10 @@ public class RegisterFragment extends Fragment {
     private TextInputLayout usernameInputRegister;
     private EditText usernameTextRegister;
 
-    public RegisterFragment(LoginViewModel viewModel) {
-        this.viewModel = viewModel;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
     }
 
     @Override
@@ -75,6 +78,8 @@ public class RegisterFragment extends Fragment {
 
             }
         });
+
+        signInText.setOnClickListener(LoginActivity.getSwitchListener());
 
     }
 

@@ -11,10 +11,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.socialgaming.R;
 import com.example.socialgaming.utils.StringUtils;
 import com.example.socialgaming.utils.ViewUtils;
+import com.example.socialgaming.view.LoginActivity;
 import com.example.socialgaming.view.model.LoginViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -29,19 +31,21 @@ public class LoginFragment extends Fragment {
     private TextInputLayout passwordInputLogin;
     private EditText passwordTextLogin;
 
-    public LoginFragment(LoginViewModel viewModel) {
-        this.viewModel = viewModel;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         inizializeUI(view);
         listernersSetup();
     }
@@ -71,6 +75,8 @@ public class LoginFragment extends Fragment {
 
             }
         });
+
+        signUpText.setOnClickListener(LoginActivity.getSwitchListener());
 
     }
 

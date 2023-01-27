@@ -25,22 +25,24 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private LoginViewModel loginViewModel;
     private FragmentManager fragmentManager;
     private boolean loginScreen;
+    private LoginViewModel loginViewModel;
 
-    private LoginFragment login;
-    private RegisterFragment register;
-
-    private View.OnClickListener switchListener;
+    private static View.OnClickListener switchListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-        fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_login);
+        fragmentManager = getSupportFragmentManager();
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.login_activity, new LoginFragment());
+        fragmentTransaction.commit();
+
+        listernersSetup();
 
         //Open Homepage once logged
         loginViewModel.getUserLiveData().observe(this, firebaseUser -> {
@@ -53,20 +55,6 @@ public class LoginActivity extends AppCompatActivity {
                 ViewUtils.displaySnackbar(findViewById(R.id.login_activity), s);
         });
 
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.login_activity, login);
-        fragmentTransaction.commit();
-
-        inizializeUI();
-        listernersSetup();
-
-    }
-
-    private void inizializeUI() {
-
-        login = new LoginFragment(loginViewModel);
-        register = new RegisterFragment(loginViewModel);
-
     }
 
     private void listernersSetup(){
@@ -78,30 +66,29 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
-        //SIGN UP & IN SWITCH
-        login.getSignUpText().setOnClickListener(switchListener);
-        register.getSignInText().setOnClickListener(switchListener);
+
 
     }
 
     public void switchMode() {
 
-        String email = switchControls();
-
         if(loginScreen) {
             loginScreen = false;
-            register.getEmailTextRegister().setText(email);
-            FragmentUtils.loadFragment(register, fragmentManager, R.id.register_screen);
+            FragmentUtils.loadFragment(new RegisterFragment(), fragmentManager, R.id.register_screen);
+
         }
         else {
             loginScreen = true;
-            login.getEmailTextLogin().setText(email);
-            FragmentUtils.loadFragment(login, fragmentManager, R.id.login_screen);
+            FragmentUtils.loadFragment(new LoginFragment(), fragmentManager, R.id.login_screen);
         }
 
 
     }
 
+    public static View.OnClickListener getSwitchListener() {
+        return switchListener;
+    }
+    /*
     private void clearControls() {
         login.getEmailTextLogin().getText().clear();
         login.getPasswordTextLogin().getText().clear();
@@ -121,6 +108,6 @@ public class LoginActivity extends AppCompatActivity {
 
         clearControls();
         return email;
-    }
+    }*/
 
 }
