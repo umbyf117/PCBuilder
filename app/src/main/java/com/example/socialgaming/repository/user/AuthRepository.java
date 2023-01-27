@@ -76,12 +76,15 @@ public class AuthRepository {
                                             userLiveData.setValue(firebaseAuth.getCurrentUser()); // Set mutable
                                             loggedOutLiveData.setValue(false);
                                             FirebaseFirestore.getInstance().collection(application.getString(R.string.firestore_users_collection))
-                                                    .document(username).set(new HashMap<String, Object>() {{ put("uId", firebaseAuth.getCurrentUser().getUid());put("builds",
-                                                            new ArrayList<String>());}}).addOnCompleteListener(task -> Objects.requireNonNull(userLiveData.getValue())
+                                                    .document(username).set(new HashMap<String, Object>() {
+                                                        {
+                                                            put("uId", firebaseAuth.getCurrentUser().getUid());
+                                                        }
+                                                    }).addOnCompleteListener(task -> Objects.requireNonNull(userLiveData.getValue())
                                                             .updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(username).build()))
                                                     .addOnFailureListener(e -> ViewUtils.displayToast(application,e.getMessage()));
                                         }
-                                    }).addOnFailureListener(e -> ViewUtils.displayToast(application,e.getMessage()));;
+                                    }).addOnFailureListener(e -> ViewUtils.displayToast(application,e.getMessage()));
                         }
                     }
                 }).addOnFailureListener(e -> ViewUtils.displayToast(application , e.getMessage()));
