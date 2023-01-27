@@ -36,7 +36,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((PcBuilder)getApplicationContext()).setMainActivity(this);
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_home);
