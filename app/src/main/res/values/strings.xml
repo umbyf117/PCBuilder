@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">SocialGaming</string>
-    <string name="login">Login</string>
-    <string name="register">Register</string>
+    <string name="app_name">PC Builder</string>
+    <string name="login">Sign In</string>
+    <string name="register">Sign Up</string>
     <string name="username">Username:</string>
     <string name="nome">First Name:</string>
     <string name="cognome">Last Name:</string>
@@ -10,7 +10,7 @@
     <string name="password">Password:</string>
     <string name="confReg">Confirm Registration</string>
     <string name="forgpass">Forgot Password?</string>
-    <string name="regButton">Register</string>
+    <string name="regButton">Sign Up</string>
     <string name="confPass">Confirm Password:</string>
 
     <!-- Preference Titles -->
@@ -34,7 +34,7 @@
     <string name="nav_header_title">SocialGaming</string>
     <string name="nav_header_subtitle">sussygnanus@amongo.sus</string>
     <string name="nav_header_desc">Header</string>
-    <string name="logo">\"SocialGaming\"</string>
+    <string name="logo">\"PC Builder\"</string>
     <string name="email">\"email\"</string>
     <string name="forgot_password">\"Forgot Password?\"</string>
     <!-- TODO: Remove or change this placeholder text -->
