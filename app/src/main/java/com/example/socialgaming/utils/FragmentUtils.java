@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.socialgaming.PcBuilder;
 import com.example.socialgaming.R;
 
 public class FragmentUtils {
@@ -28,23 +29,22 @@ public class FragmentUtils {
         fragmentTransaction.replace(fragmentContainer, fragment);
         fragmentTransaction.commit(); // save the changes
     }
-    /*
     public static void loadFragment(Fragment fragment, FragmentManager fragmentManager, String fragmentTag, Context context) {
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();/*
         if(fragmentManager.findFragmentByTag(context.getString(R.string.add_fragment))!=null)
             fragmentTransaction.remove(fragmentManager.findFragmentByTag(context.getString(R.string.add_fragment)));
         if(fragmentManager.findFragmentByTag(context.getString(R.string.recipe_fragment))!=null)
-            fragmentTransaction.remove(fragmentManager.findFragmentByTag(context.getString(R.string.recipe_fragment)));
+            fragmentTransaction.remove(fragmentManager.findFragmentByTag(context.getString(R.string.recipe_fragment)));*/
         for (Fragment f: fragmentManager.getFragments())
             fragmentTransaction.hide(f);
         fragmentTransaction.commitNow();
         if(fragmentManager.findFragmentByTag(fragmentTag)==null)
-            fragmentTransaction.add(R.id.fmContainerMain, fragment, fragmentTag);
+            fragmentTransaction.add(R.id.login_activity, fragment, fragmentTag);
         else
             fragmentTransaction.show(fragmentManager.findFragmentByTag(fragmentTag));
         fragmentTransaction.commitNow();
     }
-
+/*
     public static void backToListFragment(FragmentManager fragmentManager, Context context, String backToTag){
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if(fragmentManager.findFragmentByTag(context.getString(R.string.recipe_fragment))!=null) {
@@ -54,6 +54,5 @@ public class FragmentUtils {
         }else
             ((PcBuilder)context).backPress();
     }
-    */
-
+*/
 }

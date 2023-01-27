@@ -1,32 +1,50 @@
 package com.example.socialgaming.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.socialgaming.PcBuilder;
 import com.example.socialgaming.R;
 import com.example.socialgaming.databinding.MenuActivityBinding;
+import com.example.socialgaming.utils.FragmentUtils;
+import com.example.socialgaming.view.model.HomeViewModel;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class HomeActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private MenuActivityBinding binding;
+    private HomeViewModel viewModel;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //FirebaseApp.initializeApp();
+        ((PcBuilder)getApplicationContext()).setMainActivity(this);
+        viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        fragmentManager = getSupportFragmentManager();
+        setContentView(R.layout.activity_home);
+
+        viewModel.getUserLiveData().observe(this, firebaseUser -> {
+            if(firebaseUser == null)
+                FragmentUtils.startActivity(this, new Intent(HomeActivity.this, LoginActivity.class), true);
+        });
 
 
         //inflate salva in memoria il menu e permette di aggiungere elementi alla actionbar
@@ -53,6 +71,10 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, controller, appBarConfiguration);
         NavigationUI.setupWithNavController(navigation, controller);
 
+    }
+
+    public FirebaseUser getUserData() {
+        return viewModel.getUserLiveData().getValue();
     }
 
     @Override

@@ -14,6 +14,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.socialgaming.R;
 import com.example.socialgaming.utils.*;
@@ -30,31 +32,15 @@ public class LoginActivity extends AppCompatActivity {
     private LoginFragment login;
     private RegisterFragment register;
 
-    private Button signInButton;
-    private TextView signUpText;
-    private TextView forgetPasswordText;
-    private TextInputLayout emailInputLogin;
-    private EditText emailTextLogin;
-    private TextInputLayout passwordInputLogin;
-    private EditText passwordTextLogin;
-
-    private Button signUpButton;
-    private TextView signInText;
-    private TextInputLayout emailInputRegister;
-    private EditText emailTextRegister;
-    private TextInputLayout passwordInputRegister;
-    private EditText passwordTextRegister;
-    private TextInputLayout usernameInputRegister;
-    private EditText usernameTextRegister;
-
     private View.OnClickListener switchListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         fragmentManager = getSupportFragmentManager();
-        setContentView(R.layout.fragment_login);
+        setContentView(R.layout.activity_login);
 
         //Open Homepage once logged
         loginViewModel.getUserLiveData().observe(this, firebaseUser -> {
@@ -67,6 +53,10 @@ public class LoginActivity extends AppCompatActivity {
                 ViewUtils.displaySnackbar(findViewById(R.id.login_activity), s);
         });
 
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.login_activity, login);
+        fragmentTransaction.commit();
+
         inizializeUI();
         listernersSetup();
 
@@ -74,24 +64,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void inizializeUI() {
 
-        login = new LoginFragment();
-        register = new RegisterFragment();
-
-        signInButton = findViewById(R.id.loginButton);
-        signUpText = findViewById(R.id.signup_text);
-        forgetPasswordText = findViewById(R.id.forgetPassword);
-        emailInputLogin = findViewById(R.id.textInputMailLogin);
-        emailTextLogin = findViewById(R.id.txtMailLogin);
-        passwordInputLogin = findViewById(R.id.textInputPasswordLogin);
-        passwordTextLogin = findViewById(R.id.txtPasswordLogin);
-        signUpButton = findViewById(R.id.registerButton);
-        signInText = findViewById(R.id.signin_text);
-        emailInputRegister = findViewById(R.id.textInputMailReg);
-        emailTextRegister = findViewById(R.id.txtMailRegister);
-        passwordInputRegister = findViewById(R.id.textInputPassword);
-        passwordTextRegister = findViewById(R.id.txtPasswordRegister);
-        usernameInputRegister = findViewById(R.id.textInputUsername);
-        usernameTextRegister = findViewById(R.id.txtUsername);
+        login = new LoginFragment(loginViewModel);
+        register = new RegisterFragment(loginViewModel);
 
     }
 
@@ -104,67 +78,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
-        //SIGN IN BUTTON
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String mail = emailTextRegister.getText().toString().trim();
-                String pass = passwordTextRegister.getText().toString();
-                String username = usernameTextRegister.getText().toString().trim();
-                if(checkCredentials(mail, pass))
-                    loginViewModel.login(mail, pass);
-
-            }
-        });
-
-        //SIGN UP BUTTON
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String mail = emailTextLogin.getText().toString().trim();
-                String pass = passwordTextLogin.getText().toString();
-                if(checkCredentials(mail, pass))
-                    loginViewModel.login(mail, pass);
-
-            }
-        });
-
         //SIGN UP & IN SWITCH
-        signUpText.setOnClickListener(switchListener);
-        signInText.setOnClickListener(switchListener);
+        login.getSignUpText().setOnClickListener(switchListener);
+        register.getSignInText().setOnClickListener(switchListener);
 
-
-
-    }
-
-    private boolean checkCredentials(String email, String password) {
-        boolean check = true;
-        if(!StringUtils.checkEmail(email)) {
-            check = false;
-            ViewUtils.displayErrorStatus(emailInputLogin, getString(R.string.authentication_wrong_format_email));
-        }
-        if(!StringUtils.checkPassword(password)) {
-            check = false;
-            ViewUtils.displayErrorStatus(passwordInputLogin, getString(R.string.authentication_wrong_format_password));
-        }
-        return check;
-    }
-
-    private boolean checkCredentials(String email, String password, String username) {
-        boolean check = true;
-        if(!StringUtils.checkUsername(username)){
-            check = false;
-            ViewUtils.displayErrorStatus(usernameInputRegister, getString(R.string.authentication_input_wrong_format_username));
-        }
-        if(!StringUtils.checkEmail(email)) {
-            check = false;
-            ViewUtils.displayErrorStatus(emailInputLogin, getString(R.string.authentication_wrong_format_email));
-        }
-        if(!StringUtils.checkPassword(password)) {
-            check = false;
-            ViewUtils.displayErrorStatus(passwordInputLogin, getString(R.string.authentication_wrong_format_password));
-        }
-        return check;
     }
 
     public void switchMode() {
@@ -173,24 +90,24 @@ public class LoginActivity extends AppCompatActivity {
 
         if(loginScreen) {
             loginScreen = false;
-            setContentView(login.getView());
-            emailTextRegister.setText(email);
+            register.getEmailTextRegister().setText(email);
+            FragmentUtils.loadFragment(register, fragmentManager, R.id.register_screen);
         }
         else {
             loginScreen = true;
-            setContentView(register.getView());
-            emailTextLogin.setText(email);
+            login.getEmailTextLogin().setText(email);
+            FragmentUtils.loadFragment(login, fragmentManager, R.id.login_screen);
         }
 
 
     }
 
     private void clearControls() {
-        emailTextLogin.getText().clear();
-        passwordTextLogin.getText().clear();
-        emailTextRegister.getText().clear();
-        passwordTextRegister.getText().clear();
-        usernameTextRegister.getText().clear();
+        login.getEmailTextLogin().getText().clear();
+        login.getPasswordTextLogin().getText().clear();
+        register.getEmailTextRegister().getText().clear();
+        register.getPasswordTextRegister().getText().clear();
+        register.getUsernameTextRegister().getText().clear();
 
     }
 
@@ -198,9 +115,9 @@ public class LoginActivity extends AppCompatActivity {
 
         String email;
         if(loginScreen)
-            email = emailTextLogin.getText().toString();
+            email = login.getEmailTextLogin().getText().toString();
         else
-            email = emailTextRegister.getText().toString();
+            email = register.getEmailTextRegister().getText().toString();
 
         clearControls();
         return email;
