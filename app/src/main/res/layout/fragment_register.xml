@@ -86,7 +86,7 @@
         app:layout_constraintStart_toEndOf="@id/guideSx"
         app:startIconDrawable="@drawable/ic_account">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
         app:passwordToggleEnabled="true"
         app:startIconDrawable="@drawable/ic_baseline_lock_24">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtPasswordRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

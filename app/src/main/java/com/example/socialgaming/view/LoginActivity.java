@@ -74,12 +74,12 @@ public class LoginActivity extends AppCompatActivity {
 
         if(loginScreen) {
             loginScreen = false;
-            FragmentUtils.loadFragment(new RegisterFragment(), fragmentManager, R.id.register_screen);
+            FragmentUtils.loadFragment(new RegisterFragment(), fragmentManager, R.id.login_activity);
 
         }
         else {
             loginScreen = true;
-            FragmentUtils.loadFragment(new LoginFragment(), fragmentManager, R.id.login_screen);
+            FragmentUtils.loadFragment(new LoginFragment(), fragmentManager, R.id.login_activity);
         }
 
 
