@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
@@ -17,12 +18,14 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.socialgaming.PcBuilder;
 import com.example.socialgaming.R;
 import com.example.socialgaming.databinding.MenuActivityBinding;
+import com.example.socialgaming.repository.user.ReadWriteUserDetails;
 import com.example.socialgaming.utils.FragmentUtils;
 import com.example.socialgaming.view.model.HomeViewModel;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -71,6 +74,13 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigation, controller);
 
     }
+
+    /*public void onDataChange(@NonNull DataSnapshot snapshot){
+        ReadWriteUserDetails readWriteUserDetails = snapshot.getValue(ReadWriteUserDetails.class);
+        if(readWriteUserDetails != null){
+
+        }
+    }*/
 
     public FirebaseUser getUserData() {
         return viewModel.getUserLiveData().getValue();

@@ -54,6 +54,7 @@
     <string name="cognome">Surname:</string>
     <string name="confPass">Confirm Password:</string>
     <string name="confReg">Confirm Password:</string>
+    <string name="savedParts">Saved Builds</string>
 
 
 </resources>

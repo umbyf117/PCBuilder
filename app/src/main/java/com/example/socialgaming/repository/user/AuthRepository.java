@@ -83,6 +83,13 @@ public class AuthRepository {
                                                     }).addOnCompleteListener(task -> Objects.requireNonNull(userLiveData.getValue())
                                                             .updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(username).build()))
                                                     .addOnFailureListener(e -> ViewUtils.displayToast(application,e.getMessage()));
+
+                                            /*
+                                            //Inserisce i dati passati nel Firebase Realtime Database
+                                            ReadWriteUserDetails writeUserDetails = new ReadWriteUserDetails(email);
+
+                                            */
+
                                         }
                                     }).addOnFailureListener(e -> ViewUtils.displayToast(application,e.getMessage()));
                         }
