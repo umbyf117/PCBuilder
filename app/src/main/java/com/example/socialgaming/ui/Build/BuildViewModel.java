@@ -1,14 +1,14 @@
-package com.example.socialgaming.ui.ranks;
+package com.example.socialgaming.ui.Build;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class RanksViewModel extends ViewModel {
+public class BuildViewModel extends ViewModel {
 
     private final MutableLiveData<String> Text;
 
-    public RanksViewModel(){
+    public BuildViewModel(){
         Text = new MutableLiveData<>();
         Text.setValue("Ranks Fragment");
     }
@@ -16,5 +16,4 @@ public class RanksViewModel extends ViewModel {
     public LiveData<String> getText(){
         return Text;
     }
-
 }

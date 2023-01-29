@@ -58,6 +58,9 @@
     <string name="favParts">Favorite Builds</string>
     <string name="profileUser">Sussy</string>
     <string name="profMail">sussygnanus@amongo.sus</string>
+    <string name="main">Main Page</string>
+    <string name="components">Let\'s Build</string>
+    <string name="search">Search:</string>
 
 
 </resources>

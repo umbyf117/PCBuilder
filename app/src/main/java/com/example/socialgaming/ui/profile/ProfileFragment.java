@@ -10,8 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.socialgaming.databinding.FragmentProfileBinding;
-import com.example.socialgaming.databinding.FragmentRanksBinding;
-import com.example.socialgaming.ui.ranks.RanksViewModel;
 
 public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;

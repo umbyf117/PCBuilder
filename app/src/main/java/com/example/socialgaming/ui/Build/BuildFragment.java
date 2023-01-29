@@ -1,4 +1,4 @@
-package com.example.socialgaming.ui.ranks;
+package com.example.socialgaming.ui.Build;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,19 +9,16 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.socialgaming.databinding.FragmentRanksBinding;
+import com.example.socialgaming.databinding.FragmentComponentsBinding;
 
-public class RanksFragment extends Fragment {
-
-    private FragmentRanksBinding binding;
+public class BuildFragment extends Fragment {
+    private FragmentComponentsBinding binding;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        RanksViewModel ranksvm = new ViewModelProvider(this).get(RanksViewModel.class);
-        binding = FragmentRanksBinding.inflate(inflater, container, false);
+        BuildViewModel bdvm = new ViewModelProvider(this).get(BuildViewModel.class);
+        binding = FragmentComponentsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView tv = binding.textRanks;
-        ranksvm.getText().observe(getViewLifecycleOwner(), tv::setText);
         return root;
     }
 
@@ -29,5 +26,4 @@ public class RanksFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
 }
