@@ -1,14 +1,14 @@
-package com.example.socialgaming.ui.Search;
+package com.example.socialgaming.ui.home;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SearchViewModel extends ViewModel {
+public class HomeViewModel extends ViewModel {
 
     private final MutableLiveData<String> Text;
 
-    public SearchViewModel(){
+    public HomeViewModel(){
         Text = new MutableLiveData<>();
         Text.setValue("Ranks Fragment");
     }
