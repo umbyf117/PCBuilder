@@ -31,16 +31,40 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="5dp"
-        android:background="#0099ff">
+        android:background="#0099ff"/>
 
-    </View>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_build"
+            android:layout_gravity="center"
+            android:layout_marginStart="100dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/components"
+            android:textSize="35dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/startBlue"
+            android:layout_marginEnd="100dp"/>
+
+
+
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="2.5dp"
         android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp">
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,10 +86,31 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    />
-                    <androidx.appcompat.widget.SearchView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                    android:textSize="16sp"
+                    android:text="@string/cpu"
+                    android:layout_marginTop="5dp"/>
+
+                <androidx.appcompat.widget.SearchView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:inputType="text"/>
+
+                <!--
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                -->
+
+                <Button
+                    android:id="@+id/saveCPU"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|bottom"
+                    android:backgroundTint="#99ff"
+                    android:text="@string/save"
+                    android:textColor="#0099ff"
+                    android:layout_marginBottom="10dp"/>
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -78,9 +123,45 @@
                 android:layout_marginEnd="1.5dp"
                 android:layout_marginBottom="1.5dp"
                 app:strokeWidth="0.5dp"
-                app:strokeColor="#0000ff"/>
+                app:strokeColor="#0000ff">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="16sp"
+                    android:text="@string/mboard"
+                    android:layout_marginTop="5dp"/>
+
+                <androidx.appcompat.widget.SearchView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:inputType="text"/>
+
+                <!--
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                -->
+
+                <Button
+                    android:id="@+id/saveMB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|bottom"
+                    android:backgroundTint="#99ff"
+                    android:text="@string/save"
+                    android:textColor="#0099ff"
+                    android:layout_marginBottom="10dp"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
 
         </LinearLayout>
+
+
 
     </RelativeLayout>
 
