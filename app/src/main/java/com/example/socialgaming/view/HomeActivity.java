@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -19,6 +22,7 @@ import com.example.socialgaming.PcBuilder;
 import com.example.socialgaming.R;
 import com.example.socialgaming.databinding.MenuActivityBinding;
 import com.example.socialgaming.repository.user.ReadWriteUserDetails;
+import com.example.socialgaming.ui.profile.ProfileFragment;
 import com.example.socialgaming.utils.FragmentUtils;
 import com.example.socialgaming.view.model.HomeViewModel;
 import com.google.android.material.navigation.NavigationView;
@@ -34,6 +38,7 @@ public class HomeActivity extends AppCompatActivity {
     private MenuActivityBinding binding;
     private HomeViewModel viewModel;
     private FragmentManager fragmentManager;
+    private Button btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +58,16 @@ public class HomeActivity extends AppCompatActivity {
         binding = MenuActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        //bottone in basso a destra
         setSupportActionBar(binding.appbarMenu.toolbar);
         binding.appbarMenu.floatButtonMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Boh", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Fragment pf = new ProfileFragment();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.drawerLayout, pf);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
 
@@ -72,6 +81,8 @@ public class HomeActivity extends AppCompatActivity {
         NavController controller = Navigation.findNavController(this, R.id.navhost_fragment_content_menu);
         NavigationUI.setupActionBarWithNavController(this, controller, appBarConfiguration);
         NavigationUI.setupWithNavController(navigation, controller);
+
+
 
     }
 

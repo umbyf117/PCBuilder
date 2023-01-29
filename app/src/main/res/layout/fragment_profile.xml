@@ -2,7 +2,6 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grayLight"
@@ -10,7 +9,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="405dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:background="@drawable/gradient_background"
@@ -22,11 +21,11 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_marginTop="35dp"
                 android:id="@+id/prof_pic"
-                android:layout_width="96dp"
-                android:layout_height="96dp"
+                android:layout_width="112dp"
+                android:layout_height="112dp"
                 app:civ_border_color="#FF000000"
                 app:civ_border_width="2dp"
-                android:src=""/>
+                android:src="@drawable/profpic"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -34,25 +33,118 @@
                 android:layout_marginTop="10dp"
 
                 android:id="@+id/prof_name"
-                android:text="Sussy"
-                android:textSize="21sp"
+                android:text="@string/profileUser"
+                android:textSize="32sp"
                 android:textColor="#fff"
                 android:textStyle="bold"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+
+                android:id="@+id/profMail"
+                android:text="@string/profMail"
+                android:textSize="16sp"
+                android:textColor="#ffff"
+                android:textStyle="bold"/>
+
         </LinearLayout>
-        
-        <androidx.cardview.widget.CardView
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginTop="250dp"
+            android:weightSum="2">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/numSavedBuilds"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginTop="1dp"
+                app:strokeWidth="0.5dp"
+                app:strokeColor="#0099ff">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total Saved "
+                        android:textSize="20dp"
+                        android:layout_marginTop="10dp"/>
+                    <TextView
+                        android:id="@+id/numSB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Number"
+                        android:textSize="15dp"
+                        android:layout_gravity="center"/>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/numTotalFavorites"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginTop="1dp"
+                app:strokeWidth="0.5dp"
+                app:strokeColor="#0099ff">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total Favorites"
+                        android:textSize="20dp"
+                        android:layout_marginTop="10dp"/>
+                    <TextView
+                        android:id="@+id/numTF"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Number"
+                        android:textSize="15dp"
+                        android:layout_gravity="center"/>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="350dp"
-            android:layout_height="120dp"
+            android:layout_height="100dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="275dp">
-            
+            android:layout_marginTop="350dp"
+            app:strokeColor="#696969"
+            app:strokeWidth="0.5dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:weightSum="3">
-                
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -61,15 +153,47 @@
 
                     <Button
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:text="@string/savedParts"/>
 
                 </LinearLayout>
-                
+
             </LinearLayout>
-                
-            
-        </androidx.cardview.widget.CardView>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="350dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="460dp"
+            app:strokeColor="#696969"
+            app:strokeWidth="0.5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/favParts"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
         
 
     </RelativeLayout>

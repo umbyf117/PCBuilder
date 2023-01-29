@@ -55,6 +55,9 @@
     <string name="confPass">Confirm Password:</string>
     <string name="confReg">Confirm Password:</string>
     <string name="savedParts">Saved Builds</string>
+    <string name="favParts">Favorite Builds</string>
+    <string name="profileUser">Sussy</string>
+    <string name="profMail">sussygnanus@amongo.sus</string>
 
 
 </resources>
