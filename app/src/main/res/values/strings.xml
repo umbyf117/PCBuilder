@@ -62,6 +62,9 @@
     <string name="components">Let\'s Build</string>
     <string name="search">Search</string>
     <string name="logout">Logout</string>
+    <string name="cpu">CPUs</string>
+    <string name="save">Confirm</string>
+    <string name="mboard">MotherBoard</string>
 
 
 </resources>
