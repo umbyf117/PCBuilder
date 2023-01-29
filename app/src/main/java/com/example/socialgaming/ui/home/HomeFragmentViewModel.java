@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+public class HomeFragmentViewModel extends ViewModel {
 
     private final MutableLiveData<String> Text;
 
-    public HomeViewModel(){
+    public HomeFragmentViewModel(){
         Text = new MutableLiveData<>();
         Text.setValue("Ranks Fragment");
     }
