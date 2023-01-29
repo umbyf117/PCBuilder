@@ -28,25 +28,61 @@
 
     </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="#0099ff">
+
+    </View>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="2.5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:layout_height="150dp"
             android:weightSum="2">
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_weight="1"/>
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="1.5dp"
+                android:layout_marginTop="1.5dp"
+                android:layout_marginEnd="1.5dp"
+                android:layout_marginBottom="1.5dp"
+                app:strokeWidth="0.5dp"
+                app:strokeColor="#0000ff">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    />
+                    <androidx.appcompat.widget.SearchView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="1.5dp"
+                android:layout_marginTop="1.5dp"
+                android:layout_marginEnd="1.5dp"
+                android:layout_marginBottom="1.5dp"
+                app:strokeWidth="0.5dp"
+                app:strokeColor="#0000ff"/>
 
         </LinearLayout>
 
-
     </RelativeLayout>
+
 
 </LinearLayout>
