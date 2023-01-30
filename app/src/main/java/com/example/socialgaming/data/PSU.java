@@ -1,15 +1,15 @@
 package com.example.socialgaming.data;
 
-public class Alimentatore {
+public class PSU {
     private String mId;
     private String mName;
     private String mImage;
 
-    public Alimentatore(String mId, String mName){
+    public PSU(String mId, String mName){
         this(mId, mName, null);
     }
 
-    public Alimentatore(String mId, String mName, String mImage) {
+    public PSU(String mId, String mName, String mImage) {
         setId(mId);
         setName(mName);
         setImage(mImage);

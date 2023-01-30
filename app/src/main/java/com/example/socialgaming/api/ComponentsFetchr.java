@@ -1,29 +1,14 @@
 package com.example.socialgaming.api;
 
-import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.android.volley.toolbox.HttpResponse;
-import com.example.socialgaming.data.Alimentatore;
-import com.google.logging.type.HttpRequest;
-import com.squareup.moshi.Moshi;
 
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.*;
-import java.util.List;
-import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
