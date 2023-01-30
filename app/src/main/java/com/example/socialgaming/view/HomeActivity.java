@@ -6,7 +6,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -18,18 +17,13 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.socialgaming.PcBuilder;
 import com.example.socialgaming.R;
 import com.example.socialgaming.databinding.MenuActivityBinding;
-import com.example.socialgaming.repository.user.ReadWriteUserDetails;
 import com.example.socialgaming.ui.profile.ProfileFragment;
 import com.example.socialgaming.utils.FragmentUtils;
 import com.example.socialgaming.view.model.HomeViewModel;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 
 
 public class HomeActivity extends AppCompatActivity {
