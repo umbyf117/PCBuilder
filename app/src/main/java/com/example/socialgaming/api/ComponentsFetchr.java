@@ -84,7 +84,7 @@ public class ComponentsFetchr {
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     ResponseBody responseBody = response.body();
                     String body = responseBody.string();
                     Log.e(TAG, body);
@@ -122,7 +122,5 @@ public class ComponentsFetchr {
         static class GistFile {
             String content;
         }*/
-
-    }
 
 }
