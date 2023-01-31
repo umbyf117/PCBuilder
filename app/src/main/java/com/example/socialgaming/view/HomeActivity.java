@@ -1,5 +1,6 @@
 package com.example.socialgaming.view;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -69,13 +70,12 @@ public class HomeActivity extends AppCompatActivity {
         NavigationView navigation = binding.navView;
 
         appBarConfiguration = new AppBarConfiguration.Builder(
-                 R.id.nav_home, R.id.nav_build, R.id.nav_search, R.id.nav_logout)
+                 R.id.nav_home, R.id.nav_build, R.id.nav_search)
                 .setOpenableLayout(drawer)
                 .build();
         NavController controller = Navigation.findNavController(this, R.id.navhost_fragment_content_menu);
         NavigationUI.setupActionBarWithNavController(this, controller, appBarConfiguration);
         NavigationUI.setupWithNavController(navigation, controller);
-
 
 
     }
