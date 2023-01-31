@@ -20,6 +20,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.socialgaming.R;
 import com.example.socialgaming.databinding.MenuActivityBinding;
 import com.example.socialgaming.ui.profile.ProfileFragment;
+import com.example.socialgaming.utils.BuildUtils;
 import com.example.socialgaming.utils.FragmentUtils;
 import com.example.socialgaming.view.model.HomeViewModel;
 import com.google.android.material.navigation.NavigationView;
@@ -37,6 +38,8 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        System.out.println(BuildUtils.getComponentJSON("https://computer-components-api.p.rapidapi.com/power_supply?limit=5&offset=0&id=cld4mzbp000issqaoxyjx5ffi"));
 
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         fragmentManager = getSupportFragmentManager();

@@ -5,7 +5,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
+
 import java.io.IOException;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -15,9 +19,9 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 
-public class ComponentsFetchr {
+public class ComponentsFetcher {
 
-    private static final String TAG = "ComponentsFetchr";
+    private static final String TAG = "ComponentsFetcher";
 
     private static final String API_KEY = "fb275a437bmsh9db28c43aebefc4p1ac617jsnb6bd17a71b69";
 
@@ -77,35 +81,5 @@ public class ComponentsFetchr {
             }
         });
     }
-
-    // UTILIZZA MOCHI PER FARE UN PARSE JSON DELLA REQUEST DI OKHTTPS MA NON FUNGE PORCODIO
-    /*public void parseItems() {
-        OkHttpClient client = new OkHttpClient();
-        Moshi moshi = new Moshi.Builder().build();
-        JsonAdapter<Gist> gistJsonAdapter = moshi.adapter(Gist.class);
-
-        public void run() throws Exception {
-            Request request = new Request.Builder()
-                    .url("https://api.github.com/gists/c2a7c39532239ff261be")
-                    .build();
-            try (Response response = client.newCall(request).execute()) {
-                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-                Gist gist = gistJsonAdapter.fromJson(response.body().source());
-
-                for (Map.Entry<String, GistFile> entry : gist.files.entrySet()) {
-                    System.out.println(entry.getKey());
-                    System.out.println(entry.getValue().content);
-                }
-            }
-        }
-
-        static class Gist {
-            Map<String, GistFile> files;
-        }
-
-        static class GistFile {
-            String content;
-        }*/
 
 }
