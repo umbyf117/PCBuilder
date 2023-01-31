@@ -66,5 +66,10 @@
     <string name="save">Confirm</string>
     <string name="mboard">MotherBoard</string>
 
+    <string name="logoutfr">Sei sicuro di voler effettuare il logout?</string>
+    <string name="logoutyes">Si</string>
+    <string name="logoutno">No</string>
+
+
 
 </resources>

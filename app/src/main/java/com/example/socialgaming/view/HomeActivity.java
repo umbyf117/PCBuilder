@@ -70,7 +70,7 @@ public class HomeActivity extends AppCompatActivity {
         NavigationView navigation = binding.navView;
 
         appBarConfiguration = new AppBarConfiguration.Builder(
-                 R.id.nav_home, R.id.nav_build, R.id.nav_search)
+                 R.id.nav_home, R.id.nav_build, R.id.nav_search, R.id.nav_logout)
                 .setOpenableLayout(drawer)
                 .build();
         NavController controller = Navigation.findNavController(this, R.id.navhost_fragment_content_menu);
