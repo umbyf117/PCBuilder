@@ -1,5 +1,6 @@
 package com.example.socialgaming.view;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -78,7 +79,6 @@ public class HomeActivity extends AppCompatActivity {
         NavController controller = Navigation.findNavController(this, R.id.navhost_fragment_content_menu);
         NavigationUI.setupActionBarWithNavController(this, controller, appBarConfiguration);
         NavigationUI.setupWithNavController(navigation, controller);
-
 
 
     }
