@@ -37,6 +37,7 @@ public class SearchFragment extends Fragment {
     private ArrayAdapter<String> adapter;
     private List<String> cpuList;
 
+    /*
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
@@ -92,8 +93,8 @@ public class SearchFragment extends Fragment {
         return view;
 
     }
+    */
 
-    /*
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         return view;
@@ -104,7 +105,7 @@ public class SearchFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-    */
+
 
 
 }

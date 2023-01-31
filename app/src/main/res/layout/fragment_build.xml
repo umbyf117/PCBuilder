@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fitsSystemWindows="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -191,7 +192,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:textSize="16sp"
-                    android:text="@string/cpu"
+                    android:text="@string/ram"
                     android:layout_marginTop="5dp"/>
 
                 <androidx.appcompat.widget.SearchView
@@ -203,7 +204,7 @@
                 <!--
                 <RadioButton
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="wrap_content"/>
                 -->
 
                 <Button
@@ -234,7 +235,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:textSize="16sp"
-                    android:text="@string/mboard"
+                    android:text="@string/gpu"
                     android:layout_marginTop="5dp"/>
 
                 <androidx.appcompat.widget.SearchView
