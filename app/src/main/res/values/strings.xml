@@ -65,6 +65,8 @@
     <string name="cpu">CPUs</string>
     <string name="save">Confirm</string>
     <string name="mboard">MotherBoard</string>
+    <string name="gpu">GPU</string>
+    <string name="ram">RAM</string>
 
     <string name="logoutfr">Sei sicuro di voler effettuare il logout?</string>
     <string name="logoutyes">Si</string>
