@@ -68,5 +68,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     //Amazon Test
-    implementation 'de.axesso:axesso-java-client:1.0.0'
+    //implementation 'de.axesso:axesso-java-client:1.0.0'
 }

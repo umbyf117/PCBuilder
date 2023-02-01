@@ -10,7 +10,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
 
         <LinearLayout
             android:background="@drawable/gradient_background"
@@ -33,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
 
-                android:id="@+id/prof_name"
+                android:id="@+id/profUser"
                 android:text="@string/profileUser"
                 android:textSize="32sp"
                 android:textColor="#fff"
@@ -45,7 +46,7 @@
                 android:layout_marginTop="5dp"
 
                 android:id="@+id/profMail"
-                android:text="@string/profMail"
+                android:text="Ciao"
                 android:textSize="16sp"
                 android:textColor="#ffff"
                 android:textStyle="bold"/>
@@ -132,70 +133,59 @@
 
         </LinearLayout>
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="350dp"
-            android:layout_height="100dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="350dp"
-            app:strokeColor="#696969"
-            app:strokeWidth="0.5dp">
+        <LinearLayout
+            android:layout_marginTop="325dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="3">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/profSavedBuilds"
+                android:layout_width="350dp"
+                android:layout_height="100dp"
+                app:strokeColor="#696969"
+                app:strokeWidth="0.5dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp">
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center">
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="@string/savedParts"/>
+                    android:orientation="horizontal"
+                    android:weightSum="3">
 
                 </LinearLayout>
 
-            </LinearLayout>
 
+            </com.google.android.material.card.MaterialCardView>
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="350dp"
-            android:layout_height="100dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="460dp"
-            app:strokeColor="#696969"
-            app:strokeWidth="0.5dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="3">
+            <com.google.android.material.card.MaterialCardView
+                android:layout_below="@id/profSavedBuilds"
+                android:layout_width="350dp"
+                android:layout_height="100dp"
+                app:strokeColor="#696969"
+                app:strokeWidth="0.5dp"
+                android:layout_gravity="center">
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center">
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="@string/favParts"/>
+                    android:orientation="horizontal"
+                    android:weightSum="3">
 
                 </LinearLayout>
 
-            </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
 
 
-        </com.google.android.material.card.MaterialCardView>
-        
+
+
+
+
+
 
     </RelativeLayout>
 

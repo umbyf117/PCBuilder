@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -78,6 +79,10 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, controller, appBarConfiguration);
         NavigationUI.setupWithNavController(navigation, controller);
 
+        navigation.getMenu().findItem(R.id.nav_logout).setOnMenuItemClickListener(menuItem -> {
+            viewModel.logout();
+            return true;
+        });
 
     }
 

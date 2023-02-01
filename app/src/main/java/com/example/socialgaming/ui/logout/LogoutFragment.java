@@ -12,6 +12,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.socialgaming.R;
 import com.example.socialgaming.databinding.FragmentLogoutBinding;
@@ -20,6 +21,7 @@ import com.example.socialgaming.view.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LogoutFragment extends Fragment {
+
 
     private FragmentLogoutBinding binding;
     private Button logoutyes;
@@ -42,8 +44,8 @@ public class LogoutFragment extends Fragment {
             public void onClick(View v) {
                 mAuth.signOut();
                 singOutUser();
-                /*login = new Intent(view.getContext(), LoginActivity.class);
-                view.getContext().startActivity(login);*/
+                //login = new Intent(view.getContext(), LoginActivity.class);
+                //view.getContext().startActivity(login);
             }
         });
         logoutno = (Button) view.findViewById(R.id.logout_no);
@@ -71,5 +73,7 @@ public class LogoutFragment extends Fragment {
 
         return view;
     }
+
+
 
 }
