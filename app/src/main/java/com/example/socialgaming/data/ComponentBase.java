@@ -1,5 +1,7 @@
 package com.example.socialgaming.data;
 
+import com.example.socialgaming.data.types.ComponentType;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,6 +34,26 @@ public class ComponentBase {
         this.price = o.getDouble("price");
         this.brand = o.getString("brand");
         this.model = o.getString("model");
+    }
+
+    public static ComponentType getComponentType(ComponentBase component) {
+        if(component instanceof Case)
+            return ComponentType.CASE;
+        if(component instanceof CPU)
+            return ComponentType.CPU;
+        if(component instanceof CPUFan)
+            return ComponentType.CPU_FAN;
+        if(component instanceof GPU)
+            return ComponentType.GPU;
+        if(component instanceof Memory)
+            return ComponentType.MEMORY;
+        if(component instanceof Motherboard)
+            return ComponentType.MOTHERBOARD;
+        if(component instanceof PSU)
+            return ComponentType.PSU;
+        if(component instanceof RAM)
+            return ComponentType.RAM;
+        return null;
     }
 
     public String getId() {

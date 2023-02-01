@@ -7,7 +7,7 @@ public enum ComponentType {
     CPU,
     CPU_FAN,
     GPU,
-    MEMORIA,
+    MEMORY,
     MOTHERBOARD,
     PSU,
     RAM

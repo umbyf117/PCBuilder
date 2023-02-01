@@ -5,14 +5,14 @@ import com.example.socialgaming.data.types.MemoryType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Memoria extends ComponentBase {
+public class Memory extends ComponentBase {
     private String rpm;
     private String cache;
     private MemoryType type;
 
-    public Memoria() {}
+    public Memory() {}
 
-    public Memoria(String id, String title, String link, String img, double price, String brand, String model, String rpm, String cache, MemoryType type) {
+    public Memory(String id, String title, String link, String img, double price, String brand, String model, String rpm, String cache, MemoryType type) {
         super(id, title, link, img, price, brand, model);
         this.rpm = rpm;
         this.cache = cache;

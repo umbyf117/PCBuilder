@@ -93,7 +93,7 @@ public class BuildUtils {
                 component = new GPU();
                 break;
             case MEMORIA:
-                component = new Memoria();
+                component = new Memory();
                 break;
             case MOTHERBOARD:
                 component = new Motherboard();

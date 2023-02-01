@@ -40,8 +40,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        System.out.println(BuildUtils.getComponentJSON("https://computer-components-api.p.rapidapi.com/power_supply?limit=5&offset=0&id=cld4mzbp000issqaoxyjx5ffi"));
-
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_home);
