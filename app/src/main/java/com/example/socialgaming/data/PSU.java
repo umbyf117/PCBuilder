@@ -3,6 +3,8 @@ package com.example.socialgaming.data;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 public class PSU extends ComponentBase {
 
     private int power;
@@ -19,11 +21,20 @@ public class PSU extends ComponentBase {
     }
 
     @Override
-    public void getJSONData(JSONObject o) throws JSONException {
-        super.getJSONData(o);
+    public void setJSONData(JSONObject o) throws JSONException {
+        super.setJSONData(o);
         this.color = o.getString("color");
         this.efficiency = o.getString("efficiency");
         setPower(o.getString("power"));
+    }
+
+    @Override
+    public Map<String, Object> getMap() {
+        Map<String, Object> data = super.getMap();
+        data.put("power", power);
+        data.put("color", color);
+        data.put("efficiency", efficiency);
+        return data;
     }
 
     private void setPower(String power) {

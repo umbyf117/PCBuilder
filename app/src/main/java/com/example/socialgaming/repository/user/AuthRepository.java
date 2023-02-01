@@ -79,6 +79,7 @@ public class AuthRepository {
                                                     .document(username).set(new HashMap<String, Object>() {
                                                         {
                                                             put("uId", firebaseAuth.getCurrentUser().getUid());
+                                                            put("username", username);
                                                         }
                                                     }).addOnCompleteListener(task -> Objects.requireNonNull(userLiveData.getValue())
                                                             .updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(username).build()))

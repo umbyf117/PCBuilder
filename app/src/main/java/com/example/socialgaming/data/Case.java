@@ -3,6 +3,8 @@ package com.example.socialgaming.data;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 public class Case extends ComponentBase {
 
     private String sidePanel;
@@ -19,11 +21,20 @@ public class Case extends ComponentBase {
     }
 
     @Override
-    public void getJSONData(JSONObject o) throws JSONException {
-        super.getJSONData(o);
+    public void setJSONData(JSONObject o) throws JSONException {
+        super.setJSONData(o);
         this.sidePanel = o.getString("sidePanel");
         this.color = o.getString("color");
         this.cabinet = o.getString("cabinetType");
+    }
+
+    @Override
+    public Map<String, Object> getMap() {
+        Map<String, Object> data = super.getMap();
+        data.put("sidePanel", sidePanel);
+        data.put("color", color);
+        data.put("cabinet", cabinet);
+        return data;
     }
 
     public String getSidePanel() {

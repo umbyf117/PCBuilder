@@ -5,6 +5,8 @@ import com.example.socialgaming.data.types.MemoryType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 public class Memory extends ComponentBase {
     private String rpm;
     private String cache;
@@ -20,11 +22,20 @@ public class Memory extends ComponentBase {
     }
 
     @Override
-    public void getJSONData(JSONObject o) throws JSONException {
-        super.getJSONData(o);
+    public void setJSONData(JSONObject o) throws JSONException {
+        super.setJSONData(o);
         this.rpm = o.getString("rpm");
         this.cache = o.getString("cacheMemory");
-        setType(o.getString("type"));
+        setType(o.getString("MemoryType"));
+    }
+
+    @Override
+    public Map<String, Object> getMap() {
+        Map<String, Object> data = super.getMap();
+        data.put("rpm", rpm);
+        data.put("cache", cache);
+        data.put("MemoryType", type);
+        return data;
     }
 
     private void setType(String type) {

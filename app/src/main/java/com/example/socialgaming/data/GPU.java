@@ -3,6 +3,8 @@ package com.example.socialgaming.data;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 public class GPU extends ComponentBase {
     private int memory;
     private String clockSpeed;
@@ -18,11 +20,20 @@ public class GPU extends ComponentBase {
     }
 
     @Override
-    public void getJSONData(JSONObject o) throws JSONException {
-        super.getJSONData(o);
+    public void setJSONData(JSONObject o) throws JSONException {
+        super.setJSONData(o);
         setMemory(o.getString("memory"));
         this.clockSpeed = o.getString("clockSpeed");
         this.chipset = o.getString("chipset");
+    }
+
+    @Override
+    public Map<String, Object> getMap() {
+        Map<String, Object> data = super.getMap();
+        data.put("memory", memory);
+        data.put("clockSpeed", clockSpeed);
+        data.put("chipset", chipset);
+        return data;
     }
 
     private void setMemory(String memory) {

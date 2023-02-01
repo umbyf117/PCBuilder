@@ -79,37 +79,10 @@ public class BuildUtils {
     public ComponentBase getComponent(JSONObject obj, ComponentType type) {
         ComponentBase component = null;
 
-        switch(type) {
-            case CASE:
-                component = new Case();
-                break;
-            case CPU:
-                component = new CPU();
-                break;
-            case CPU_FAN:
-                component = new CPUFan();
-                break;
-            case GPU:
-                component = new GPU();
-                break;
-            case MEMORIA:
-                component = new Memory();
-                break;
-            case MOTHERBOARD:
-                component = new Motherboard();
-                break;
-            case PSU:
-                component = new PSU();
-                break;
-            case RAM:
-                component = new RAM();
-                break;
-            default:
-                component = new ComponentBase();
-        }
+        component = ComponentBase.construct(type);
 
         try {
-            component.getJSONData(obj);
+            component.setJSONData(obj);
         } catch (JSONException e) {
             Log.e(HomeActivity.class.getSimpleName(), "Json getting data error: " + e.getMessage());
         }

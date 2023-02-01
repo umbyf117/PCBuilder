@@ -1,6 +1,6 @@
 package com.example.socialgaming.data.types;
 
-import com.example.socialgaming.data.CPUFan;
+import java.util.Locale;
 
 public enum ComponentType {
     CASE,
@@ -10,5 +10,11 @@ public enum ComponentType {
     MEMORY,
     MOTHERBOARD,
     PSU,
-    RAM
+    RAM;
+
+    public String toCapitalCase() {
+        return toString().charAt(0) + toString().toLowerCase().substring(1);
+    }
+
 }
+

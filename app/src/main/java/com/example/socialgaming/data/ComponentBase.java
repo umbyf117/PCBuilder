@@ -5,6 +5,9 @@ import com.example.socialgaming.data.types.ComponentType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ComponentBase {
     private String id;
     private String title;
@@ -26,7 +29,7 @@ public class ComponentBase {
         this.model = model;
     }
 
-    public void getJSONData(JSONObject o) throws JSONException {
+    public void setJSONData(JSONObject o) throws JSONException {
         this.id = o.getString("id");
         this.title = o.getString("title");
         this.link = o.getString("link");
@@ -34,6 +37,18 @@ public class ComponentBase {
         this.price = o.getDouble("price");
         this.brand = o.getString("brand");
         this.model = o.getString("model");
+    }
+
+    public Map<String, Object> getMap() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("id", id);
+        data.put("title",title);
+        data.put("link",link);
+        data.put("image", img);
+        data.put("price",price);
+        data.put("brand",brand);
+        data.put("model",model);
+        return data;
     }
 
     public static ComponentType getComponentType(ComponentBase component) {
@@ -54,6 +69,77 @@ public class ComponentBase {
         if(component instanceof RAM)
             return ComponentType.RAM;
         return null;
+    }
+    public static ComponentBase construct(ComponentType type) {
+        ComponentBase component;
+        switch(type) {
+            case CASE:
+                component = new Case();
+                break;
+            case CPU:
+                component = new CPU();
+                break;
+            case CPU_FAN:
+                component = new CPUFan();
+                break;
+            case GPU:
+                component = new GPU();
+                break;
+            case MEMORY:
+                component = new Memory();
+                break;
+            case MOTHERBOARD:
+                component = new Motherboard();
+                break;
+            case PSU:
+                component = new PSU();
+                break;
+            case RAM:
+                component = new RAM();
+                break;
+            default:
+                component = new ComponentBase();
+        }
+        return component;
+    }
+
+    public static  ComponentBase construct(ComponentType type, Map<String, Object> data) {
+        ComponentBase component;
+        switch(type) {
+            case CASE:
+                component = new Case();
+                break;
+            case CPU:
+                component = new CPU();
+                break;
+            case CPU_FAN:
+                component = new CPUFan();
+                break;
+            case GPU:
+                component = new GPU();
+                break;
+            case MEMORY:
+                component = new Memory();
+                break;
+            case MOTHERBOARD:
+                component = new Motherboard();
+                break;
+            case PSU:
+                component = new PSU();
+                break;
+            case RAM:
+                component = new RAM();
+                break;
+            default:
+                component = new ComponentBase();
+        }
+        try {
+            component.setJSONData(new JSONObject(data));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return component;
     }
 
     public String getId() {

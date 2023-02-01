@@ -5,6 +5,8 @@ import com.example.socialgaming.data.types.RamType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 public class RAM extends ComponentBase {
 
     private int size;
@@ -21,11 +23,20 @@ public class RAM extends ComponentBase {
     }
 
     @Override
-    public void getJSONData(JSONObject o) throws JSONException {
-        super.getJSONData(o);
+    public void setJSONData(JSONObject o) throws JSONException {
+        super.setJSONData(o);
         setSize(o.getString("size"));
         setQuantity(o.getString("quantity"));
         setType(o.getString("type"));
+    }
+
+    @Override
+    public Map<String, Object> getMap() {
+        Map<String, Object> data = super.getMap();
+        data.put("size", size);
+        data.put("quantity", quantity);
+        data.put("RamType", type);
+        return data;
     }
 
     private void setSize(String size) {
