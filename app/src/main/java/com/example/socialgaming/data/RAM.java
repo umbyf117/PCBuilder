@@ -22,6 +22,13 @@ public class RAM extends ComponentBase {
         this.type = type;
     }
 
+    public RAM(String id, String title, String link, String img, double price, String brand, String model, String size, String quantity, RamType type) {
+        super(id, title, link, img, price, brand, model);
+        setSize(size);
+        setQuantity(quantity);
+        this.type = type;
+    }
+
     @Override
     public void setJSONData(JSONObject o) throws JSONException {
         super.setJSONData(o);

@@ -1,6 +1,59 @@
 package com.example.socialgaming.data;
 
+import java.util.Map;
+
 public class CPUFan extends ComponentBase {
+    private int rpm;
+    private String color;
+    private String noiseLevel;
+
+    public CPUFan() {}
+
+    public CPUFan(String id, String title, String link, String img, double price, String brand, String model, int rpm, String color, String noiseLevel) {
+        super(id, title, link, img, price, brand, model);
+        this.rpm = rpm;
+        this.color = color;
+        this.noiseLevel = noiseLevel;
+    }
+
+    public CPUFan(String id, String title, String link, String img, double price, String brand, String model, String rpm, String color, String noiseLevel) {
+        super(id, title, link, img, price, brand, model);
+        setRpm(rpm);
+        this.color = color;
+        this.noiseLevel = noiseLevel;
+    }
+
+    @Override
+    public Map<String, Object> getMap() {
+        Map<String, Object> data = super.getMap();
+        data.put("rpm", rpm);
+        data.put("color", color);
+        data.put("noiseLevel", noiseLevel);
+        return data;
+    }
+
+    private void setRpm(String rpm) {
+        this.rpm = Integer.parseInt(rpm.replace(" RPM", ""));
+    }
+
+    public int getRpm() {
+        return rpm;
+    }
+    public void setRpm(int rpm) {
+        this.rpm = rpm;
+    }
+    public String getColor() {
+        return color;
+    }
+    public void setColor(String color) {
+        this.color = color;
+    }
+    public String getNoiseLevel() {
+        return noiseLevel;
+    }
+    public void setNoiseLevel(String noiseLevel) {
+        this.noiseLevel = noiseLevel;
+    }
 }
 /*
 id:"B0009FV5PK"
