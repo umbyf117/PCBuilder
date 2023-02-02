@@ -37,12 +37,6 @@
         android:label="@string/search"
         tools:layout="@layout/fragment_search"/>
 
-    <fragment
-        android:id="@+id/nav_logout"
-        android:name="com.example.socialgaming.ui.logout.LogoutFragment"
-        android:label="@string/logout"
-        tools:layout="@layout/fragment_logout"/>
-
     <activity
         android:id="@+id/loginActivity"
         android:name="com.example.socialgaming.view.LoginActivity"
