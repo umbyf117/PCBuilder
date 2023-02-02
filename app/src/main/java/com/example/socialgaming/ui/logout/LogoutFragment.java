@@ -22,7 +22,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LogoutFragment extends Fragment {
 
-
     private FragmentLogoutBinding binding;
     private Button logoutyes;
     private Button logoutno;
