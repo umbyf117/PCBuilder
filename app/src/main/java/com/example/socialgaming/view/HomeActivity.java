@@ -24,6 +24,7 @@ import com.example.socialgaming.R;
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.databinding.MenuActivityBinding;
 import com.example.socialgaming.ui.Settings.SettingsFragment;
+import com.example.socialgaming.ui.profile.OnFragmentInteractionListener;
 import com.example.socialgaming.ui.profile.ProfileFragment;
 import com.example.socialgaming.utils.BuildUtils;
 import com.example.socialgaming.utils.FragmentUtils;
@@ -32,7 +33,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseUser;
 
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
     private AppBarConfiguration appBarConfiguration;
     private MenuActivityBinding binding;
@@ -89,11 +90,9 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-
     public FirebaseUser getUserData() {
         return viewModel.getUserLiveData().getValue();
     }
-
 
     @Override
     public boolean onSupportNavigateUp(){
@@ -101,4 +100,9 @@ public class HomeActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(controller, appBarConfiguration) || super.onSupportNavigateUp();
     }
 
+    @Override
+    public void changeFragment(int id) {
+        if(id == 1){
+        }
+    }
 }

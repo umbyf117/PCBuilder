@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.socialgaming.R;
 import com.example.socialgaming.databinding.FragmentBuildBinding;
-import com.example.socialgaming.databinding.FragmentLogoutBinding;
+import com.example.socialgaming.databinding.FragmentProfileBinding;
 import com.example.socialgaming.ui.Search.SearchFragment;
 
 import java.util.ArrayList;
@@ -23,17 +23,21 @@ public class BuildFragment extends Fragment {
 
     ListView lista;
     ArrayList<String> arrayList;
-    SearchView cpusearch;
+    androidx.appcompat.widget.SearchView cpusearch;
     ArrayAdapter<String> arrayAdapter;
     private FragmentBuildBinding binding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = FragmentBuildBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
 
-        lista = (ListView) view.findViewById(R.id.lista);
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentBuildBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+
+        lista = (ListView) root.findViewById(R.id.lista);
 
         arrayList = new ArrayList<>();
         arrayList.add("CPU1");
@@ -44,14 +48,14 @@ public class BuildFragment extends Fragment {
         arrayList.add("CPU6");
         arrayList.add("CPU7");
 
-        cpusearch = (SearchView) view.findViewById(R.id.CPUSearch);
+        cpusearch = (androidx.appcompat.widget.SearchView) root.findViewById(R.id.CPUSearch);
 
-        arrayAdapter = new ArrayAdapter<String>(view.getContext() , android.R.layout.simple_list_item_1, arrayList);
+        arrayAdapter = new ArrayAdapter<String>(root.getContext(), android.R.layout.simple_list_item_1, arrayList);
 
         lista.setAdapter(arrayAdapter);
 
 
-        cpusearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        cpusearch.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -65,10 +69,6 @@ public class BuildFragment extends Fragment {
                 return false;
             }
         });
-    }
-
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.fragment_build, container, false);
-        return view;
+        return root;
     }
 }
