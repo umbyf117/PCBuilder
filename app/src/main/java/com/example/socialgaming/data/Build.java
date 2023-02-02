@@ -1,8 +1,11 @@
 package com.example.socialgaming.data;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 public class Build {
     private Motherboard board;
@@ -16,30 +19,43 @@ public class Build {
 
     private User creator;
     private Set<String> like, dislike;
+    private UUID uuid;
 
-    public Build(Motherboard board, CPU cpu, List<RAM> rams, List<Memory> harddisks, GPU gpu, Case house, PSU psu, User creator) {
-        this.board = board;
-        this.cpu = cpu;
-        this.rams = rams;
-        this.harddisks = harddisks;
-        this.gpu = gpu;
-        this.house = house;
-        this.psu = psu;
-        this.creator = creator;
-        this.like = new HashSet<>();
-        this.dislike = new HashSet<>();
+    public Build(Motherboard board, CPU cpu, List<RAM> rams, List<Memory> harddisks, GPU gpu, Case house, CPUFan fan, PSU psu, User creator, Set<String> like, Set<String> dislike, UUID uuid) {
+        setBoard(board);
+        setCpu(cpu);
+        setRams(rams);
+        setHarddisks(harddisks);
+        setGpu(gpu);
+        setHouse(house);
+        setFan(fan);
+        setPsu(psu);
+        setCreator(creator);
+        setLike(like);
+        setDislike(dislike);
+        setUuid(uuid);
     }
 
-    public Build(Motherboard board, CPU cpu, List<RAM> rams, List<Memory> harddisks, GPU gpu, Case house, PSU psu, String username) {
-        this.board = board;
-        this.cpu = cpu;
-        this.rams = rams;
-        this.harddisks = harddisks;
-        this.gpu = gpu;
-        this.house = house;
-        this.psu = psu;
-        this.like = new HashSet<>();
-        this.dislike = new HashSet<>();
+    public Build(Motherboard board, CPU cpu, List<RAM> rams, List<Memory> harddisks, GPU gpu, Case house, CPUFan fan, PSU psu, User creator) {
+        this(board, cpu, rams, harddisks, gpu, house, fan, psu, creator, new HashSet<>(), new HashSet<>(), UUID.randomUUID());
+    }
+
+    //GENERATE HASMAP
+    public Map<String, Object> getMap() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("motherboard", board);
+        data.put("cpu", cpu);
+        data.put("ram", rams);
+        data.put("harddisk", harddisks);
+        data.put("gpu", gpu);
+        data.put("case", house);
+        data.put("fan", fan);
+        data.put("psu", psu);
+        data.put("username", creator.getUsername());
+        data.put("like", like);
+        data.put("dislike", dislike);
+        data.put("uuid", uuid);
+        return data;
     }
 
     //LIKE DISLIKE METHODS
@@ -118,6 +134,7 @@ public class Build {
         return harddisks.add(memory);
     }
 
+    //GETTER & SETTER
     public Motherboard getBoard() {
         return board;
     }
@@ -189,5 +206,11 @@ public class Build {
     }
     public void setDislike(Set<String> dislike) {
         this.dislike = dislike;
+    }
+    public UUID getUuid() {
+        return uuid;
+    }
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 }

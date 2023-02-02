@@ -17,6 +17,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ComponentRepository {
@@ -37,9 +38,15 @@ public class ComponentRepository {
         database = FirebaseDatabase.getInstance().getReference();
     }
 
-    public boolean writeData(ComponentType type, ComponentBase component, boolean force) {
+    /**
+     * @param type - Tipo di componente
+     * @param component - La componente da salvare nel database
+     * @return true - se la componente viene aggiunta
+     * @return false - se la componente non viene aggiunta (sia se esiste giá, sia per errori interni)
+     */
+    public boolean writeData(ComponentType type, ComponentBase component) {
         documentReference = firestore.collection(type.toCapitalCase()).document(component.getId());
-        if(exists(type, component.getId()) && force == false)
+        if(exists(type, component.getId()))
             return false;
 
         Map<String, Object> upload = component.getMap();
@@ -59,26 +66,26 @@ public class ComponentRepository {
 
     }
 
-    public boolean writeData(ComponentType type, ComponentBase component) {
-        return writeData(type, component, false);
-    }
-
+    /**
+     * @param type - Tipo di componente
+     * @param idComponent - ID del componente da cercare
+     * @return component - se esiste il componente
+     * @return null- se non esiste il componenete
+     */
     public ComponentBase readData(ComponentType type, String idComponent) {
 
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        data = document.getData();
-                    } else {
-                        data = null;
-                    }
+        documentReference = firestore.collection(type.toCapitalCase()).document(idComponent);
+        documentReference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    data = document.getData();
                 } else {
                     data = null;
-                    Log.e(HomeActivity.class.getSimpleName(), "Error trying to read data!");
                 }
+            } else {
+                data = null;
+                Log.e(HomeActivity.class.getSimpleName(), "Error trying to read data!");
             }
         });
 
@@ -90,6 +97,30 @@ public class ComponentRepository {
         return componentBase;
     }
 
+    /**
+     * @param type - Tipo di componente
+     * @param component - La componente da salvare nel database
+     * @return true - se il component esiste (e quindi viene aggiornato)
+     * @return false - se non esiste il component con stesso id
+     */
+    public boolean updateData(ComponentType type, ComponentBase component) {
+        if(!exists(type, component.getId()))
+            return false;
+
+        Map<String, Object> dataUpdated = component.getMap();
+        Map<String, Object> upload = new HashMap<>();
+        upload.put("/" + type.toCapitalCase() + "/" + component.getId(), dataUpdated);
+        database.updateChildren(upload);
+
+        return true;
+    }
+
+    /**
+     * @param type - Tipo di componente
+     * @param idComponent - ID del componente da cercare
+     * @return true - se esiste il component nel database con lo stesso ID
+     * @return false - se non trova un component con stesso ID nel database
+     */
     public boolean exists(ComponentType type, String idComponent) {
         readData(type, idComponent);
         if(data == null)

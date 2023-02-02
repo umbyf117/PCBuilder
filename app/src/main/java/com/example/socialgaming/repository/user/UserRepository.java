@@ -33,28 +33,21 @@ public class UserRepository {
         database = FirebaseDatabase.getInstance().getReference();
     }
 
-    //DA FINIRE
+    //AGGIORNA LA PASSWORD SSE LA VECCHIA PASSWORD E oldPass COINCIDONO
     public boolean updatePassword(User user, String oldPass, String newPass) {
         documentReference = firestore.collection(USERS_COLLECTION).document(user.getUsername());
 
         if(user.changePassword(oldPass, newPass) != 0)
             return false;
 
+        Map<String, Object> dataUpdated = new HashMap<>();
+        dataUpdated.put("password", user.getPassword());
         Map<String, Object> upload = new HashMap<>();
-        data.put("password", user.getPassword());
-        final boolean[] success = new boolean[1];
+        upload.put("/users/" + user.getUsername(), dataUpdated);
 
-        firestore.collection(USERS_COLLECTION).add(upload)
-                .addOnSuccessListener(documentReference -> {
-                    Log.d("TAG", "Document written with ID: " + documentReference.getId());
-                    success[0] = true;
-                })
-                .addOnFailureListener(e -> {
-                    Log.w("TAG", "Error adding document", e);
-                    success[0] = false;
-                });
+        database.updateChildren(upload);
 
-        return success[0];
+        return true;
 
     }
 
