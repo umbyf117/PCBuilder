@@ -21,6 +21,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.socialgaming.R;
 import com.example.socialgaming.databinding.MenuActivityBinding;
+import com.example.socialgaming.ui.Settings.SettingsFragment;
 import com.example.socialgaming.ui.profile.ProfileFragment;
 import com.example.socialgaming.utils.BuildUtils;
 import com.example.socialgaming.utils.FragmentUtils;
@@ -86,21 +87,9 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    /*public void onDataChange(@NonNull DataSnapshot snapshot){
-        ReadWriteUserDetails readWriteUserDetails = snapshot.getValue(ReadWriteUserDetails.class);
-        if(readWriteUserDetails != null){
-
-        }
-    }*/
 
     public FirebaseUser getUserData() {
         return viewModel.getUserLiveData().getValue();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
     }
 
     @Override

@@ -9,9 +9,15 @@
     android:id="@+id/profFragm">
 
     <RelativeLayout
+        android:id="@+id/rlProfile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center">
+
+        <Button
+            android:id="@+id/btnSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:background="@drawable/gradient_background"
@@ -28,6 +34,8 @@
                 app:civ_border_color="#FF000000"
                 app:civ_border_width="2dp"
                 android:src="@drawable/profpic"/>
+
+
 
             <TextView
                 android:layout_width="wrap_content"
