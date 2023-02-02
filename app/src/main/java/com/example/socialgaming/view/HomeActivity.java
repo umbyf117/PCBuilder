@@ -13,6 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -20,6 +21,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.socialgaming.R;
+import com.example.socialgaming.data.User;
 import com.example.socialgaming.databinding.MenuActivityBinding;
 import com.example.socialgaming.ui.Settings.SettingsFragment;
 import com.example.socialgaming.ui.profile.ProfileFragment;
@@ -91,6 +93,7 @@ public class HomeActivity extends AppCompatActivity {
     public FirebaseUser getUserData() {
         return viewModel.getUserLiveData().getValue();
     }
+
 
     @Override
     public boolean onSupportNavigateUp(){

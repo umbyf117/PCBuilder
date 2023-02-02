@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.socialgaming.R;
+import com.example.socialgaming.data.Build;
 import com.example.socialgaming.repository.callback.AuthenticationCallback;
 import com.example.socialgaming.utils.ViewUtils;
 import com.google.firebase.auth.FirebaseAuth;
@@ -78,8 +79,9 @@ public class AuthRepository {
                                             FirebaseFirestore.getInstance().collection(application.getString(R.string.firestore_users_collection))
                                                     .document(username).set(new HashMap<String, Object>() {
                                                         {
-                                                            put("uId", firebaseAuth.getCurrentUser().getUid());
                                                             put("username", username);
+                                                            put("favorite", new ArrayList<Build>());
+                                                            put("created", new ArrayList<Build>());
                                                         }
                                                     }).addOnCompleteListener(task -> Objects.requireNonNull(userLiveData.getValue())
                                                             .updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(username).build()))
