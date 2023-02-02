@@ -19,9 +19,12 @@ import okhttp3.Response;
 
 public class BuildUtils {
 
-    public static String getComponentJSON(String url) {
+    private static final String URL = "https://computer-components-api.p.rapidapi.com/%COMPONENT_TYPE%?limit=%LIMIT%&offset=%OFFSET%";
+
+    public static String getComponentsJSON(ComponentType type, int limit, int offset) {
 
         ResponseWrapper responseWrapper = new ResponseWrapper();
+        String url = getUrl(type, limit, offset);
 
         Thread backgroundThread = new Thread(new Runnable() {
             @Override
@@ -57,7 +60,7 @@ public class BuildUtils {
       return responseWrapper.response;
     }
 
-    public ComponentBase[] getComponents(String json, ComponentType type) {
+    public static ComponentBase[] getComponents(String json, ComponentType type) {
 
         if (json != null) {
             try {
@@ -76,7 +79,7 @@ public class BuildUtils {
       return null;
     }
 
-    public ComponentBase getComponent(JSONObject obj, ComponentType type) {
+    public static ComponentBase getComponent(JSONObject obj, ComponentType type) {
         ComponentBase component = null;
 
         component = ComponentBase.construct(type);
@@ -88,6 +91,39 @@ public class BuildUtils {
         }
 
         return component;
+    }
+
+    public static String getUrl(ComponentType type, int limit, int offset) {
+        String url = URL.replace("%LIMIT%", limit + "");
+        url = url.replace("%OFFSET%", offset + "");
+        switch(type) {
+            case CASE:
+                url = url.replace("%COMPONENT_TYPE%", "case");
+                break;
+            case CPU:
+                url = url.replace("%COMPONENT_TYPE%", "processor");
+                break;
+            case CPU_FAN:
+                url = url.replace("%COMPONENT_TYPE%", "cpu_fan");
+                break;
+            case GPU:
+                url = url.replace("%COMPONENT_TYPE%", "gpu");
+                break;
+            case MEMORY:
+                url = url.replace("%COMPONENT_TYPE%", "storage");
+                break;
+            case MOTHERBOARD:
+                url = url.replace("%COMPONENT_TYPE%", "motherboard");
+                break;
+            case PSU:
+                url = url.replace("%COMPONENT_TYPE%", "power_supply");
+                break;
+            case RAM:
+                url = url.replace("%COMPONENT_TYPE%", "ram");
+                break;
+        }
+
+        return url;
     }
 
 }

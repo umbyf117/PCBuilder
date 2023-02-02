@@ -79,6 +79,8 @@ public class AuthRepository {
                                             FirebaseFirestore.getInstance().collection(application.getString(R.string.firestore_users_collection))
                                                     .document(username).set(new HashMap<String, Object>() {
                                                         {
+                                                            put("mail", email);
+                                                            put("password", password);
                                                             put("username", username);
                                                             put("favorite", new ArrayList<Build>());
                                                             put("created", new ArrayList<Build>());
