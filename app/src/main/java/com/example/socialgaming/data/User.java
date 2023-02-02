@@ -1,25 +1,34 @@
 package com.example.socialgaming.data;
 
+import android.net.Uri;
+
+import com.example.socialgaming.R;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class User {
+    public static final Uri DEFAULT_IMAGE = Uri.parse("android.resource://" + "drawable" + "/" + R.drawable.logo);
+
     private String mail;
     private String password;
     private String username;
     private List<Build> favorite;
     private List<Build> created;
+    private Uri image;
 
-    public User(String mail, String password, String username, List<Build> favorite, List<Build> created) {
+    public User(String mail, String password, String username, List<Build> favorite, List<Build> created, Uri image) {
         this.mail = mail;
         this.password = password;
         this.username = username;
         this.favorite = favorite;
         this.created = created;
+        this.image = image;
     }
 
     public User(String mail, String password, String username) {
-        this(mail, password, username, new ArrayList<>(), new ArrayList<>());
+        this(mail, password, username, new ArrayList<>(), new ArrayList<>(), DEFAULT_IMAGE);
     }
 
     public boolean addFavoriteBuild(Build build) {

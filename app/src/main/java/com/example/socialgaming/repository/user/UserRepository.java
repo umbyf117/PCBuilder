@@ -1,6 +1,7 @@
 package com.example.socialgaming.repository.user;
 
 import android.app.Application;
+import android.net.Uri;
 import android.util.Log;
 
 import com.example.socialgaming.data.User;
@@ -49,6 +50,19 @@ public class UserRepository {
 
         return true;
 
+    }
+
+    public boolean updateImage(User user, Uri image) {
+        documentReference = firestore.collection(USERS_COLLECTION).document(user.getUsername());
+
+        Map<String, Object> dataUpdated = new HashMap<>();
+        dataUpdated.put("image", image);
+        Map<String, Object> upload = new HashMap<>();
+        upload.put("/users/" + user.getUsername(), dataUpdated);
+
+        database.updateChildren(upload);
+
+        return true;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.socialgaming.repository.component;
 
 import android.app.Application;
+import android.net.Uri;
 import android.util.Log;
 
 import com.example.socialgaming.data.Build;
@@ -124,7 +125,9 @@ public class BuildRepository {
             User creator = getUser(o.getString("username"));
             Set<String> like = (Set<String>) data.get("like");
             Set<String> dislike = (Set<String>) data.get("dislike");
-            Build build = new Build(board, cpu, rams, harddisks, gpu, house, fan, psu, creator, like, dislike, uuid);
+            String name = o.getString("name");
+            Uri image = (Uri) o.get("image");
+            Build build = new Build(board, cpu, rams, harddisks, gpu, house, fan, psu, creator, like, dislike, uuid, name, image);
 
             return build;
         } catch (JSONException e) {
@@ -164,7 +167,8 @@ public class BuildRepository {
                 o.getString("password"),
                 o.getString("username"),
                 (List<Build>) userData.get("favorite"),
-                (List<Build>) userData.get("created")
+                (List<Build>) userData.get("created"),
+                (Uri) userData.get("image")
         );
     }
 

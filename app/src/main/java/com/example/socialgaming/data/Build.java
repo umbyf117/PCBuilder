@@ -1,5 +1,7 @@
 package com.example.socialgaming.data;
 
+import android.net.Uri;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -21,7 +23,10 @@ public class Build {
     private Set<String> like, dislike;
     private UUID uuid;
 
-    public Build(Motherboard board, CPU cpu, List<RAM> rams, List<Memory> harddisks, GPU gpu, Case house, CPUFan fan, PSU psu, User creator, Set<String> like, Set<String> dislike, UUID uuid) {
+    private Uri image;
+    private String name;
+
+    public Build(Motherboard board, CPU cpu, List<RAM> rams, List<Memory> harddisks, GPU gpu, Case house, CPUFan fan, PSU psu, User creator, Set<String> like, Set<String> dislike, UUID uuid, String name, Uri uri) {
         setBoard(board);
         setCpu(cpu);
         setRams(rams);
@@ -34,10 +39,12 @@ public class Build {
         setLike(like);
         setDislike(dislike);
         setUuid(uuid);
+        this.name = name;
+        this.image = uri;
     }
 
-    public Build(Motherboard board, CPU cpu, List<RAM> rams, List<Memory> harddisks, GPU gpu, Case house, CPUFan fan, PSU psu, User creator) {
-        this(board, cpu, rams, harddisks, gpu, house, fan, psu, creator, new HashSet<>(), new HashSet<>(), UUID.randomUUID());
+    public Build(Motherboard board, CPU cpu, List<RAM> rams, List<Memory> harddisks, GPU gpu, Case house, CPUFan fan, PSU psu, User creator, String name, Uri image) {
+        this(board, cpu, rams, harddisks, gpu, house, fan, psu, creator, new HashSet<>(), new HashSet<>(), UUID.randomUUID(), name, image);
     }
 
     //GENERATE HASMAP
@@ -55,6 +62,8 @@ public class Build {
         data.put("like", like);
         data.put("dislike", dislike);
         data.put("uuid", uuid);
+        data.put("name", name);
+        data.put("uri", image);
         return data;
     }
 

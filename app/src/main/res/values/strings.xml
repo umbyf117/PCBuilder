@@ -71,7 +71,11 @@
     <string name="logoutfr">Sei sicuro di voler effettuare il logout?</string>
     <string name="logoutyes">Si</string>
     <string name="logoutno">No</string>
-
+    <string name="navigation_waiting">Homepage</string>
+    <string name="navigation_profile">Profile</string>
+    <string name="navigation_create">Create</string>
+    <string name="navigation_search">Search</string>
+    <string name="navigation_setting">Setting</string>
 
 
 </resources>

@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.socialgaming.R;
 import com.example.socialgaming.data.Build;
+import com.example.socialgaming.data.User;
 import com.example.socialgaming.repository.callback.AuthenticationCallback;
 import com.example.socialgaming.utils.ViewUtils;
 import com.google.firebase.auth.FirebaseAuth;
@@ -84,18 +85,13 @@ public class AuthRepository {
                                                             put("username", username);
                                                             put("favorite", new ArrayList<Build>());
                                                             put("created", new ArrayList<Build>());
+                                                            put("image", User.DEFAULT_IMAGE);
                                                         }
                                                     }).addOnCompleteListener(task -> Objects.requireNonNull(userLiveData.getValue())
                                                             .updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(username).build()))
                                                     .addOnFailureListener(e -> ViewUtils.displayToast(application,e.getMessage()));
 
-                                            /*
-                                            //Inserisce i dati passati nel Firebase Realtime Database
-                                            ReadWriteUserDetails writeUserDetails = new ReadWriteUserDetails(email);
-
-                                            */
-
-                                        }
+                                            }
                                     }).addOnFailureListener(e -> ViewUtils.displayToast(application,e.getMessage()));
                         }
                     }

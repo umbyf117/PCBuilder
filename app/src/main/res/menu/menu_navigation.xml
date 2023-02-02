@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homepage"
+        android:color="@color/blue_light"
+        android:icon="@drawable/homepage"
+        android:iconTint="@color/blue_dark"
+        android:iconTintMode="screen"
+        android:title="@string/navigation_waiting" />
+
+    <item
+        android:id="@+id/profile"
+        android:color="@color/blue_light"
+        android:icon="@drawable/account"
+        android:iconTint="@color/blue_dark"
+        android:title="@string/navigation_profile"/>
+
+    <item
+        android:id="@+id/create_build"
+        android:color="@color/blue_light"
+        android:icon="@drawable/plus"
+        android:iconTint="@color/blue_dark"
+        android:title="@string/navigation_create"/>
+
+    <item
+        android:id="@+id/search_build"
+        android:color="@color/blue_light"
+        android:icon="@drawable/search"
+        android:iconTint="@color/blue_dark"
+        android:title="@string/navigation_search"/>
+
+    <item
+        android:id="@+id/settings"
+        android:color="@color/blue_light"
+        android:icon="@drawable/setting"
+        android:iconTint="@color/blue_dark"
+        android:title="@string/navigation_setting"/>
+</menu>
