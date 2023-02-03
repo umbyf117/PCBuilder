@@ -5,13 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.socialgaming.R;
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.databinding.FragmentHomeBinding;
 
@@ -25,9 +23,10 @@ public class HomeFragment extends Fragment {
     private User user;
     private LinearLayout buildList;
 
-    public HomeFragment(User user) {
-        this.user = user;
-        homeViewModel = new HomeFragmentViewModel();
+    public static HomeFragment newInstance(User user) {
+        HomeFragment homeFragment = new HomeFragment();
+        homeFragment.user = user;
+        return homeFragment;
     }
 
     @Override
@@ -35,7 +34,9 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         binding = FragmentHomeBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
+        homeViewModel = new HomeFragmentViewModel();
 
+        /*
         // Recupera l'istanza della ScrollView
         ScrollView scrollView = view.findViewById(R.id.buildList);
         buildList = scrollView.findViewById(R.id.buildLayout);
@@ -56,6 +57,7 @@ public class HomeFragment extends Fragment {
 
         // Aggiungi la vista inflata alla ScrollView
         scrollView.addView(templateView);
+        */
 
     }
 

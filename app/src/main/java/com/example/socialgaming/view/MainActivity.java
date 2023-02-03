@@ -1,16 +1,19 @@
 package com.example.socialgaming.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.socialgaming.R;
+import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.ui.Build.BuildFragment;
 import com.example.socialgaming.ui.Search.SearchFragment;
 import com.example.socialgaming.ui.Settings.SettingsFragment;
 import com.example.socialgaming.ui.home.HomeFragment;
 import com.example.socialgaming.ui.profile.ProfileFragment;
+import com.example.socialgaming.utils.FragmentUtils;
 import com.example.socialgaming.view.model.MainViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -33,8 +36,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewModel = new MainViewModel(getApplication());
+        viewModel.getUserLiveData().observe(this, firebaseUser -> {
+            if(firebaseUser == null)
+                FragmentUtils.startActivity(this, new Intent(MainActivity.this, LoginActivity.class), true);
+        });
 
         user = viewModel.getUserRepository().getUserData(viewModel.getUserLiveData().getValue().getDisplayName());
+
+        homeFragment = new HomeFragment();
+        profileFragment = new ProfileFragment();
+        buildFragment = new BuildFragment();
+        searchFragment = new SearchFragment();
+        settingsFragment = new SettingsFragment();
 
         setContentView(R.layout.activity_main);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -45,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.bottom_home:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container_home, homeFragment).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container_home, new HomeFragment()).commit();
                         return true;
                     case R.id.bottom_profile:
                         getSupportFragmentManager().beginTransaction().replace(R.id.container_home, profileFragment).commit();

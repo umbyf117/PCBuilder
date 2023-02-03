@@ -21,7 +21,7 @@ public class FragmentUtils {
     }
 
     public static void loadFragment(Fragment fragment, FragmentManager fragmentManager) {
-        loadFragment(fragment, fragmentManager, R.id.home_activity);
+        loadFragment(fragment, fragmentManager, R.id.main_activity);
     }
 
     public static void loadFragment(Fragment fragment, FragmentManager fragmentManager, @IdRes int fragmentContainer) {
