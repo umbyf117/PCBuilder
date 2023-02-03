@@ -25,6 +25,8 @@ public class MainViewModel extends AndroidViewModel {
         userLiveData = authRepository.getUserLiveData();
     }
 
+
+
     public void logout() {
         authRepository.logOut();
     }

@@ -160,10 +160,11 @@ public class BuildRepository {
                         Log.d(TAG, "Error getting documents: ", task.getException());
                     }
                 });
-        for(int i = 0; i < buildList.size(); i++) {
 
-        }
-        return null;
+        if(buildList.size() < offset)
+            return null;
+
+        return buildList.subList(offset, buildList.size());
     }
 
     /**
