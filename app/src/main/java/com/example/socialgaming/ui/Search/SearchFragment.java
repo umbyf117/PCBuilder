@@ -33,9 +33,8 @@ import java.util.List;
 
 public class SearchFragment extends Fragment {
     private SearchView sv;
-    private ListView lv;
     private ArrayAdapter<String> adapter;
-    private List<String> cpuList;
+
 
     /*
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,14 +94,17 @@ public class SearchFragment extends Fragment {
     }
     */
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_search, container, false);
-    }
-
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+
+
+        return view;
     }
 
 
