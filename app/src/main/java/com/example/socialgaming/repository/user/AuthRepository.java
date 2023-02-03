@@ -3,6 +3,7 @@ package com.example.socialgaming.repository.user;
 import android.app.Application;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.socialgaming.R;
@@ -10,6 +11,8 @@ import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.utils.ViewUtils;
 import com.example.socialgaming.view.MainActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -70,7 +73,18 @@ public class AuthRepository {
                             firebaseAuth.createUserWithEmailAndPassword(email, password)
                                     .addOnCompleteListener(application.getMainExecutor(), taskFA -> {
                                         if (taskFA.isSuccessful()) {
-                                            userLiveData.setValue(firebaseAuth.getCurrentUser()); // Set mutable
+                                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                    .setDisplayName(username)
+                                                    .build();
+
+                                            user.updateProfile(profileUpdates)
+                                                    .addOnCompleteListener(task -> {
+                                                        if (task.isSuccessful()) {
+                                                            Log.d("[UPDATE]", "User profile updated.");
+                                                        }
+                                                    });
+                                            userLiveData.setValue(user); // Set mutable
                                             loggedOutLiveData.setValue(false);
                                             FirebaseFirestore.getInstance().collection(application.getString(R.string.firestore_users_collection))
                                                     .document(username).set(new HashMap<String, Object>() {

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.databinding.FragmentHomeBinding;
 import com.example.socialgaming.repository.component.BuildRepository;
+import com.example.socialgaming.repository.user.AuthRepository;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeFragment extends Fragment {
 
@@ -28,7 +31,6 @@ public class HomeFragment extends Fragment {
     private static final Color BLUE_DARK = Color.valueOf(Color.parseColor("#1b263b"));
     private static final Color GOLD = Color.valueOf(Color.parseColor("#FFD700"));
 
-    private FragmentHomeBinding binding;
     private HomeFragmentViewModel homeViewModel;
 
     private User user;
@@ -44,22 +46,25 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = FragmentHomeBinding.inflate(getLayoutInflater());
-        homeViewModel = new HomeFragmentViewModel();
-        buildRepository = new BuildRepository();
-
-        setHomePageBubbles();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        homeViewModel = new HomeFragmentViewModel(getActivity().getApplication());
+        buildRepository = new BuildRepository();
+        user = homeViewModel.getUserRepository()
+                .getUserData(homeViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName());
+        TextView username = view.findViewById(R.id.username);
+        if(user != null)
+            username.setText(user.getUsername());
+        setHomePageBubbles(view);
+
+        return view;
     }
 
-    public void setHomePageBubbles() {
-
-        View view = binding.getRoot();
+    public void setHomePageBubbles(View view) {
 
         // Recupera l'istanza della ScrollView
         buildList = view.findViewById(R.id.buildLayout);

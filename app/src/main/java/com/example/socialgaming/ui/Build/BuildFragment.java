@@ -49,10 +49,9 @@ public class BuildFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentBuildBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        View view = inflater.inflate(R.layout.fragment_build, container, false);
 
-        lista = (ListView) root.findViewById(R.id.lista);
+        lista = (ListView) view.findViewById(R.id.lista);
 
         arrayList = new ArrayList<>();
         arrayList.add("CPU1");
@@ -63,9 +62,9 @@ public class BuildFragment extends Fragment {
         arrayList.add("CPU6");
         arrayList.add("CPU7");
 
-        cpusearch = (androidx.appcompat.widget.SearchView) root.findViewById(R.id.CPUSearch);
+        cpusearch = (androidx.appcompat.widget.SearchView) view.findViewById(R.id.CPUSearch);
 
-        arrayAdapter = new ArrayAdapter<String>(root.getContext(), android.R.layout.simple_list_item_1, arrayList);
+        arrayAdapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_list_item_1, arrayList);
 
         lista.setAdapter(arrayAdapter);
 
@@ -173,7 +172,7 @@ public class BuildFragment extends Fragment {
                 return false;
             }
         });
-        return root;
+        return view;
     }
 
     private void refreshView(){

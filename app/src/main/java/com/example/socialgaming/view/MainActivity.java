@@ -44,6 +44,14 @@ public class MainActivity extends AppCompatActivity {
 
         viewModel = new MainViewModel(getApplication());
 
+        viewModel.getUserLiveData().observe(this, firebaseUser -> {
+            if(firebaseUser == null)
+                FragmentUtils.startActivity(this, new Intent(MainActivity.this, LoginActivity.class), true);
+            else if (firebaseUser != null) {
+                user = viewModel.getUserRepository().getUserData(firebaseUser.getDisplayName());
+            }
+        });
+
         homeFragment = new HomeFragment();
         profileFragment = new ProfileFragment();
         buildFragment = new BuildFragment();
@@ -59,33 +67,25 @@ public class MainActivity extends AppCompatActivity {
 
         setupNavigationListener();
 
-        viewModel.getUserLiveData().observe(this, firebaseUser -> {
-            if(firebaseUser == null)
-                FragmentUtils.startActivity(this, new Intent(MainActivity.this, LoginActivity.class), true);
-            else if (firebaseUser != null) {
-                user = viewModel.getUserRepository().getUserData(firebaseUser.getDisplayName());
-            }
-        });
-
     }
 
     public void setupNavigationListener() {
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch(item.getItemId()){
-                case R.id.bottom_home:
+                case R.id.homepage:
                     getSupportFragmentManager().beginTransaction().replace(R.id.container_home, homeFragment).commit();
                     return true;
-                case R.id.bottom_profile:
+                case R.id.profile:
                     getSupportFragmentManager().beginTransaction().replace(R.id.container_home, profileFragment).commit();
                     return true;
-                case R.id.bottom_build:
+                case R.id.create_build:
                     getSupportFragmentManager().beginTransaction().replace(R.id.container_home, buildFragment).commit();
                     return true;
-                case R.id.bottom_search:
+                case R.id.search_build:
                     getSupportFragmentManager().beginTransaction().replace(R.id.container_home, searchFragment).commit();
                     return true;
-                case R.id.bottom_settings:
+                case R.id.settings:
                     getSupportFragmentManager().beginTransaction().replace(R.id.container_home, settingsFragment).commit();
                     return true;
             }

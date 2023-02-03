@@ -51,8 +51,7 @@ public class ProfileFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentProfileBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         //get user authentication info
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -60,14 +59,12 @@ public class ProfileFragment extends Fragment {
         userMail = user.getEmail();
 
         //display firebase username instead of textview
-        TextView tv1 = root.findViewById(R.id.profUser);
+        TextView tv1 = view.findViewById(R.id.profUser);
         tv1.setText(userId);
-        TextView tv2 = root.findViewById(R.id.profMail);
+        TextView tv2 = view.findViewById(R.id.profMail);
         tv2.setText(userMail);
 
-
-
-        return root;
+        return view;
     }
 
 

@@ -36,12 +36,13 @@ public class UserRepository {
 
     //Ottenimento dati dell'utente
     public User getUserData(String username) {
-        documentReference = firestore.collection("/" + USERS_COLLECTION).document("/" + USERS_COLLECTION + "/" + username);
+        documentReference = firestore.collection(USERS_COLLECTION).document("/" + username);
         documentReference.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
                     data = document.getData();
+                    return;
                 } else {
                     data = null;
                 }
