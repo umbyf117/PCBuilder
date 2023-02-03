@@ -9,7 +9,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.socialgaming.repository.user.AuthRepository;
 import com.example.socialgaming.repository.user.UserRepository;
-import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainViewModel extends AndroidViewModel {
@@ -41,4 +40,5 @@ public class MainViewModel extends AndroidViewModel {
     public UserRepository getUserRepository() {
         return userRepository;
     }
+
 }

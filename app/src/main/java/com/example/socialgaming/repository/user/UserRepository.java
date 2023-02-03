@@ -7,7 +7,6 @@ import android.util.Log;
 import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.ComponentBase;
 import com.example.socialgaming.data.User;
-import com.example.socialgaming.repository.callback.AuthenticationCallback;
 import com.example.socialgaming.view.MainActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -21,7 +20,7 @@ import java.util.Map;
 
 public class UserRepository {
 
-    private static final String USERS_COLLECTION = "users";
+    public static final String USERS_COLLECTION = "users";
 
     private FirebaseFirestore firestore;
     private DatabaseReference database;
@@ -36,7 +35,7 @@ public class UserRepository {
 
     //Ottenimento dati dell'utente
     public User getUserData(String username) {
-        documentReference = firestore.collection(USERS_COLLECTION).document(username);
+        documentReference = firestore.collection("/" + USERS_COLLECTION).document("/" + USERS_COLLECTION + "/" + username);
         documentReference.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();

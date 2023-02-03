@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/buildBubble"
     android:layout_width="match_parent"
     android:layout_height="400px"
     android:orientation="horizontal"
@@ -10,7 +11,7 @@
     android:backgroundTint="@color/blue_light">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/buildImage"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="0.5"
@@ -80,7 +81,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/saveBuild"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginTop="12dp"

@@ -19,7 +19,7 @@ import com.example.socialgaming.data.PSU;
 import com.example.socialgaming.data.RAM;
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.data.types.ComponentType;
-import com.example.socialgaming.repository.callback.AuthenticationCallback;
+import com.example.socialgaming.repository.user.UserRepository;
 import com.example.socialgaming.view.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -45,6 +45,8 @@ import java.util.Set;
 import java.util.UUID;
 
 public class BuildRepository {
+
+    private static final String BUILD_COLLECTION = "Builds";
 
     private FirebaseFirestore firestore;
     private DatabaseReference database;
@@ -78,7 +80,7 @@ public class BuildRepository {
 
         final boolean[] success = new boolean[1];
 
-        firestore.collection("Builds").add(upload)
+        firestore.collection("/" + BUILD_COLLECTION).add(upload)
                 .addOnSuccessListener(documentReference -> {
                     Log.d("TAG", "Document written with ID: " + documentReference.getId());
                     success[0] = true;
@@ -102,7 +104,8 @@ public class BuildRepository {
      */
     public Build getBuild(UUID uuid) {
 
-        documentReference = firestore.collection("builds").document(uuid.toString());
+        documentReference = firestore.collection("/" + BUILD_COLLECTION)
+                .document("/" + BUILD_COLLECTION + "/" + uuid.toString());
         documentReference.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
@@ -145,7 +148,7 @@ public class BuildRepository {
     }
 
     public List<Build> getBuildList(int limit, int offset) {
-        firestore.collection("Builds")
+        firestore.collection("/" + BUILD_COLLECTION)
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .limit(limit + offset)
                 .get()
@@ -174,7 +177,8 @@ public class BuildRepository {
      */
     public User getUser(String username) throws JSONException {
 
-        documentReference = firestore.collection("users").document(username);
+        documentReference = firestore.collection("/" + UserRepository.USERS_COLLECTION)
+                .document("/" + UserRepository.USERS_COLLECTION + "/" + username);
         documentReference.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();

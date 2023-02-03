@@ -143,6 +143,19 @@ public class Build {
         return harddisks.add(memory);
     }
 
+    //VALUES METHODS
+    public double getValue() {
+
+        if(like.size() == 0)
+            return 0;
+
+        if(dislike.size() == 0)
+            return 100.0;
+
+        double value = (like.size() * 10)/(dislike.size() * 10);
+        return value/10;
+    }
+
     //GETTER & SETTER
     public Motherboard getBoard() {
         return board;
@@ -221,5 +234,17 @@ public class Build {
     }
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
+    }
+    public Uri getImage() {
+        return image;
+    }
+    public void setImage(Uri image) {
+        this.image = image;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 }

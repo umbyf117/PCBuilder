@@ -25,6 +25,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String TAG = "Main Activity";
+
     private MainViewModel viewModel;
 
     private BottomNavigationView bottomNavigationView;
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         setupNavigationListener();
 
         viewModel.getUserLiveData().observe(this, firebaseUser -> {
-            if(firebaseUser == null || viewModel.getUserRepository().getUserData(firebaseUser.getDisplayName()) == null)
+            if(firebaseUser == null)
                 FragmentUtils.startActivity(this, new Intent(MainActivity.this, LoginActivity.class), true);
             else if (firebaseUser != null) {
                 user = viewModel.getUserRepository().getUserData(firebaseUser.getDisplayName());

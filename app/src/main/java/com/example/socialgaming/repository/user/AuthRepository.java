@@ -1,14 +1,15 @@
 package com.example.socialgaming.repository.user;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.socialgaming.R;
 import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.User;
-import com.example.socialgaming.repository.callback.AuthenticationCallback;
 import com.example.socialgaming.utils.ViewUtils;
+import com.example.socialgaming.view.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -22,15 +23,13 @@ public class AuthRepository {
 
     private static volatile AuthRepository INSTANCE = null;
     private Application application;
-    private AuthenticationCallback callback;
 
     private FirebaseAuth firebaseAuth;
     private static MutableLiveData<FirebaseUser> userLiveData; // Not null if user logged
     private static MutableLiveData<Boolean> loggedOutLiveData; // True if user not logged
 
-    public AuthRepository(Application application, AuthenticationCallback callback){
+    public AuthRepository(Application application){
         this.application = application;
-        this.callback = callback;
         this.firebaseAuth = FirebaseAuth.getInstance();
         userLiveData = new MutableLiveData<>();
         loggedOutLiveData = new MutableLiveData<>();
@@ -41,18 +40,14 @@ public class AuthRepository {
         } else { loggedOutLiveData.setValue(true); }
     }
 
-    public static AuthRepository getInstance(Application application, AuthenticationCallback callback){
+    public static AuthRepository getInstance(Application application){
         if(AuthRepository.INSTANCE == null){
             synchronized (AuthRepository.class){
                 if(AuthRepository.INSTANCE == null)
-                    AuthRepository.INSTANCE = new AuthRepository(application, callback);
+                    AuthRepository.INSTANCE = new AuthRepository(application);
             }
         }
         return AuthRepository.INSTANCE;
-    }
-
-    public static AuthRepository getInstance(Application application){
-        return getInstance(application, null);
     }
 
     public void login(String email, String password) {
@@ -70,7 +65,7 @@ public class AuthRepository {
                 .document(username).get().addOnCompleteListener(taskFS -> {
                     if(taskFS.isSuccessful()){
                         if(taskFS.getResult().exists())
-                            callback.showAuthError(application.getString(R.string.authentication_input_username_exist));
+                            Log.i(MainActivity.TAG, application.getString(R.string.authentication_input_username_exist));
                         else {
                             firebaseAuth.createUserWithEmailAndPassword(email, password)
                                     .addOnCompleteListener(application.getMainExecutor(), taskFA -> {

@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.example.socialgaming.data.ComponentBase;
 import com.example.socialgaming.data.types.ComponentType;
-import com.example.socialgaming.repository.callback.AuthenticationCallback;
 import com.example.socialgaming.view.MainActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -36,14 +35,15 @@ public class ComponentRepository {
      * @return false - se la componente non viene aggiunta (sia se esiste giá, sia per errori interni)
      */
     public boolean setData(ComponentType type, ComponentBase component) {
-        documentReference = firestore.collection(type.toCapitalCase()).document(component.getId());
+        documentReference = firestore.collection("/" + type.toCapitalCase())
+                .document("/" + type.toCapitalCase() + "/" + component.getId());
         if(exists(type, component.getId()))
             return false;
 
         Map<String, Object> upload = component.getMap();
         final boolean[] success = new boolean[1];
 
-        firestore.collection(type.toCapitalCase()).add(upload)
+        firestore.collection("/" + type.toCapitalCase()).add(upload)
                 .addOnSuccessListener(documentReference -> {
                     Log.d("TAG", "Document written with ID: " + documentReference.getId());
                     success[0] = true;
@@ -65,7 +65,8 @@ public class ComponentRepository {
      */
     public ComponentBase getData(ComponentType type, String idComponent) {
 
-        documentReference = firestore.collection(type.toCapitalCase()).document(idComponent);
+        documentReference = firestore.collection("/" + type.toCapitalCase())
+                .document("/" + type.toCapitalCase() + "/" + idComponent);
         documentReference.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
