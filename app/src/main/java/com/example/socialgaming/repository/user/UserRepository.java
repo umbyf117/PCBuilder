@@ -34,6 +34,7 @@ public class UserRepository {
         database = FirebaseDatabase.getInstance().getReference();
     }
 
+
     //Ottenimento dati dell'utente
     public User getUserData(String username) {
         documentReference = firestore.collection(USERS_COLLECTION).document(username);
