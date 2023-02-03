@@ -1,6 +1,8 @@
 package com.example.socialgaming.ui.home;
 
 import android.annotation.SuppressLint;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,8 @@ import com.example.socialgaming.repository.component.BuildRepository;
 public class HomeFragment extends Fragment {
 
     private static final int BUILD_PER_LOAD = 10;
+    private static final Color BLUE_DARK = Color.valueOf(Color.parseColor("#1b263b"));
+    private static final Color GOLD = Color.valueOf(Color.parseColor("#FFD700"));
 
     private FragmentHomeBinding binding;
     private HomeFragmentViewModel homeViewModel;
@@ -62,11 +66,11 @@ public class HomeFragment extends Fragment {
 
         // Crea una nuova istanza di LayoutInflater
         LayoutInflater inflater = LayoutInflater.from(buildList.getContext());
-
+    /*
         for(Build b : buildRepository.getBuildList(50, 0)) {
             setBuildBubble(inflater, view, b);
         }
-
+*/
     }
 
     public void setBuildBubble(LayoutInflater inflater, View view, Build b) {
@@ -103,9 +107,20 @@ public class HomeFragment extends Fragment {
             dislike.setClickable(false);
         }
 
-        if(b.getLike().contains(user.getUsername())) {
-            ImageView like = templateView.findViewById(R.id.like);
-            //like.setForegroundTintList();
+        else {
+
+            if (b.getLike().contains(user.getUsername())) {
+                ImageView like = templateView.findViewById(R.id.like);
+                like.setForegroundTintList(ColorStateList.valueOf(Color.GREEN));
+            } else if (b.getDislike().contains(user.getUsername())) {
+                ImageView dislike = templateView.findViewById(R.id.dislike);
+                dislike.setForegroundTintList(ColorStateList.valueOf(Color.RED));
+            }
+
+            if (user.getFavorite().contains(b)) {
+                ImageView star = templateView.findViewById(R.id.saveBuild);
+                star.setForegroundTintList(ColorStateList.valueOf(GOLD.toArgb()));
+            }
         }
 
 

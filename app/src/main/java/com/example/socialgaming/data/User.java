@@ -7,6 +7,7 @@ import com.example.socialgaming.R;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class User {
     public static final Uri DEFAULT_IMAGE = Uri.parse("android.resource://" + "drawable" + "/" + R.drawable.logo);
@@ -29,6 +30,19 @@ public class User {
 
     public User(String mail, String password, String username) {
         this(mail, password, username, new ArrayList<>(), new ArrayList<>(), DEFAULT_IMAGE);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return this.username.equals(user.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mail, password, username, favorite, created, image);
     }
 
     public boolean addFavoriteBuild(Build build) {

@@ -47,6 +47,44 @@ public class Build {
         this(board, cpu, rams, harddisks, gpu, house, fan, psu, creator, new HashSet<>(), new HashSet<>(), UUID.randomUUID(), name, image);
     }
 
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (!(o instanceof Build)) return false;
+
+        Build build = (Build) o;
+
+        return this.uuid.equals(build.uuid);
+    }
+
+    @Override
+    public int hashCode() {
+        return uuid != null ? uuid.hashCode() : 0;
+    }
+
+    public boolean checkComponents(Build build) {
+        if(this == build)
+            return true;
+        if(!this.board.equals(build.board))
+            return false;
+        if(!this.cpu.equals(build.cpu))
+            return false;
+        if(!this.rams.equals(build.rams))
+            return false;
+        if(!this.gpu.equals(build.gpu))
+            return false;
+        if(!this.harddisks.equals(build.harddisks))
+            return false;
+        if(!this.house.equals(build.house))
+            return false;
+        if(!this.fan.equals(build.fan))
+            return false;
+        if(!this.psu.equals(build.psu))
+            return false;
+        return true;
+    }
+
     //GENERATE HASMAP
     public Map<String, Object> getMap() {
         Map<String, Object> data = new HashMap<>();

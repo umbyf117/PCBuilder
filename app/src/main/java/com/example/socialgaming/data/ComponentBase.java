@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class ComponentBase {
     private String id;
@@ -27,6 +28,21 @@ public class ComponentBase {
         this.price = price;
         this.brand = brand;
         this.model = model;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof ComponentBase))
+            return false;
+        ComponentBase componentBase = (ComponentBase) o;
+        return this.id.equals(componentBase.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, link, img, price, brand, model);
     }
 
     public void setJSONData(JSONObject o) throws JSONException {

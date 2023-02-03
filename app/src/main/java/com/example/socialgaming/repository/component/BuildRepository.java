@@ -164,6 +164,9 @@ public class BuildRepository {
                     }
                 });
 
+        if(buildList == null)
+            return null;
+
         if(buildList.size() < offset)
             return null;
 
