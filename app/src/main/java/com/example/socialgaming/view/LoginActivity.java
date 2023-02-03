@@ -1,18 +1,11 @@
 package com.example.socialgaming.view;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Patterns;
-import android.util.TypedValue;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -21,7 +14,6 @@ import com.example.socialgaming.R;
 import com.example.socialgaming.utils.*;
 import com.example.socialgaming.view.auth.*;
 import com.example.socialgaming.view.model.LoginViewModel;
-import com.google.android.material.textfield.TextInputLayout;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -47,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         //Open Homepage once logged
         loginViewModel.getUserLiveData().observe(this, firebaseUser -> {
             if(firebaseUser != null)
-                FragmentUtils.startActivity(this, new Intent(LoginActivity.this, HomeActivity.class), true);
+                FragmentUtils.startActivity(this, new Intent(LoginActivity.this, MainActivity.class), true);
         });
 
         loginViewModel.getErrorLiveData().observe(this, s -> {

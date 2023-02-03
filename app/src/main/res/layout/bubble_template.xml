@@ -52,9 +52,10 @@
             android:layout_height="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="16dp"
+            android:foreground="@drawable/thumbup"
+            android:foregroundTint="@color/blue_dark"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/thumbup"/>
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <ImageView
             android:id="@+id/dislike"
@@ -62,9 +63,10 @@
             android:layout_height="24dp"
             android:layout_marginEnd="40dp"
             android:layout_marginBottom="16dp"
+            android:foreground="@drawable/thumbdown"
+            android:foregroundTint="@color/blue_dark"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/like"
-            app:srcCompat="@drawable/thumbdown" />
+            app:layout_constraintEnd_toEndOf="@id/like"/>
 
         <TextView
             android:id="@+id/textView3"
@@ -83,9 +85,10 @@
             android:layout_height="32dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
+            android:foreground="@drawable/star"
+            android:foregroundTint="@color/blue_dark"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/star" />
+            app:layout_constraintTop_toTopOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

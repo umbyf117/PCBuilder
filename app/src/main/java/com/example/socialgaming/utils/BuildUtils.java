@@ -5,7 +5,7 @@ import android.util.Log;
 import com.example.socialgaming.data.*;
 import com.example.socialgaming.data.types.ComponentType;
 import com.example.socialgaming.utils.wrapper.ResponseWrapper;
-import com.example.socialgaming.view.HomeActivity;
+import com.example.socialgaming.view.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,7 +72,7 @@ public class BuildUtils {
                 }
 
             } catch (final JSONException e) {
-                Log.e(HomeActivity.class.getSimpleName(), "Json parsing error: " + e.getMessage());
+                Log.e(MainActivity.class.getSimpleName(), "Json parsing error: " + e.getMessage());
             }
         }
 
@@ -87,7 +87,7 @@ public class BuildUtils {
         try {
             component.setJSONData(obj);
         } catch (JSONException e) {
-            Log.e(HomeActivity.class.getSimpleName(), "Json getting data error: " + e.getMessage());
+            Log.e(MainActivity.class.getSimpleName(), "Json getting data error: " + e.getMessage());
         }
 
         return component;

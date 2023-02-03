@@ -3,14 +3,10 @@ package com.example.socialgaming.repository.component;
 import android.app.Application;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.example.socialgaming.data.ComponentBase;
 import com.example.socialgaming.data.types.ComponentType;
 import com.example.socialgaming.repository.callback.AuthenticationCallback;
-import com.example.socialgaming.view.HomeActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.socialgaming.view.MainActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
@@ -22,18 +18,13 @@ import java.util.Map;
 
 public class ComponentRepository {
 
-    private Application application;
-    private AuthenticationCallback callback;
-
     private FirebaseFirestore firestore;
     private DatabaseReference database;
     private DocumentReference documentReference;
 
     private Map<String, Object> data;
 
-    public ComponentRepository(Application application, AuthenticationCallback callback, String component) {
-        this.application = application;
-        this.callback = callback;
+    public ComponentRepository() {
         firestore = FirebaseFirestore.getInstance();
         database = FirebaseDatabase.getInstance().getReference();
     }
@@ -44,7 +35,7 @@ public class ComponentRepository {
      * @return true - se la componente viene aggiunta
      * @return false - se la componente non viene aggiunta (sia se esiste giá, sia per errori interni)
      */
-    public boolean writeData(ComponentType type, ComponentBase component) {
+    public boolean setData(ComponentType type, ComponentBase component) {
         documentReference = firestore.collection(type.toCapitalCase()).document(component.getId());
         if(exists(type, component.getId()))
             return false;
@@ -72,7 +63,7 @@ public class ComponentRepository {
      * @return component - se esiste il componente
      * @return null- se non esiste il componenete
      */
-    public ComponentBase readData(ComponentType type, String idComponent) {
+    public ComponentBase getData(ComponentType type, String idComponent) {
 
         documentReference = firestore.collection(type.toCapitalCase()).document(idComponent);
         documentReference.get().addOnCompleteListener(task -> {
@@ -85,7 +76,7 @@ public class ComponentRepository {
                 }
             } else {
                 data = null;
-                Log.e(HomeActivity.class.getSimpleName(), "Error trying to read data!");
+                Log.e(MainActivity.class.getSimpleName(), "Error trying to read data!");
             }
         });
 
@@ -122,7 +113,7 @@ public class ComponentRepository {
      * @return false - se non trova un component con stesso ID nel database
      */
     public boolean exists(ComponentType type, String idComponent) {
-        readData(type, idComponent);
+        getData(type, idComponent);
         if(data == null)
             return false;
         return true;

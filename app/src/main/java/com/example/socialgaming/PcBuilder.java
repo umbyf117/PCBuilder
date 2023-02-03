@@ -2,12 +2,12 @@ package com.example.socialgaming;
 
 import android.app.Application;
 
-import com.example.socialgaming.view.HomeActivity;
+import com.example.socialgaming.view.MainActivity;
 import com.example.socialgaming.utils.ViewUtils;
 
 public class PcBuilder extends Application {
 
-    private HomeActivity homeActivity;
+    private MainActivity mainActivity;
 
     @Override
     public void onCreate() {
@@ -15,14 +15,14 @@ public class PcBuilder extends Application {
     }
 
     public void showError(String msg) {
-        ViewUtils.displaySnackbar(homeActivity.findViewById(R.id.home_activity), msg);
+        ViewUtils.displaySnackbar(mainActivity.findViewById(R.id.main_activity), msg);
     }
 
-    public void setMainActivity(HomeActivity activity) {
-        this.homeActivity = activity;
+    public void setMainActivity(MainActivity activity) {
+        this.mainActivity = activity;
     }
 
     public void backPress() {
-        homeActivity.finish();
+        mainActivity.finish();
     }
 }

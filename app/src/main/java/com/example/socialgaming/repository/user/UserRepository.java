@@ -4,22 +4,24 @@ import android.app.Application;
 import android.net.Uri;
 import android.util.Log;
 
+import com.example.socialgaming.data.Build;
+import com.example.socialgaming.data.ComponentBase;
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.repository.callback.AuthenticationCallback;
+import com.example.socialgaming.view.MainActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserRepository {
 
     private static final String USERS_COLLECTION = "users";
-
-    private Application application;
-    private AuthenticationCallback callback;
 
     private FirebaseFirestore firestore;
     private DatabaseReference database;
@@ -27,11 +29,39 @@ public class UserRepository {
 
     private Map<String, Object> data;
 
-    public UserRepository(Application application, AuthenticationCallback callback, String component) {
-        this.application = application;
-        this.callback = callback;
+    public UserRepository() {
         firestore = FirebaseFirestore.getInstance();
         database = FirebaseDatabase.getInstance().getReference();
+    }
+
+    //Ottenimento dati dell'utente
+    public User getUserData(String username) {
+        documentReference = firestore.collection(USERS_COLLECTION).document(username);
+        documentReference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    data = document.getData();
+                } else {
+                    data = null;
+                }
+            } else {
+                data = null;
+                Log.e(MainActivity.class.getSimpleName(), "Error trying to read data!");
+            }
+        });
+
+        if(data == null)
+            return null;
+
+        User user = new User((String) data.get("mail"),
+                (String) data.get("password"),
+                username,
+                (List<Build>) data.get("favorite"),
+                (List<Build>) data.get("created"),
+                (Uri) data.get("image"));
+
+        return user;
     }
 
     //AGGIORNA LA PASSWORD SSE LA VECCHIA PASSWORD E oldPass COINCIDONO
