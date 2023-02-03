@@ -1,5 +1,6 @@
 package com.example.socialgaming.ui.profile;
 
+import android.media.Image;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +22,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.socialgaming.R;
 import com.example.socialgaming.databinding.FragmentProfileBinding;
 import com.example.socialgaming.ui.Settings.SettingsFragment;
+import com.example.socialgaming.utils.FragmentUtils;
+import com.example.socialgaming.view.auth.LoginFragment;
+import com.example.socialgaming.view.auth.RegisterFragment;
 import com.firebase.ui.auth.data.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,15 +37,11 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
-    private FirebaseDatabase fd;
-    private DatabaseReference ref;
-    private FirebaseUser userFB;
     private String userId, userMail;
-    private TextView tv1, tv2;
-    private ImageButton imgbtn;
-    private OnFragmentInteractionListener listener;
+    private boolean set;
+    private ImageView imgbtn;
 
-    public ProfileFragment(){
+    public ProfileFragment() {
 
     }
 
@@ -49,7 +50,7 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
@@ -58,33 +59,27 @@ public class ProfileFragment extends Fragment {
         userId = getUserName();
         userMail = user.getEmail();
 
-        //button to settings fragment
-        ImageButton imgbtn = root.findViewById(R.id.btnSettings);
-        imgbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.changeFragment(2);
-            }
-        });
-
-
         //display firebase username instead of textview
         TextView tv1 = root.findViewById(R.id.profUser);
         tv1.setText(userId);
         TextView tv2 = root.findViewById(R.id.profMail);
         tv2.setText(userMail);
 
+
+
         return root;
     }
 
-    public void onDestroyView(){
+
+    public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
 
-    public String getUserName(){
+    public String getUserName() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         return user.getDisplayName();
     }
+
 
 }

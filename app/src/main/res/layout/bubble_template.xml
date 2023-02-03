@@ -54,7 +54,7 @@
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/thumbUp"/>
+            app:srcCompat="@drawable/thumbup"/>
 
         <ImageView
             android:id="@+id/dislike"
@@ -64,7 +64,7 @@
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/like"
-            app:srcCompat="@drawable/thumbDown" />
+            app:srcCompat="@drawable/thumbdown" />
 
         <TextView
             android:id="@+id/textView3"
@@ -85,7 +85,7 @@
             android:layout_marginEnd="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/Star" />
+            app:srcCompat="@drawable/star" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

@@ -60,7 +60,7 @@
                 android:layout_weight="1"
                 android:gravity="end">
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/btnSettings"
                     android:layout_width="50dp"
                     android:layout_height="50dp"

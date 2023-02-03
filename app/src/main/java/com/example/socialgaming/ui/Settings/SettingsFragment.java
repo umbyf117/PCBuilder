@@ -12,13 +12,14 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.socialgaming.R;
 import com.example.socialgaming.ui.profile.OnFragmentInteractionListener;
+import com.example.socialgaming.ui.profile.ProfileFragment;
 
 public class SettingsFragment extends Fragment {
 
-    private OnFragmentInteractionListener listener;
 
     public SettingsFragment(){
 
@@ -30,6 +31,7 @@ public class SettingsFragment extends Fragment {
     private Button chooseImageButton;
     private Bitmap profileImage;
     private ImageButton imgbtn;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +44,7 @@ public class SettingsFragment extends Fragment {
         imgbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.changeFragment(1);
+                Fragment fr = new ProfileFragment();
             }
         });
 
