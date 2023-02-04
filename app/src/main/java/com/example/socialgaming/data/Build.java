@@ -85,7 +85,7 @@ public class Build {
         return true;
     }
 
-    //GENERATE HASMAP
+    //GENERATE HASHMAP
     public Map<String, Object> getMap() {
         Map<String, Object> data = new HashMap<>();
         data.put("motherboard", board);

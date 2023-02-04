@@ -11,15 +11,6 @@
         android:name="com.example.socialgaming.ui.home.HomeFragment"
         android:label="@string/home"
         tools:layout="@layout/fragment_home">
-        <action
-            android:id="@+id/action_nav_home_to_nav_home"
-            app:destination="@id/nav_home" />
-        <action
-            android:id="@+id/action_nav_home_to_nav_build"
-            app:destination="@id/nav_build" />
-        <action
-            android:id="@+id/action_nav_home_to_nav_search"
-            app:destination="@id/nav_search" />
 
     </fragment>
 
@@ -30,10 +21,22 @@
         tools:layout="@layout/fragment_build"/>
 
     <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.socialgaming.ui.profile.ProfileFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_profile"/>
+
+    <fragment
         android:id="@+id/nav_search"
         android:name="com.example.socialgaming.ui.Search.SearchFragment"
         android:label="@string/search"
         tools:layout="@layout/fragment_search"/>
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.example.socialgaming.ui.Settings.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/fragment_settings"/>
 
     <activity
         android:id="@+id/loginActivity"

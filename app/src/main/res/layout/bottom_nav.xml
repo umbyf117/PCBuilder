@@ -19,6 +19,6 @@
         style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
         android:layout_alignParentBottom="true"
         android:id="@+id/bottom_navigation"
-        app:menu="@menu/bottom_menu"/>
+        app:menu="@menu/menu_navigation"/>
 
 </RelativeLayout>
