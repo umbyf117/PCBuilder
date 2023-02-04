@@ -77,5 +77,7 @@
     <string name="navigation_search">Search</string>
     <string name="navigation_setting">Setting</string>
     <string name="profile">Profile</string>
+    <string name="nightMode">Night Mode</string>
+    <string name="change_pass">Change Password</string>
 
 </resources>
