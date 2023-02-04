@@ -1,9 +1,14 @@
 package com.example.socialgaming.repository.user;
 
 import android.net.Uri;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.repository.callbacks.IUserCallback;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
@@ -90,7 +95,28 @@ public class UserRepository {
     }
 
     public boolean updateImage(User user, Uri image) {
-        documentReference = firestore.collection(USERS_COLLECTION).document(user.getUsername());
+
+        DocumentReference userRef = FirebaseFirestore.getInstance().collection("users").document(user.getUsername());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("image", image);
+
+        userRef.update(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+
+        return true;
+        /*documentReference = firestore.collection(USERS_COLLECTION).document(user.getUsername());
 
         Map<String, Object> dataUpdated = new HashMap<>();
         dataUpdated.put("image", image);
@@ -99,7 +125,7 @@ public class UserRepository {
 
         database.updateChildren(upload);
 
-        return true;
+        return true;*/
     }
 
 }
