@@ -21,23 +21,33 @@ import com.example.socialgaming.R;
 import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.databinding.FragmentHomeBinding;
+import com.example.socialgaming.repository.callbacks.IBuildCallback;
+import com.example.socialgaming.repository.callbacks.IUserCallback;
 import com.example.socialgaming.repository.component.BuildRepository;
 import com.example.socialgaming.repository.user.AuthRepository;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements IUserCallback, IBuildCallback {
 
     private static final int BUILD_PER_LOAD = 10;
-    private static final Color BLUE_DARK = Color.valueOf(Color.parseColor("#1b263b"));
-    private static final Color GOLD = Color.valueOf(Color.parseColor("#FFD700"));
+    private static final ColorStateList BLUE_DARK = ColorStateList.valueOf(Color.parseColor("#1b263b"));
+    private static final ColorStateList GOLD = ColorStateList.valueOf(Color.parseColor("#FFD700"));
+    private static final ColorStateList RED = ColorStateList.valueOf(Color.RED);
+    private static final ColorStateList GREEN = ColorStateList.valueOf(Color.GREEN);
 
     private HomeFragmentViewModel homeViewModel;
+    private View currentView;
 
     private User user;
+    private List<Build> builds;
+
     private LinearLayout buildList;
-    private BuildRepository buildRepository;
+    private TextView username;
+    private ImageView image;
 
     public static HomeFragment newInstance(User user) {
         HomeFragment homeFragment = new HomeFragment();
@@ -53,31 +63,36 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        currentView = inflater.inflate(R.layout.fragment_home, container, false);
         homeViewModel = new HomeFragmentViewModel(getActivity().getApplication());
-        buildRepository = new BuildRepository();
-        user = homeViewModel.getUserRepository()
-                .getUserData(homeViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName());
-        TextView username = view.findViewById(R.id.username);
+        homeViewModel.getUserRepository().getUserData(
+                homeViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName(),
+                this);
+
+        user = new User();
+        builds = new ArrayList<>();
+
+        username = currentView.findViewById(R.id.username);
+        image = currentView.findViewById(R.id.prof_pic);
         if(user != null)
             username.setText(user.getUsername());
-        setHomePageBubbles(view);
 
-        return view;
+
+        return currentView;
     }
 
-    public void setHomePageBubbles(View view) {
+    public void setHomePageBubbles() {
 
         // Recupera l'istanza della ScrollView
-        buildList = view.findViewById(R.id.buildLayout);
+        buildList = currentView.findViewById(R.id.buildLayout);
 
         // Crea una nuova istanza di LayoutInflater
         LayoutInflater inflater = LayoutInflater.from(buildList.getContext());
 
-        List<Build> builds = buildRepository.getBuildList(50, 0);
+        List<Build> builds = homeViewModel.getBuildRepository().getBuildList(50, 0, this);
         if(builds != null)
             for(Build b : builds) {
-                setBuildBubble(inflater, view, b);
+                setBuildBubble(inflater, currentView, b);
             }
 
     }
@@ -117,19 +132,50 @@ public class HomeFragment extends Fragment {
         }
 
         else {
+            ImageView like = templateView.findViewById(R.id.like);
+            ImageView dislike = templateView.findViewById(R.id.dislike);
+            ImageView star = templateView.findViewById(R.id.saveBuild);
 
-            if (b.getLike().contains(user.getUsername())) {
-                ImageView like = templateView.findViewById(R.id.like);
-                like.setForegroundTintList(ColorStateList.valueOf(Color.GREEN));
-            } else if (b.getDislike().contains(user.getUsername())) {
-                ImageView dislike = templateView.findViewById(R.id.dislike);
-                dislike.setForegroundTintList(ColorStateList.valueOf(Color.RED));
-            }
+            if (b.getLike().contains(user.getUsername()))
+                like.setForegroundTintList(GREEN);
+            else if (b.getDislike().contains(user.getUsername()))
+                dislike.setForegroundTintList(RED);
+            if (user.getFavorite().contains(b))
+                star.setForegroundTintList(GOLD);
 
-            if (user.getFavorite().contains(b)) {
-                ImageView star = templateView.findViewById(R.id.saveBuild);
-                star.setForegroundTintList(ColorStateList.valueOf(GOLD.toArgb()));
-            }
+            like.setOnClickListener(v -> {
+                if(b.getLike().contains(user.getUsername())) {
+                    b.getLike().remove(user.getUsername());
+                    like.setForegroundTintList(BLUE_DARK);
+                }
+                else {
+                    b.getLike().add(user.getUsername());
+                    like.setForegroundTintList(GREEN);
+                }
+            });
+
+            dislike.setOnClickListener(v -> {
+                if(b.getDislike().contains(user.getUsername())) {
+                    b.getDislike().remove(user.getUsername());
+                    dislike.setForegroundTintList(BLUE_DARK);
+                }
+                else {
+                    b.getDislike().add(user.getUsername());
+                    dislike.setForegroundTintList(RED);
+                }
+            });
+
+            star.setOnClickListener(v -> {
+                if(user.getFavorite().contains(b)) {
+                    user.getFavorite().remove(b);
+                    star.setForegroundTintList(BLUE_DARK);
+                }
+                else {
+                    user.getFavorite().add(b);
+                    star.setForegroundTintList(GOLD);
+                }
+            });
+
         }
 
 
@@ -137,4 +183,32 @@ public class HomeFragment extends Fragment {
         buildList.addView(templateView);
     }
 
+    @Override
+    public void onUserReceived(DocumentSnapshot documentSnapshot) {
+        if(user == null)
+            user = new User();
+        user.updateWithDocument(documentSnapshot);
+        username.setText(user.getUsername());
+        image.setImageURI(user.getImage());
+
+    }
+
+    @Override
+    public void onBuildReceived(DocumentSnapshot documentSnapshot) {
+        Build build = new Build();
+        if(documentSnapshot.exists()) {
+            build.updateWithDocument(documentSnapshot);
+            builds.add(build);
+        }
+    }
+
+    @Override
+    public void onBuildsReceived(List<DocumentSnapshot> documentsSnapshot) {
+        if(builds == null)
+            builds = new ArrayList<>();
+
+        for(DocumentSnapshot d : documentsSnapshot)
+            this.onBuildReceived(d);
+        setHomePageBubbles();
+    }
 }

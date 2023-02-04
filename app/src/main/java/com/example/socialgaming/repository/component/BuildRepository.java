@@ -19,12 +19,10 @@ import com.example.socialgaming.data.PSU;
 import com.example.socialgaming.data.RAM;
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.data.types.ComponentType;
+import com.example.socialgaming.repository.callbacks.IBuildCallback;
 import com.example.socialgaming.repository.user.UserRepository;
 import com.example.socialgaming.view.MainActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
@@ -70,31 +68,21 @@ public class BuildRepository {
      */
     public boolean setBuild(Build build) {
 
-        if(exists(build))
-            return false;
-
         Map<String, Object> upload = build.getMap();
-        boolean componentsSaved = writeComponents(build);
-        if(!componentsSaved)
-            return false;
-
-        final boolean[] success = new boolean[1];
 
         firestore.collection("/" + BUILD_COLLECTION).add(upload)
                 .addOnSuccessListener(documentReference -> {
                     Log.d("TAG", "Document written with ID: " + documentReference.getId());
-                    success[0] = true;
                 })
                 .addOnFailureListener(e -> {
                     Log.w("TAG", "Error adding document", e);
-                    success[0] = false;
                 });
 
-        return success[0];
+        return true;
     }
 
-    public Build getBuild(Build build) {
-        return getBuild(build.getUuid());
+    public void getBuild(Build build, IBuildCallback callback) {
+        getBuild(build.getUuid(), callback);
     }
 
     /**
@@ -102,67 +90,22 @@ public class BuildRepository {
      * @return build - se esiste nel database
      * @return null - se non trova la build con l'uuid specificato
      */
-    public Build getBuild(UUID uuid) {
+    public void getBuild(UUID uuid, IBuildCallback callback) {
 
-        documentReference = firestore.collection("/" + BUILD_COLLECTION)
-                .document("/" + BUILD_COLLECTION + "/" + uuid.toString());
-        documentReference.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    data = document.getData();
-                } else {
-                    data = null;
-                }
-            } else {
-                data = null;
-                Log.e(MainActivity.class.getSimpleName(), "Error trying to read data!");
-            }
-        });
+        documentReference = firestore.collection(BUILD_COLLECTION).document("/" + uuid.toString());
+        documentReference.get()
+                .addOnSuccessListener(documentSnapshot -> callback.onBuildReceived(documentSnapshot));
 
-        if(data == null)
-            return null;
-
-        JSONObject o = new JSONObject(data);
-        try {
-            Motherboard board = (Motherboard) componentRepository.getData(ComponentType.MOTHERBOARD, o.getString("motherboard"));
-            CPU cpu = (CPU) componentRepository.getData(ComponentType.CPU, o.getString("cpu"));
-            List<RAM> rams = (List<RAM>) data.get("ram");
-            List<Memory> harddisks = (List<Memory>) data.get("harddisk");
-            GPU gpu = (GPU) componentRepository.getData(ComponentType.GPU, o.getString("gpu"));
-            Case house = (Case) componentRepository.getData(ComponentType.CASE, o.getString("case"));
-            CPUFan fan = (CPUFan) componentRepository.getData(ComponentType.CPU_FAN, o.getString("fan"));
-            PSU psu = (PSU) componentRepository.getData(ComponentType.PSU, o.getString("psu"));
-            User creator = getUser(o.getString("username"));
-            Set<String> like = (Set<String>) data.get("like");
-            Set<String> dislike = (Set<String>) data.get("dislike");
-            String name = o.getString("name");
-            Uri image = (Uri) o.get("image");
-            Build build = new Build(board, cpu, rams, harddisks, gpu, house, fan, psu, creator, like, dislike, uuid, name, image);
-
-            return build;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
-    public List<Build> getBuildList(int limit, int offset) {
+    public List<Build> getBuildList(int limit, int offset, IBuildCallback callback) {
+
         firestore.collection("/" + BUILD_COLLECTION)
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .limit(limit + offset)
                 .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        buildList = new ArrayList<Build>();
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Build build = document.toObject(Build.class);
-                            buildList.add(build);
-                        }
-                    } else {
-                        Log.d(TAG, "Error getting documents: ", task.getException());
-                    }
-                });
+                .addOnSuccessListener(queryDocumentSnapshots ->
+                        callback.onBuildsReceived(queryDocumentSnapshots.getDocuments()));
 
         if(buildList == null)
             return null;
@@ -172,12 +115,12 @@ public class BuildRepository {
 
         return buildList.subList(offset, buildList.size());
     }
-
     /**
      * @param username - Username del Creatore della Build
      * @return user - istanza di User che contiene tutti i dati dell'utente
      * @throws JSONException
      */
+    /*
     public User getUser(String username) throws JSONException {
 
         documentReference = firestore.collection("/" + UserRepository.USERS_COLLECTION)
@@ -209,12 +152,14 @@ public class BuildRepository {
                 (Uri) userData.get("image")
         );
     }
+    */
 
     /**
      * @param build
      * @return true - se la build esiste (e quindi viene aggiornata)
      * @return false - se non esiste la build con stesso uuid
      */
+    /*
     public boolean updateData(Build build) {
         if(!exists(build))
             return false;
@@ -226,18 +171,9 @@ public class BuildRepository {
 
         return true;
     }
+*/
 
-    /**
-     * @param build
-     * @return true - se esiste una build nel database con lo stesso UUID
-     * @return false - se non trova una build con stesso uuid nel database
-     */
-    public boolean exists(Build build) {
-        if(getBuild(build) == null)
-            return false;
-        return true;
-    }
-
+    /*
     //CARICA NEL DATABASE DI TUTTI GLI ELEMENTI DELLA BUILD SE ESSI NON ESISTONO
     private boolean writeComponents(Build build) {
         boolean success = true;
@@ -265,5 +201,6 @@ public class BuildRepository {
 
         return success;
     }
+    */
 
 }

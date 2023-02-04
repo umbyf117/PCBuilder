@@ -1,16 +1,19 @@
 package com.example.socialgaming.data;
 
+import android.content.ContentResolver;
 import android.net.Uri;
 
 import com.example.socialgaming.R;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class User {
-    public static final Uri DEFAULT_IMAGE = Uri.parse("android.resource://" + "drawable" + "/" + R.drawable.logo);
+    public static final Uri DEFAULT_IMAGE = Uri.parse("android.resource://com.example.socialgaming/" + R.drawable.logo);
 
     private String mail;
     private String password;
@@ -30,6 +33,18 @@ public class User {
 
     public User(String mail, String password, String username) {
         this(mail, password, username, new ArrayList<>(), new ArrayList<>(), DEFAULT_IMAGE);
+    }
+
+    public User() {}
+
+    public void updateWithDocument(DocumentSnapshot documentSnapshot) {
+        Map<String, Object> data = documentSnapshot.getData();
+        this.mail = (String) data.get("mail");
+        this.password = (String) data.get("password");
+        this.username = (String) data.get("username");
+        this.favorite = (List<Build>) data.get("favorite");
+        this.created = (List<Build>) data.get("created");
+        this.image = Uri.parse((String) data.get("image"));
     }
 
     @Override
@@ -123,5 +138,11 @@ public class User {
     }
     public void setCreated(List<Build> created) {
         this.created = created;
+    }
+    public Uri getImage() {
+        return image;
+    }
+    public void setImage(Uri image) {
+        this.image = image;
     }
 }

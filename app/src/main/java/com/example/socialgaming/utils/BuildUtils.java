@@ -27,25 +27,22 @@ public class BuildUtils {
         ResponseWrapper responseWrapper = new ResponseWrapper();
         String url = getUrl(type, limit, offset);
 
-        Thread backgroundThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                OkHttpClient client = new OkHttpClient();
+        Thread backgroundThread = new Thread(() -> {
+            OkHttpClient client = new OkHttpClient();
 
-                Request request = new Request.Builder()
-                        .url(url)
-                        .get()
-                        .addHeader("X-RapidAPI-Key", "35ef5df84fmshcae21a2a6092192p1edff1jsn9ddef0c06104")
-                        .addHeader("X-RapidAPI-Host", "computer-components-api.p.rapidapi.com")
-                        .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .get()
+                    .addHeader("X-RapidAPI-Key", "35ef5df84fmshcae21a2a6092192p1edff1jsn9ddef0c06104")
+                    .addHeader("X-RapidAPI-Host", "computer-components-api.p.rapidapi.com")
+                    .build();
 
-                Response response = null;
-                try {
-                    response = client.newCall(request).execute();
-                    responseWrapper.response = response.body().string();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            Response response = null;
+            try {
+                response = client.newCall(request).execute();
+                responseWrapper.response = response.body().string();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
 
