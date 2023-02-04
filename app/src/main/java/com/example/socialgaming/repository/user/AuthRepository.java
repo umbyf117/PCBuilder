@@ -94,7 +94,7 @@ public class AuthRepository {
                                                             put("username", username);
                                                             put("favorite", new ArrayList<Build>());
                                                             put("created", new ArrayList<Build>());
-                                                            put("image", User.DEFAULT_IMAGE);
+                                                            put("image", User.DEFAULT_IMAGE.toString());
                                                         }
                                                     }).addOnCompleteListener(task -> Objects.requireNonNull(userLiveData.getValue())
                                                             .updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(username).build()))

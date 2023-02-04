@@ -2,6 +2,8 @@ package com.example.socialgaming.data;
 
 import android.net.Uri;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -45,6 +47,26 @@ public class Build {
 
     public Build(Motherboard board, CPU cpu, List<RAM> rams, List<Memory> harddisks, GPU gpu, Case house, CPUFan fan, PSU psu, User creator, String name, Uri image) {
         this(board, cpu, rams, harddisks, gpu, house, fan, psu, creator, new HashSet<>(), new HashSet<>(), UUID.randomUUID(), name, image);
+    }
+
+    public Build() {}
+
+    public void updateWithDocument(DocumentSnapshot documentSnapshot) {
+        Map<String, Object> data = documentSnapshot.getData();
+        this.board = (Motherboard) data.get("motherboard");
+        this.cpu = (CPU) data.get("cpu");
+        this.rams = (List<RAM>) data.get("ram");
+        this.harddisks = (List<Memory>) data.get("harddisk");
+        this.gpu = (GPU) data.get("gpu");
+        this.house = (Case) data.get("case");
+        this.fan = (CPUFan) data.get("fan");
+        this.psu = (PSU) data.get("psu");
+        this.creator = (User) data.get("creator");
+        this.like = (Set<String>) data.get("like");
+        this.dislike = (Set<String>) data.get("dislike");
+        this.uuid = (UUID) data.get("uuid");
+        this.name = (String) data.get("name");
+        this.image = (Uri) data.get("uri");
     }
 
     @Override
@@ -96,7 +118,7 @@ public class Build {
         data.put("case", house);
         data.put("fan", fan);
         data.put("psu", psu);
-        data.put("username", creator.getUsername());
+        data.put("creator", creator);
         data.put("like", like);
         data.put("dislike", dislike);
         data.put("uuid", uuid);

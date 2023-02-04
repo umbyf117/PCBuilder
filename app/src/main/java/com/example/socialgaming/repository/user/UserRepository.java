@@ -1,21 +1,15 @@
 package com.example.socialgaming.repository.user;
 
-import android.app.Application;
 import android.net.Uri;
-import android.util.Log;
 
-import com.example.socialgaming.data.Build;
-import com.example.socialgaming.data.ComponentBase;
 import com.example.socialgaming.data.User;
-import com.example.socialgaming.view.MainActivity;
+import com.example.socialgaming.repository.callbacks.IUserCallback;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class UserRepository {
@@ -35,35 +29,47 @@ public class UserRepository {
 
 
     //Ottenimento dati dell'utente
+    public void getUserData(String username, IUserCallback callback) {
+        documentReference = firestore.collection(USERS_COLLECTION).document("/" + username);
+        documentReference.get()
+                .addOnSuccessListener(documentSnapshot -> callback.onUserReceived(documentSnapshot));
+
+    }
+    /*
     public User getUserData(String username) {
+        final User[] user = {null};
+        final CountDownLatch latch = new CountDownLatch(1);
+
         documentReference = firestore.collection(USERS_COLLECTION).document("/" + username);
         documentReference.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    data = document.getData();
-                    return;
+                    Map<String, Object> data = document.getData();
+                    user[0] = new User((String) data.get("mail"),
+                            (String) data.get("password"),
+                            username,
+                            (List<Build>) data.get("favorite"),
+                            (List<Build>) data.get("created"),
+                            (Uri) data.get("image"));
                 } else {
-                    data = null;
+                    Log.d(MainActivity.class.getSimpleName(), "No such document");
                 }
             } else {
-                data = null;
-                Log.e(MainActivity.class.getSimpleName(), "Error trying to read data!");
+                Log.e(MainActivity.class.getSimpleName(), "Error trying to read data!", task.getException());
             }
+            latch.countDown();
         });
 
-        if(data == null)
-            return null;
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            Log.e(MainActivity.class.getSimpleName(), "Error waiting for data", e);
+        }
 
-        User user = new User((String) data.get("mail"),
-                (String) data.get("password"),
-                username,
-                (List<Build>) data.get("favorite"),
-                (List<Build>) data.get("created"),
-                (Uri) data.get("image"));
+        return user[0];
+    }*/
 
-        return user;
-    }
 
     //AGGIORNA LA PASSWORD SSE LA VECCHIA PASSWORD E oldPass COINCIDONO
     public boolean updatePassword(User user, String oldPass, String newPass) {

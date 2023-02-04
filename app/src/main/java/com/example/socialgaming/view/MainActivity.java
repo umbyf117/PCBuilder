@@ -2,6 +2,7 @@ package com.example.socialgaming.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -36,21 +37,15 @@ public class MainActivity extends AppCompatActivity {
     private SearchFragment searchFragment;
     private SettingsFragment settingsFragment;
 
-    private User user;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         viewModel = new MainViewModel(getApplication());
 
         viewModel.getUserLiveData().observe(this, firebaseUser -> {
             if(firebaseUser == null)
                 FragmentUtils.startActivity(this, new Intent(MainActivity.this, LoginActivity.class), true);
-            else if (firebaseUser != null) {
-                user = viewModel.getUserRepository().getUserData(firebaseUser.getDisplayName());
-            }
-        });
+            });
 
         homeFragment = new HomeFragment();
         profileFragment = new ProfileFragment();
