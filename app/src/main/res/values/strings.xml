@@ -79,5 +79,7 @@
     <string name="profile">Profile</string>
     <string name="nightMode">Night Mode</string>
     <string name="change_pass">Change Password</string>
+    <string name="saveBuild">Save Build</string>
+    <string name="psu">Power Supply</string>
 
 </resources>
