@@ -25,6 +25,8 @@ import com.example.socialgaming.repository.component.BuildRepository;
 import com.example.socialgaming.repository.user.AuthRepository;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.List;
+
 public class HomeFragment extends Fragment {
 
     private static final int BUILD_PER_LOAD = 10;
@@ -71,11 +73,13 @@ public class HomeFragment extends Fragment {
 
         // Crea una nuova istanza di LayoutInflater
         LayoutInflater inflater = LayoutInflater.from(buildList.getContext());
-    /*
-        for(Build b : buildRepository.getBuildList(50, 0)) {
-            setBuildBubble(inflater, view, b);
-        }
-*/
+
+        List<Build> builds = buildRepository.getBuildList(50, 0);
+        if(builds != null)
+            for(Build b : builds) {
+                setBuildBubble(inflater, view, b);
+            }
+
     }
 
     public void setBuildBubble(LayoutInflater inflater, View view, Build b) {
