@@ -1,34 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
-    <View
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="vertical"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"/>
+        android:layout_height="wrap_content">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/build_upload_img"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/editBuildName"
+            android:layout_marginTop="10dp"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:hint="Build Name:"
+            android:textSize="25dp"
+            android:background="@drawable/shape_round"
+            app:layout_constraintTop_toBottomOf="@id/imageView"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <SearchView
+            android:id="@+id/build_mobo"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:queryHint="Motherboard:"
+            android:background="@drawable/shape_round"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toBottomOf="@id/editBuildName"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <SearchView
+            android:id="@+id/build_cpu"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:queryHint="Processor:"
+            android:background="@drawable/shape_round"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toBottomOf="@id/build_mobo"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <SearchView
+            android:id="@+id/build_ram"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:queryHint="RAM:"
+            android:background="@drawable/shape_round"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toBottomOf="@id/build_cpu"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <SearchView
+            android:id="@+id/build_cpufan"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:queryHint="CPU Cooling System:"
+            android:background="@drawable/shape_round"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toBottomOf="@id/build_ram"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <SearchView
+            android:id="@+id/build_gpu"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:queryHint="Graphics Card:"
+            android:background="@drawable/shape_round"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toBottomOf="@id/build_cpufan"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <SearchView
+            android:id="@+id/build_memory"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:queryHint="Storage:"
+            android:background="@drawable/shape_round"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toBottomOf="@id/build_gpu"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <SearchView
+            android:id="@+id/build_psu"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:queryHint="Power Supply:"
+            android:background="@drawable/shape_round"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toBottomOf="@id/build_memory"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <SearchView
+            android:id="@+id/build_case"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:queryHint="Case:"
+            android:background="@drawable/shape_round"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toBottomOf="@id/build_psu"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <Button
+            android:id="@+id/saveBuild"
+            app:layout_constraintTop_toBottomOf="@id/build_case"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save Build"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <EditText
-        android:layout_marginTop="50dp"
-        android:id="@+id/edit_build_name"
-        app:layout_constraintTop_toBottomOf="@id/build_upload_img"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:hint=""
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
