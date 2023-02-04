@@ -99,15 +99,6 @@ public class BuildFragment extends Fragment {
                 return false;
             }
         });
-        //Saves the Motherboard to the Build
-        btn1 = view.findViewById(R.id.saveMB);
-        btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText et = view.findViewById(R.id.editmobo);
-                createObjWithArgs(motherboard, null, null, null, null, null, null, null, null, null, null);
-            }
-        });
 
         //Search Motherboard
         sv2 = view.findViewById(R.id.CPUSearch);
@@ -120,13 +111,6 @@ public class BuildFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
-            }
-        });
-        btn2 = view.findViewById(R.id.saveCPU);
-        btn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createObjWithArgs(motherboard, cpu, null, null, null, null, null, null, null, null, null);
             }
         });
 
@@ -142,14 +126,6 @@ public class BuildFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
-            }
-        });
-        btn3 = view.findViewById(R.id.saveRAM);
-        btn3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<RAM> rams = new ArrayList<>();
-                createObjWithArgs(motherboard, cpu, rams, null, null, null, null, null, null, null, null);
             }
         });
 

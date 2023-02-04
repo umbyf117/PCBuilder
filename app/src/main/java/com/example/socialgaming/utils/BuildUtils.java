@@ -21,6 +21,7 @@ public class BuildUtils {
 
     private static final String URL = "https://computer-components-api.p.rapidapi.com/%COMPONENT_TYPE%?limit=%LIMIT%&offset=%OFFSET%";
 
+    //Da usare quando cerco un componente
     public static String getComponentsJSON(ComponentType type, int limit, int offset) {
 
         ResponseWrapper responseWrapper = new ResponseWrapper();

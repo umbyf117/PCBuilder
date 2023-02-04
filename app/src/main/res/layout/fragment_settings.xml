@@ -1,81 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
-    android:orientation="vertical"
-    android:id="@+id/stgFragm">
+<androidx.constraintlayout.widget.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:id="@+id/homeFrag">
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/top_bar_stg"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="50dp"
+        android:background="@color/blue"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buildList"
+        app:layout_constraintTop_toBottomOf="@+id/top_bar_stg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:id="@+id/buildLayout"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    </ScrollView>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/prof_pic_stg"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/profpic"
+            app:civ_border_color="@color/blue"
+            app:civ_border_width="7dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/pc_builder_stg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/manteka"
+            android:textColor="@color/blue_light"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/top_bar_stg"
+            app:layout_constraintEnd_toStartOf="@+id/prof_pic_stg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/top_bar_stg"
+            tools:text="@string/app_name" />
+
+        <TextView
+            android:id="@+id/usernameStg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/jurabold"
+            android:text="Username"
+            android:textAlignment="center"
+            android:textColor="@color/background_light"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/top_bar_stg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/prof_pic_stg"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    <LinearLayout
+        android:layout_marginTop="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3">
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="start">
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/logo"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:id="@+id/logoStg"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/titleStgFragm"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="21sp"
-                    android:textStyle="bold"
-                    android:text="@string/app_name"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end">
+                android:id="@+id/txtNightMode"
+                android:layout_marginStart="100dp"
+                android:text="@string/nightMode"
+                android:textSize="30dp"/>
 
-                <ImageButton
-                    android:id="@+id/btnProf"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_settings"
-                    android:background="@drawable/gradient_background"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"/>
-
-            </LinearLayout>
-
-
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_night_mode"
+                android:layout_marginLeft="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/chgPass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change_pass"
+            android:textSize="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"/>
 
-    </RelativeLayout>
+        <EditText
+            android:id="@+id/edit_oldPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="New Password:"
+            android:textSize="20dp"
+            android:background="@drawable/shape_round"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"/>
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/edit_newPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="Old Password:"
+            android:textSize="20dp"
+            android:background="@drawable/shape_round"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"/>
+
+        <EditText
+            android:id="@+id/edit_newPassConf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="Confirm Password:"
+            android:textSize="20dp"
+            android:background="@drawable/shape_round"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirm"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_round"
+            android:backgroundTintMode="add"/>
+
+        <TextView
+            android:id="@+id/txtLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="@string/logout"
+            android:textSize="30dp"
+            android:layout_gravity="center"/>
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:text="Press to Logout"
+            android:background="@drawable/shape_round"
+            android:backgroundTintMode="add"
+            />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
