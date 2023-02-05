@@ -212,7 +212,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
             user = new User();
         user.updateWithDocument(documentSnapshot);
         username.setText(user.getUsername());
-        image.setImageURI(user.getImage());
+        //image.setImageURI(user.getImage());
 
     }
 

@@ -94,6 +94,7 @@ public class BuildFragment extends Fragment {
 
     private void createObjWithArgs(Motherboard motherboard, CPU cpu, List<RAM> ram, List<Memory> memories, GPU gpu, Case house, CPUFan fan, PSU psu, User creator, String name, Uri image){
         Build build = new Build (motherboard, cpu, ram, memories, gpu, house, fan, psu, creator, name, image);
+
     }
 
 }

@@ -46,4 +46,12 @@
             <!-- Customize your theme here. -->
         </style>
 
+    <style name="LightTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorSecondary">@color/text_light</item>
+    </style>
+
+    <style name="DarkTheme" parent="@style/Theme.AppCompat.DayNight">
+        <item name="colorPrimary">@color/blue_dark</item>
+    </style>
+
 </resources>
