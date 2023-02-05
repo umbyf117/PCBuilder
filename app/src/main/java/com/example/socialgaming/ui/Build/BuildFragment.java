@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
@@ -46,18 +47,8 @@ import java.util.UUID;
 public class BuildFragment extends Fragment {
 
     private BuildViewModel bvm;
-    private Button btn;
-    private androidx.cardview.widget.CardView cv1, cv2, cv3, cv4, cv5, cv6, cv7, cv8;
-    //Lists of components gotten through JSON
-    private List<Build> buildlist;
-    private List<Case> caselist;
-    private List<CPU> cpulist;
-    private List<CPUFan> cpufanlist;
-    private List<GPU> gpulist;
-    private List<Memory> memorylist;
-    private List<Motherboard> mobolist;
-    private List<PSU> psulist;
-    private List<RAM> ramlist;
+    private androidx.cardview.widget.CardView cv1;
+    private TextView selectedDataTextView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,23 +58,30 @@ public class BuildFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_build, container, false);
-        ArrayList<Motherboard> mbs = new ArrayList<Motherboard>();
 
         cv1 = view.findViewById(R.id.moboBuild);
         cv1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-
-                MotherboardFragment mf = new MotherboardFragment();
-                ft.add(R.id.buildViewLLayout, mf);
-                ft.addToBackStack(null);
-                ft.commit();
+                switchToMotherBoardFragment(50);
             }
         });
 
         return view;
+    }
+
+    private void switchToMotherBoardFragment(int numCardViews){
+        Bundle bl = new Bundle();
+        bl.putInt("numCardViews", numCardViews);
+        FragmentManager fm = getChildFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+
+        MotherboardFragment mbf = new MotherboardFragment();
+        mbf.setArguments(bl);
+        ft.replace(R.id.buildViewLLayout, mbf)
+                .addToBackStack(null)
+                .commit();
+
     }
 
     private void saveSelectedItem(String selectedItem){

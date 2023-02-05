@@ -131,11 +131,12 @@ public class ProfileFragment extends Fragment implements IUserCallback {
             user = new User();
         user.updateWithDocument(documentSnapshot);
 
+        /*
         TextView tv1 = view.findViewById(R.id.profUser);
         tv1.setText(user.getUsername());
         TextView tv2 = view.findViewById(R.id.profMail);
         tv2.setText(user.getMail());
-
+        */
         image.setImageURI(user.getImage());
     }
 }
