@@ -40,40 +40,6 @@ public class UserRepository {
                 .addOnSuccessListener(documentSnapshot -> callback.onUserReceived(documentSnapshot));
 
     }
-    /*
-    public User getUserData(String username) {
-        final User[] user = {null};
-        final CountDownLatch latch = new CountDownLatch(1);
-
-        documentReference = firestore.collection(USERS_COLLECTION).document("/" + username);
-        documentReference.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    Map<String, Object> data = document.getData();
-                    user[0] = new User((String) data.get("mail"),
-                            (String) data.get("password"),
-                            username,
-                            (List<Build>) data.get("favorite"),
-                            (List<Build>) data.get("created"),
-                            (Uri) data.get("image"));
-                } else {
-                    Log.d(MainActivity.class.getSimpleName(), "No such document");
-                }
-            } else {
-                Log.e(MainActivity.class.getSimpleName(), "Error trying to read data!", task.getException());
-            }
-            latch.countDown();
-        });
-
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            Log.e(MainActivity.class.getSimpleName(), "Error waiting for data", e);
-        }
-
-        return user[0];
-    }*/
 
 
     //AGGIORNA LA PASSWORD SSE LA VECCHIA PASSWORD E oldPass COINCIDONO

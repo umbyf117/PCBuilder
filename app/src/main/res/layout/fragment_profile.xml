@@ -1,253 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
-    android:orientation="vertical"
-    android:id="@+id/profFragm">
+    android:background="@color/background_light"
+    android:id="@+id/profileFragment">
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/top_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="150dp"
+        android:background="@color/blue"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </LinearLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/prof_pic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/profpic"
+        app:civ_border_color="@color/blue"
+        app:civ_border_width="7dp"
+        app:layout_constraintBottom_toBottomOf="@+id/top_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/top_bar"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="@font/jurabold"
+        android:text="Username"
+        android:textAlignment="center"
+        android:textColor="@color/background_light"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/top_bar"
+        app:layout_constraintStart_toEndOf="@+id/prof_pic"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/juramedium"
+        android:text="0.0"
+        android:textAlignment="textStart"
+        android:textAllCaps="true"
+        android:textColor="@color/background_light"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/top_bar"
+        app:layout_constraintStart_toEndOf="@+id/prof_pic"
+        app:layout_constraintTop_toTopOf="@+id/top_bar" />
+
+    <LinearLayout
+        android:id="@+id/buttonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_bar">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/createdBuildBackground"
             android:orientation="horizontal"
-            android:weightSum="3">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="start">
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/logo"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:id="@+id/logoProf"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/titleProfFragm"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="21sp"
-                    android:textStyle="bold"
-                    android:text="@string/app_name"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"/>
-
-            </LinearLayout>
-
-
-
-        </LinearLayout>
-
-
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/rlProfile"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center">
-        <!--android:background="@color/blue"-->
-
-
-
-        <LinearLayout
-            android:background="@drawable/gradient_background"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/prof_pic"
-                android:layout_width="112dp"
-                android:layout_height="112dp"
-                android:layout_marginTop="35dp"
-                android:src="@drawable/profpic"
-                app:civ_border_color="#FF000000"
-                app:civ_border_width="2dp" />
-
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-
-                android:id="@+id/profUser"
-                android:text="@string/profileUser"
-                android:textSize="32sp"
-                android:textColor="#fff"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-
-                android:id="@+id/profMail"
-                android:text="Ciao"
-                android:textSize="16sp"
-                android:textColor="#ffff"
-                android:textStyle="bold"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:layout_marginTop="250dp"
-            android:weightSum="2">
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/numSavedBuilds"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginStart="1dp"
-                android:layout_marginBottom="1dp"
-                android:layout_marginEnd="1dp"
-                android:layout_marginTop="1dp"
-                app:strokeWidth="0.5dp"
-                app:strokeColor="#0099ff">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center_horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Total Saved"
-                        android:textSize="20dp"
-                        android:layout_marginTop="10dp"/>
-                    <TextView
-                        android:id="@+id/numSB"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Number"
-                        android:textSize="15dp"
-                        android:layout_gravity="center"/>
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/numTotalFavorites"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginStart="1dp"
-                android:layout_marginBottom="1dp"
-                android:layout_marginEnd="1dp"
-                android:layout_marginTop="1dp"
-                app:strokeWidth="0.5dp"
-                app:strokeColor="#0099ff">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center_horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Total Favorites"
-                        android:textSize="20dp"
-                        android:layout_marginTop="10dp"/>
-                    <TextView
-                        android:id="@+id/numTF"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Number"
-                        android:textSize="15dp"
-                        android:layout_gravity="center"/>
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="325dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_weight="0.5"
+            android:background="@color/blue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/profSavedBuilds"
-                android:layout_width="350dp"
-                android:layout_height="100dp"
-                app:strokeColor="#696969"
-                app:strokeWidth="0.5dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="50dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:weightSum="3">
-
-                </LinearLayout>
-
-
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_below="@id/profSavedBuilds"
-                android:layout_width="350dp"
-                android:layout_height="100dp"
-                app:strokeColor="#696969"
-                app:strokeWidth="0.5dp"
-                android:layout_gravity="center">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:weightSum="3">
-
-                </LinearLayout>
-
-
-            </com.google.android.material.card.MaterialCardView>
-
+            <Button
+                android:id="@+id/createdBuildButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/round_top"
+                android:text="Created Build"
+                android:textColor="@color/text_light"
+                app:backgroundTint="@color/background_light" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/favoriteBuildBackground"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:background="@color/background_light"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <Button
+                android:id="@+id/favoriteBuildButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Favorite Build"
+                android:background="@drawable/round_bottom"
+                android:backgroundTint="@color/blue"/>
+        </LinearLayout>
+    </LinearLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonsLayout">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+        </LinearLayout>
+    </ScrollView>
 
-
-
-
-
-    </RelativeLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
