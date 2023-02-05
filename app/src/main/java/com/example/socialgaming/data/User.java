@@ -1,9 +1,13 @@
 package com.example.socialgaming.data;
 
 import android.content.ContentResolver;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 
+import com.example.socialgaming.PcBuilder;
 import com.example.socialgaming.R;
+import com.example.socialgaming.utils.ImageUtils;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.io.File;
@@ -13,16 +17,16 @@ import java.util.Map;
 import java.util.Objects;
 
 public class User {
-    public static final Uri DEFAULT_IMAGE = Uri.parse("android.resource://com.example.socialgaming/" + R.drawable.logo);
+    public static Bitmap DEFAULT_IMAGE;
 
     private String mail;
     private String password;
     private String username;
     private List<Build> favorite;
     private List<Build> created;
-    private Uri image;
+    private Bitmap image;
 
-    public User(String mail, String password, String username, List<Build> favorite, List<Build> created, Uri image) {
+    public User(String mail, String password, String username, List<Build> favorite, List<Build> created, Bitmap image) {
         this.mail = mail;
         this.password = password;
         this.username = username;
@@ -44,7 +48,9 @@ public class User {
         this.username = (String) data.get("username");
         this.favorite = (List<Build>) data.get("favorite");
         this.created = (List<Build>) data.get("created");
-        this.image = Uri.parse((String) data.get("image"));
+        List<Long> byteList = ((List<Long>)data.get("image"));
+        byte[] byteArray = ImageUtils.decodeListToArray(byteList);
+        this.image = ImageUtils.decodeByteArrayToBitmap(byteArray);
     }
 
     @Override
@@ -155,10 +161,10 @@ public class User {
     public void setCreated(List<Build> created) {
         this.created = created;
     }
-    public Uri getImage() {
+    public Bitmap getImage() {
         return image;
     }
-    public void setImage(Uri image) {
+    public void setImage(Bitmap image) {
         this.image = image;
     }
 }

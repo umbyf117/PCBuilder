@@ -1,6 +1,7 @@
 package com.example.socialgaming.view;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 
+import com.example.socialgaming.PcBuilder;
 import com.example.socialgaming.Interfaces.OnCardSelectedListener;
 import com.example.socialgaming.R;
 import com.example.socialgaming.data.Build;
@@ -44,6 +46,9 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        User.DEFAULT_IMAGE = BitmapFactory.decodeResource(this.getResources(), R.drawable.logo);
+
         viewModel = new MainViewModel(getApplication());
 
         viewModel.getUserLiveData().observe(this, firebaseUser -> {

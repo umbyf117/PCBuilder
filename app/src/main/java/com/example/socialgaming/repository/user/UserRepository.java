@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.repository.callbacks.IUserCallback;
+import com.example.socialgaming.utils.ImageUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -36,6 +37,7 @@ public class UserRepository {
     //Ottenimento dati dell'utente
     public void getUserData(String username, IUserCallback callback) {
         documentReference = firestore.collection(USERS_COLLECTION).document("/" + username);
+
         documentReference.get()
                 .addOnSuccessListener(documentSnapshot -> callback.onUserReceived(documentSnapshot));
 
@@ -60,26 +62,14 @@ public class UserRepository {
 
     }
 
-    public boolean updateImage(User user, Uri image) {
+    public boolean updateImage(User user) {
 
         DocumentReference userRef = FirebaseFirestore.getInstance().collection("users").document(user.getUsername());
 
         Map<String, Object> data = new HashMap<>();
-        data.put("image", image);
+        data.put("image", ImageUtils.encodeBitmapToByteArray(user.getImage()));
 
-        userRef.update(data)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
+        userRef.update(data);
 
         return true;
         /*documentReference = firestore.collection(USERS_COLLECTION).document(user.getUsername());

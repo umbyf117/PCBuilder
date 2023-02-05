@@ -98,8 +98,8 @@ public class ProfileFragment extends Fragment implements IUserCallback {
 
         setCreatedBuilds(this.getLayoutInflater());
 
-        //if(user.getImage() != null)
-            //image.setImageURI(user.getImage());
+        if(user.getImage() != null)
+            image.setImageBitmap(user.getImage());
     }
 
     private void setCreatedBuilds(LayoutInflater inflater) {
@@ -135,7 +135,7 @@ public class ProfileFragment extends Fragment implements IUserCallback {
 
     private View getCreatedBuildView(Build b, View v) {
         ImageView buildImage = v.findViewById(R.id.imageBuild);
-        buildImage.setImageURI(b.getImage());
+        buildImage.setImageBitmap(b.getImage());
         TextView buildName = v.findViewById(R.id.nameBuild);
         buildName.setText(b.getName());
         TextView value = v.findViewById(R.id.creator);
@@ -180,7 +180,7 @@ public class ProfileFragment extends Fragment implements IUserCallback {
 
     private View getFavoriteBuildView(Build b, View v) {
         ImageView buildImage = v.findViewById(R.id.imageBuild);
-        buildImage.setImageURI(b.getImage());
+        buildImage.setImageBitmap(b.getImage());
         TextView buildName = v.findViewById(R.id.nameBuild);
         buildName.setText(b.getName());
         TextView value = v.findViewById(R.id.creator);

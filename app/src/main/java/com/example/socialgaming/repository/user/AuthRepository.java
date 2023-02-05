@@ -1,14 +1,18 @@
 package com.example.socialgaming.repository.user;
 
 import android.app.Application;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.socialgaming.PcBuilder;
 import com.example.socialgaming.R;
 import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.User;
+import com.example.socialgaming.utils.ImageUtils;
 import com.example.socialgaming.utils.ViewUtils;
 import com.example.socialgaming.view.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,8 +22,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class AuthRepository {
@@ -94,7 +101,14 @@ public class AuthRepository {
                                                             put("username", username);
                                                             put("favorite", new ArrayList<Build>());
                                                             put("created", new ArrayList<Build>());
-                                                            put("image", User.DEFAULT_IMAGE.toString());
+                                                            try {
+                                                                byte[] byteArray = ImageUtils.encodeBitmapToByteArray(BitmapFactory.decodeStream(application.getContentResolver().openInputStream(
+                                                                        Uri.parse("android.resource://com.example.socialgaming/" + R.drawable.logo))));
+                                                                List<Integer> byteList = ImageUtils.encodeArrayToList(byteArray);
+                                                                put("image", byteList);
+                                                            } catch (FileNotFoundException e) {
+                                                                e.printStackTrace();
+                                                            }
                                                         }
                                                     }).addOnCompleteListener(task -> Objects.requireNonNull(userLiveData.getValue())
                                                             .updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(username).build()))

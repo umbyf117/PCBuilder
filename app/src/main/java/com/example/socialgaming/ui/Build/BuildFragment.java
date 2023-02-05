@@ -1,5 +1,6 @@
 package com.example.socialgaming.ui.Build;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -97,7 +98,7 @@ public class BuildFragment extends Fragment {
         return bvm.getSelectedItem();
     }
 
-    private void createObjWithArgs(Motherboard motherboard, CPU cpu, List<RAM> ram, List<Memory> memories, GPU gpu, Case house, CPUFan fan, PSU psu, User creator, String name, Uri image){
+    private void createObjWithArgs(Motherboard motherboard, CPU cpu, List<RAM> ram, List<Memory> memories, GPU gpu, Case house, CPUFan fan, PSU psu, User creator, String name, Bitmap image){
         Build build = new Build (motherboard, cpu, ram, memories, gpu, house, fan, psu, creator, name, image);
 
     }

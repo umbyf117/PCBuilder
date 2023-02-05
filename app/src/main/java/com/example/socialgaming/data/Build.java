@@ -1,7 +1,9 @@
 package com.example.socialgaming.data;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 
+import com.example.socialgaming.utils.ImageUtils;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.HashMap;
@@ -25,10 +27,10 @@ public class Build {
     private Set<String> like, dislike;
     private UUID uuid;
 
-    private Uri image;
+    private Bitmap image;
     private String name;
 
-    public Build(Motherboard board, CPU cpu, List<RAM> rams, List<Memory> harddisks, GPU gpu, Case house, CPUFan fan, PSU psu, User creator, Set<String> like, Set<String> dislike, UUID uuid, String name, Uri uri) {
+    public Build(Motherboard board, CPU cpu, List<RAM> rams, List<Memory> harddisks, GPU gpu, Case house, CPUFan fan, PSU psu, User creator, Set<String> like, Set<String> dislike, UUID uuid, String name, Bitmap uri) {
         setBoard(board);
         setCpu(cpu);
         setRams(rams);
@@ -45,7 +47,7 @@ public class Build {
         this.image = uri;
     }
 
-    public Build(Motherboard board, CPU cpu, List<RAM> rams, List<Memory> harddisks, GPU gpu, Case house, CPUFan fan, PSU psu, User creator, String name, Uri image) {
+    public Build(Motherboard board, CPU cpu, List<RAM> rams, List<Memory> harddisks, GPU gpu, Case house, CPUFan fan, PSU psu, User creator, String name, Bitmap image) {
         this(board, cpu, rams, harddisks, gpu, house, fan, psu, creator, new HashSet<>(), new HashSet<>(), UUID.randomUUID(), name, image);
     }
 
@@ -66,7 +68,7 @@ public class Build {
         this.dislike = (Set<String>) data.get("dislike");
         this.uuid = (UUID) data.get("uuid");
         this.name = (String) data.get("name");
-        this.image = (Uri) data.get("uri");
+        this.image = ImageUtils.decodeByteArrayToBitmap((byte[]) data.get("uri"));
     }
 
     @Override
@@ -295,10 +297,10 @@ public class Build {
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
-    public Uri getImage() {
+    public Bitmap getImage() {
         return image;
     }
-    public void setImage(Uri image) {
+    public void setImage(Bitmap image) {
         this.image = image;
     }
     public String getName() {

@@ -1,18 +1,29 @@
 package com.example.socialgaming.ui.Settings;
 
+import android.app.Application;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SettingsViewModel extends ViewModel {
-    private final MutableLiveData<String> Text;
+import com.example.socialgaming.repository.user.AuthRepository;
+import com.example.socialgaming.repository.user.UserRepository;
 
-    public SettingsViewModel(){
-        Text = new MutableLiveData<>();
-        Text.setValue("Settings Fragment");
+public class SettingsViewModel extends ViewModel {
+
+    private AuthRepository authRepository;
+    private UserRepository userRepository;
+
+    public SettingsViewModel(Application application) {
+        authRepository = new AuthRepository(application);
+        userRepository = new UserRepository();
     }
 
-    public LiveData<String> getText(){
-        return Text;
+    //GETTER
+    public AuthRepository getAuthRepository() {
+        return authRepository;
+    }
+    public UserRepository getUserRepository() {
+        return userRepository;
     }
 }

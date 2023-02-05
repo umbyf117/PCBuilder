@@ -1,5 +1,6 @@
 package com.example.socialgaming.ui.Settings;
 
+import android.content.Intent;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -21,6 +23,9 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.socialgaming.R;
 import com.example.socialgaming.ui.profile.OnFragmentInteractionListener;
 import com.example.socialgaming.ui.profile.ProfileFragment;
+import com.example.socialgaming.utils.FragmentUtils;
+import com.example.socialgaming.view.LoginActivity;
+import com.example.socialgaming.view.MainActivity;
 import com.example.socialgaming.view.MainActivity;
 
 public class SettingsFragment extends Fragment {
@@ -33,6 +38,7 @@ public class SettingsFragment extends Fragment {
 
     private static final int PICK_IMAGE_REQUEST = 1;
 
+    private SettingsViewModel viewModel;
     private ImageView profileImageView;
     private Button chooseImageButton;
     private Bitmap profileImage;
@@ -46,6 +52,13 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(@NonNull  LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        viewModel = new SettingsViewModel(this.getActivity().getApplication());
+
+        Button logoutButton = view.findViewById(R.id.btnLogout);
+        logoutButton.setOnClickListener(view1 -> {
+            viewModel.getAuthRepository().logOut();
+            FragmentUtils.startActivity((AppCompatActivity) this.getActivity(), new Intent(this.getContext(), LoginActivity.class), true);
+        });
         MainActivity activity = (MainActivity) getActivity();
         activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
         switchCompat = view.findViewById(R.id.switch_night_mode);

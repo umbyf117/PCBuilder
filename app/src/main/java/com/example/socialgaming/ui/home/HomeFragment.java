@@ -87,9 +87,13 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
 
         homeViewModel = new HomeFragmentViewModel(getActivity().getApplication());
-        homeViewModel.getUserRepository().getUserData(
-                homeViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName(),
-                this);
+
+        if(homeViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName().isEmpty())
+            homeViewModel.getAuthRepository().logOut();
+        else
+            homeViewModel.getUserRepository().getUserData(
+                    homeViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName(),
+                    this);
 
         user = new User();
         builds = new ArrayList<>();
@@ -218,7 +222,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
             user = new User();
         user.updateWithDocument(documentSnapshot);
         username.setText(user.getUsername());
-        //image.setImageURI(user.getImage());
+        image.setImageBitmap(user.getImage());
 
     }
 
