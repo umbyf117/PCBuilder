@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -35,6 +36,7 @@ import com.example.socialgaming.repository.callbacks.IBuildCallback;
 import com.example.socialgaming.repository.callbacks.IUserCallback;
 import com.example.socialgaming.repository.component.BuildRepository;
 import com.example.socialgaming.repository.user.AuthRepository;
+import com.example.socialgaming.view.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
@@ -80,6 +82,10 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         currentView = inflater.inflate(R.layout.fragment_home, container, false);
+
+        MainActivity activity = (MainActivity) getActivity();
+        activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
+
         homeViewModel = new HomeFragmentViewModel(getActivity().getApplication());
         homeViewModel.getUserRepository().getUserData(
                 homeViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName(),

@@ -12,6 +12,7 @@ import android.widget.SearchView;
 
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -22,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.socialgaming.R;
 import com.example.socialgaming.api.ComponentsFetcher;
+import com.example.socialgaming.view.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -101,6 +103,8 @@ public class SearchFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
+        MainActivity activity = (MainActivity) getActivity();
+        activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
         return view;
     }
 

@@ -13,6 +13,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import com.example.socialgaming.R;
@@ -20,6 +21,7 @@ import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.repository.callbacks.IUserCallback;
 import com.example.socialgaming.ui.home.HomeFragment;
+import com.example.socialgaming.view.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -54,6 +56,9 @@ public class ProfileFragment extends Fragment implements IUserCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         profileViewModel = new ProfileViewModel(getActivity().getApplication());
+
+        MainActivity activity = (MainActivity) getActivity();
+        activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
 
         user = new User();
         profileViewModel.getUserRepository().getUserData(
@@ -93,8 +98,8 @@ public class ProfileFragment extends Fragment implements IUserCallback {
 
         setCreatedBuilds(this.getLayoutInflater());
 
-        if(user.getImage() != null)
-            image.setImageURI(user.getImage());
+        //if(user.getImage() != null)
+            //image.setImageURI(user.getImage());
     }
 
     private void setCreatedBuilds(LayoutInflater inflater) {

@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.socialgaming.R;
 import com.example.socialgaming.ui.profile.OnFragmentInteractionListener;
 import com.example.socialgaming.ui.profile.ProfileFragment;
+import com.example.socialgaming.view.MainActivity;
 
 public class SettingsFragment extends Fragment {
 
@@ -45,6 +46,8 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(@NonNull  LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        MainActivity activity = (MainActivity) getActivity();
+        activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
         switchCompat = view.findViewById(R.id.switch_night_mode);
         switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -54,11 +57,8 @@ public class SettingsFragment extends Fragment {
                 editor.putBoolean("night_mode", isChecked);
                 editor.apply();
 
-                if(isChecked){
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                }
+                setNightMode(isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+
             }
         });
         SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
@@ -66,6 +66,10 @@ public class SettingsFragment extends Fragment {
         switchCompat.setChecked(isNightModeEnabled);
 
         return view;
+    }
+
+    private void setNightMode(int i) {
+        AppCompatDelegate.setDefaultNightMode(i);
     }
 
 }

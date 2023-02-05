@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -36,6 +37,7 @@ import com.example.socialgaming.repository.component.BuildRepository;
 import com.example.socialgaming.ui.Lists.MotherboardFragment;
 import com.example.socialgaming.ui.Search.SearchFragment;
 import com.example.socialgaming.utils.BuildUtils;
+import com.example.socialgaming.view.MainActivity;
 
 import org.checkerframework.checker.units.qual.A;
 
@@ -58,6 +60,9 @@ public class BuildFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_build, container, false);
+
+        MainActivity activity = (MainActivity) getActivity();
+        activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
 
         cv1 = view.findViewById(R.id.moboBuild);
         cv1.setOnClickListener(new View.OnClickListener() {

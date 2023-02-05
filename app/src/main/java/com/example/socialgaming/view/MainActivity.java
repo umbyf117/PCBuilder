@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 
@@ -90,6 +91,10 @@ public class MainActivity extends AppCompatActivity{
             return false;
         });
 
+    }
+
+    public void setNightMode(int mode){
+        AppCompatDelegate.setDefaultNightMode(mode);
     }
 
     public FirebaseUser getUserData() {
