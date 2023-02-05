@@ -15,23 +15,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.socialgaming.R;
-import com.example.socialgaming.data.ComponentBase;
 import com.example.socialgaming.data.Motherboard;
-import com.example.socialgaming.data.types.ComponentType;
-import com.example.socialgaming.ui.Lists.placeholder.PlaceholderContent;
 import com.example.socialgaming.utils.BuildUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MotherboardFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
 
-    private BuildUtils bu;
-    private List<String> mbs;
     private String list;
+    private Motherboard mb;
 
     public MotherboardFragment() {
     }
@@ -52,6 +45,8 @@ public class MotherboardFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
+
     }
 
     @Override
@@ -59,27 +54,10 @@ public class MotherboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_motherboard_list, container, false);
 
-        bu = new BuildUtils();
-        mbs = new ArrayList<String>();
-        Motherboard mb = new Motherboard();
+        BuildUtils.getComponentsJSON(MOTHERBOARD, 50, 0);
+        Motherboard[] mbs = (Motherboard[]) BuildUtils.getComponents(BuildUtils.getComponentsJSON(MOTHERBOARD, 50, 0), MOTHERBOARD);
 
-        for(int i=0; i<50; i++){
-            if(bu.getComponentsJSON(MOTHERBOARD, i, 0)!=null){
-                mbs.add(bu.getComponentsJSON(MOTHERBOARD, i, 0));
-            }
-        }
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new MyMotherboardRecyclerViewAdapter(PlaceholderContent.ITEMS));
-        }
         return view;
     }
 }

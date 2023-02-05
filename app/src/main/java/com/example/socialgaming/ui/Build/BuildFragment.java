@@ -16,6 +16,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.socialgaming.R;
 import com.example.socialgaming.data.Build;
@@ -35,6 +36,8 @@ import com.example.socialgaming.ui.Lists.MotherboardFragment;
 import com.example.socialgaming.ui.Search.SearchFragment;
 import com.example.socialgaming.utils.BuildUtils;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -42,7 +45,7 @@ import java.util.UUID;
 
 public class BuildFragment extends Fragment {
 
-    private SearchView sv1, sv2, sv3, sv4;
+    private BuildViewModel bvm;
     private Button btn;
     private androidx.cardview.widget.CardView cv1, cv2, cv3, cv4, cv5, cv6, cv7, cv8;
     //Lists of components gotten through JSON
@@ -55,16 +58,16 @@ public class BuildFragment extends Fragment {
     private List<Motherboard> mobolist;
     private List<PSU> psulist;
     private List<RAM> ramlist;
-    //BuildUtils
-    private BuildUtils bu;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bvm = new ViewModelProvider(this).get(BuildViewModel.class);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_build, container, false);
+        ArrayList<Motherboard> mbs = new ArrayList<Motherboard>();
 
         cv1 = view.findViewById(R.id.moboBuild);
         cv1.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +77,7 @@ public class BuildFragment extends Fragment {
                 FragmentTransaction ft = fm.beginTransaction();
 
                 MotherboardFragment mf = new MotherboardFragment();
-                ft.replace(R.id.buildView, mf);
+                ft.add(R.id.buildViewLLayout, mf);
                 ft.addToBackStack(null);
                 ft.commit();
             }
@@ -83,8 +86,12 @@ public class BuildFragment extends Fragment {
         return view;
     }
 
-    private void refreshView(){
+    private void saveSelectedItem(String selectedItem){
+        bvm.setSelectedItem(selectedItem);
+    }
 
+    public String getSelectedItem(){
+        return bvm.getSelectedItem();
     }
 
     private void createObjWithArgs(Motherboard motherboard, CPU cpu, List<RAM> ram, List<Memory> memories, GPU gpu, Case house, CPUFan fan, PSU psu, User creator, String name, Uri image){
