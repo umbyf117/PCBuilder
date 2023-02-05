@@ -5,8 +5,10 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.repository.callbacks.IUserCallback;
+import com.example.socialgaming.repository.component.BuildRepository;
 import com.example.socialgaming.utils.ImageUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -60,6 +62,10 @@ public class UserRepository {
 
         return true;
 
+    }
+
+    public void deleteBuild(Build b) {
+        firestore.collection("/" + BuildRepository.BUILD_COLLECTION).document("/" + b.getUuid()).delete();
     }
 
     public boolean updateImage(User user) {

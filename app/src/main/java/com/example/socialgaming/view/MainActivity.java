@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 
@@ -43,6 +44,11 @@ public class MainActivity extends AppCompatActivity{
     private SearchFragment searchFragment;
     private SettingsFragment settingsFragment;
 
+    private Fragment currentFragment;
+
+
+    //CREARE IL SALVATAGGIO DATI NEL CASO DI CAMBIO DI FRAGMENT
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,9 +68,11 @@ public class MainActivity extends AppCompatActivity{
         searchFragment = new SearchFragment();
         settingsFragment = new SettingsFragment();
 
+        currentFragment = homeFragment;
+
         setContentView(R.layout.activity_main);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.container_home, homeFragment);
+        fragmentTransaction.add(R.id.container_home, currentFragment);
         fragmentTransaction.commit();
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);

@@ -48,8 +48,6 @@ import java.util.List;
 public class HomeFragment extends Fragment implements IUserCallback, IBuildCallback {
 
     private static final int BUILD_PER_LOAD = 50;
-    private static final int STORAGE_PERMISSION_CODE = 10;
-    private static final int IMAGE_PICK_CODE = 11;
 
 
     public static final ColorStateList BLUE_DARK = ColorStateList.valueOf(Color.parseColor("#1b263b"));

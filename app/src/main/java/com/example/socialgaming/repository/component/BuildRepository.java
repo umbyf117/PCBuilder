@@ -44,7 +44,7 @@ import java.util.UUID;
 
 public class BuildRepository {
 
-    private static final String BUILD_COLLECTION = "Builds";
+    public static final String BUILD_COLLECTION = "Builds";
 
     private FirebaseFirestore firestore;
     private DatabaseReference database;
@@ -115,92 +115,9 @@ public class BuildRepository {
 
         return buildList.subList(offset, buildList.size());
     }
-    /**
-     * @param username - Username del Creatore della Build
-     * @return user - istanza di User che contiene tutti i dati dell'utente
-     * @throws JSONException
-     */
-    /*
-    public User getUser(String username) throws JSONException {
 
-        documentReference = firestore.collection("/" + UserRepository.USERS_COLLECTION)
-                .document("/" + UserRepository.USERS_COLLECTION + "/" + username);
-        documentReference.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    userData = document.getData();
-                } else {
-                    userData = null;
-                }
-            } else {
-                userData = null;
-                Log.e(MainActivity.class.getSimpleName(), "Error trying to read data!");
-            }
-        });
-
-        if(userData == null)
-            return null;
-
-        JSONObject o = new JSONObject(userData);
-
-        return new User(o.getString("mail"),
-                o.getString("password"),
-                o.getString("username"),
-                (List<Build>) userData.get("favorite"),
-                (List<Build>) userData.get("created"),
-                (Uri) userData.get("image")
-        );
+    public void deleteBuild(Build b) {
+        firestore.collection("/" + BUILD_COLLECTION).document("/" + b.getUuid()).delete();
     }
-    */
-
-    /**
-     * @param build
-     * @return true - se la build esiste (e quindi viene aggiornata)
-     * @return false - se non esiste la build con stesso uuid
-     */
-    /*
-    public boolean updateData(Build build) {
-        if(!exists(build))
-            return false;
-
-        Map<String, Object> upload = build.getMap();
-        Map<String, Object> data = new HashMap<>();
-        data.put("/builds/" + build.getUuid().toString(), upload);
-        database.updateChildren(data);
-
-        return true;
-    }
-*/
-
-    /*
-    //CARICA NEL DATABASE DI TUTTI GLI ELEMENTI DELLA BUILD SE ESSI NON ESISTONO
-    private boolean writeComponents(Build build) {
-        boolean success = true;
-        if(!componentRepository.exists(ComponentType.MOTHERBOARD, build.getBoard().getId()))
-            success = success && componentRepository.setData(ComponentType.MOTHERBOARD, build.getBoard());
-        if(!componentRepository.exists(ComponentType.CPU, build.getCpu().getId()))
-            success = success && componentRepository.setData(ComponentType.CPU, build.getCpu());
-        if(!componentRepository.exists(ComponentType.CPU_FAN, build.getFan().getId()))
-            success = success && componentRepository.setData(ComponentType.CPU_FAN, build.getFan());
-        if(!componentRepository.exists(ComponentType.GPU, build.getGpu().getId()))
-            success = success && componentRepository.setData(ComponentType.GPU, build.getGpu());
-        if(!componentRepository.exists(ComponentType.PSU, build.getPsu().getId()))
-            success = success && componentRepository.setData(ComponentType.PSU, build.getPsu());
-        if(!componentRepository.exists(ComponentType.CASE, build.getHouse().getId()))
-            success = success && componentRepository.setData(ComponentType.MOTHERBOARD, build.getHouse());
-
-        for(RAM r : build.getRams())
-            if(!componentRepository.exists(ComponentType.RAM, r.getId()))
-                success = success && componentRepository.setData(ComponentType.RAM, r);
-
-        for(Memory m : build.getHarddisks())
-            if(!componentRepository.exists(ComponentType.MEMORY, m.getId()))
-                success = success && componentRepository.setData(ComponentType.MEMORY, m);
-
-
-        return success;
-    }
-    */
 
 }

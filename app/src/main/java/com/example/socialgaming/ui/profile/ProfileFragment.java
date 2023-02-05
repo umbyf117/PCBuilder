@@ -1,5 +1,6 @@
 package com.example.socialgaming.ui.profile;
 
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,12 +14,14 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import com.example.socialgaming.R;
 import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.User;
+import com.example.socialgaming.repository.callbacks.IBuildCallback;
 import com.example.socialgaming.repository.callbacks.IUserCallback;
 import com.example.socialgaming.ui.home.HomeFragment;
 import com.example.socialgaming.view.MainActivity;
@@ -26,6 +29,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.Inflater;
 
 public class ProfileFragment extends Fragment implements IUserCallback {
@@ -43,7 +48,6 @@ public class ProfileFragment extends Fragment implements IUserCallback {
     private Button favoriteBuild;
     private LinearLayout createdBuildLayout;
     private LinearLayout favoriteBuildLayout;
-    private ScrollView buildScrollView;
     private LinearLayout containerBuilds;
 
     private boolean created;
@@ -85,23 +89,6 @@ public class ProfileFragment extends Fragment implements IUserCallback {
         return user.getDisplayName();
     }
 
-
-    @Override
-    public void onUserReceived(DocumentSnapshot documentSnapshot) {
-        if(user == null)
-            user = new User();
-        user.updateWithDocument(documentSnapshot);
-        TextView username = view.findViewById(R.id.username);
-        username.setText(user.getUsername());
-        TextView value = view.findViewById(R.id.userValue);
-        value.setText("" + user.getUserValue());
-
-        setCreatedBuilds(this.getLayoutInflater());
-
-        if(user.getImage() != null)
-            image.setImageBitmap(user.getImage());
-    }
-
     private void setCreatedBuilds(LayoutInflater inflater) {
 
         View childLayout = null;
@@ -132,7 +119,6 @@ public class ProfileFragment extends Fragment implements IUserCallback {
 
 
     }
-
     private View getCreatedBuildView(Build b, View v) {
         ImageView buildImage = v.findViewById(R.id.imageBuild);
         buildImage.setImageBitmap(b.getImage());
@@ -143,10 +129,21 @@ public class ProfileFragment extends Fragment implements IUserCallback {
         ImageView star = v.findViewById(R.id.saveBuild);
         star.setVisibility(View.INVISIBLE);
         star.setClickable(false);
+        ImageView delete = v.findViewById(R.id.deleteBuild);
+        delete.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+            builder.setMessage("Are you sure you want to delete this build?")
+                    .setPositiveButton("Yes", (dialog, id) ->
+                            user.getCreated().remove(b)
+                    )
+                    .setNegativeButton("No", (dialog, id) -> {
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        });
 
         return v;
     }
-
     private void setFavoriteBuilds(LayoutInflater inflater) {
 
         View childLayout = null;
@@ -177,7 +174,6 @@ public class ProfileFragment extends Fragment implements IUserCallback {
 
 
     }
-
     private View getFavoriteBuildView(Build b, View v) {
         ImageView buildImage = v.findViewById(R.id.imageBuild);
         buildImage.setImageBitmap(b.getImage());
@@ -200,10 +196,12 @@ public class ProfileFragment extends Fragment implements IUserCallback {
             }
 
         });
+        ImageView delete = v.findViewById(R.id.deleteBuild);
+        delete.setVisibility(View.INVISIBLE);
+        delete.setClickable(false);
 
         return v;
     }
-
     public void switchBuildsListener() {
 
         createdBuild.setOnClickListener(view -> {
@@ -238,6 +236,22 @@ public class ProfileFragment extends Fragment implements IUserCallback {
             }
         });
 
+    }
+
+    @Override
+    public void onUserReceived(DocumentSnapshot documentSnapshot) {
+        if(user == null)
+            user = new User();
+        user.updateWithDocument(documentSnapshot);
+        TextView username = view.findViewById(R.id.username);
+        username.setText(user.getUsername());
+        TextView value = view.findViewById(R.id.userValue);
+        value.setText("" + user.getUserValue());
+
+        setCreatedBuilds(this.getLayoutInflater());
+
+        if(user.getImage() != null)
+            image.setImageBitmap(user.getImage());
     }
 
 }
