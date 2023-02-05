@@ -23,7 +23,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="16dp"
-        android:src="@drawable/profpic"
+        android:src="@drawable/logo"
         app:civ_border_color="@color/blue"
         app:civ_border_width="7dp"
         app:layout_constraintBottom_toBottomOf="@+id/top_bar"
@@ -48,7 +48,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/userValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -115,14 +115,17 @@
     </LinearLayout>
 
     <ScrollView
+        android:id="@+id/buildsScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonsLayout">
         <LinearLayout
+            android:id="@+id/containerBuilds"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
         </LinearLayout>
     </ScrollView>

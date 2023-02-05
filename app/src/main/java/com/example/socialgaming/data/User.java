@@ -109,6 +109,22 @@ public class User {
         return -1;
     }
 
+    /**
+     * @return - User value based on all his build
+     */
+    public double getUserValue() {
+
+        if(created.size() == 0)
+            return 0.0;
+
+        int value = 0;
+        for(Build b : created)
+            value = (int) (value + b.getValue() * 10);
+        value = value / (created.size());
+        return value / 10.0;
+
+    }
+
     public String getMail() {
         return mail;
     }

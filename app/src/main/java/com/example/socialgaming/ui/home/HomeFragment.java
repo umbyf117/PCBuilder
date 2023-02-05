@@ -1,9 +1,17 @@
 package com.example.socialgaming.ui.home;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +23,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.socialgaming.R;
@@ -28,16 +38,22 @@ import com.example.socialgaming.repository.user.AuthRepository;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements IUserCallback, IBuildCallback {
 
-    private static final int BUILD_PER_LOAD = 10;
-    private static final ColorStateList BLUE_DARK = ColorStateList.valueOf(Color.parseColor("#1b263b"));
-    private static final ColorStateList GOLD = ColorStateList.valueOf(Color.parseColor("#FFD700"));
-    private static final ColorStateList RED = ColorStateList.valueOf(Color.RED);
-    private static final ColorStateList GREEN = ColorStateList.valueOf(Color.GREEN);
+    private static final int BUILD_PER_LOAD = 50;
+    private static final int STORAGE_PERMISSION_CODE = 10;
+    private static final int IMAGE_PICK_CODE = 11;
+
+
+    public static final ColorStateList BLUE_DARK = ColorStateList.valueOf(Color.parseColor("#1b263b"));
+    public static final ColorStateList GOLD = ColorStateList.valueOf(Color.parseColor("#FFD700"));
+    public static final ColorStateList RED = ColorStateList.valueOf(Color.RED);
+    public static final ColorStateList GREEN = ColorStateList.valueOf(Color.GREEN);
 
     private HomeFragmentViewModel homeViewModel;
     private View currentView;
@@ -74,6 +90,11 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
 
         username = currentView.findViewById(R.id.username);
         image = currentView.findViewById(R.id.prof_pic);
+        image.setOnClickListener(v -> {
+            //requestStoragePermission();
+            //pickImageFromGallery();
+        });
+
         if(user != null)
             username.setText(user.getUsername());
 
@@ -89,7 +110,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         // Crea una nuova istanza di LayoutInflater
         LayoutInflater inflater = LayoutInflater.from(buildList.getContext());
 
-        List<Build> builds = homeViewModel.getBuildRepository().getBuildList(50, 0, this);
+        List<Build> builds = homeViewModel.getBuildRepository().getBuildList(BUILD_PER_LOAD, 0, this);
         if(builds != null)
             for(Build b : builds) {
                 setBuildBubble(inflater, currentView, b);
@@ -182,6 +203,8 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         templateView.setLayoutParams(params);
         buildList.addView(templateView);
     }
+
+
 
     @Override
     public void onUserReceived(DocumentSnapshot documentSnapshot) {

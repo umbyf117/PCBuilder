@@ -1,75 +1,50 @@
 package com.example.socialgaming.ui.profile;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.media.Image;
-import android.net.Uri;
-import android.nfc.Tag;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.socialgaming.R;
+import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.User;
-import com.example.socialgaming.databinding.FragmentProfileBinding;
 import com.example.socialgaming.repository.callbacks.IUserCallback;
-import com.example.socialgaming.repository.user.UserRepository;
-import com.example.socialgaming.ui.Settings.SettingsFragment;
-import com.example.socialgaming.ui.home.HomeFragmentViewModel;
-import com.example.socialgaming.utils.FragmentUtils;
-import com.example.socialgaming.view.auth.LoginFragment;
-import com.example.socialgaming.view.auth.RegisterFragment;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.example.socialgaming.ui.home.HomeFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.google.type.Date;
 
-import java.util.HashMap;
+import java.util.zip.Inflater;
 
 public class ProfileFragment extends Fragment implements IUserCallback {
-    private FragmentProfileBinding binding;
+
+    public static final ColorStateList BACKGROUND_LIGHT = ColorStateList.valueOf(Color.parseColor("#CCCCCC"));
+    public static final ColorStateList TEXT_LIGHT = ColorStateList.valueOf(Color.parseColor("#252525"));
+    public static final ColorStateList BLUE = ColorStateList.valueOf(Color.parseColor("#415a77"));
+
     private ImageView image;
-    private FirebaseUser FirebaseUser;
-    private FirebaseDatabase FirebaseDatabase;
-    private FirebaseStorage storageRef;
     private User user;
     private ProfileViewModel profileViewModel;
     private View view;
 
-    private static final int PICK_IMAGE = 1;
+    private Button createdBuild;
+    private Button favoriteBuild;
+    private LinearLayout createdBuildLayout;
+    private LinearLayout favoriteBuildLayout;
+    private ScrollView buildScrollView;
+    private LinearLayout containerBuilds;
 
-    public ProfileFragment() {
-
-    }
+    private boolean created;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,37 +61,18 @@ public class ProfileFragment extends Fragment implements IUserCallback {
                 this);
 
         image = view.findViewById(R.id.prof_pic);
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectImage();
-            }
-        });
+        createdBuild = view.findViewById(R.id.createdBuildButton);
+        favoriteBuild = view.findViewById(R.id.favoriteBuildButton);
+        createdBuildLayout = view.findViewById(R.id.createdBuildBackground);
+        favoriteBuildLayout = view.findViewById(R.id.favoriteBuildBackground);
+        created = true;
+
+        containerBuilds = view.findViewById(R.id.containerBuilds);
+
+
+        switchBuildsListener();
 
         return view;
-    }
-
-    private void selectImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
-            Uri imageUri = data.getData();
-            user.setImage(imageUri);
-            image = view.findViewById(R.id.prof_pic);
-            image.setImageURI(imageUri);
-            profileViewModel.getUserRepository().updateImage(user, imageUri);
-        }
-    }
-
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 
     public String getUserName() {
@@ -130,13 +86,153 @@ public class ProfileFragment extends Fragment implements IUserCallback {
         if(user == null)
             user = new User();
         user.updateWithDocument(documentSnapshot);
+        TextView username = view.findViewById(R.id.username);
+        username.setText(user.getUsername());
+        TextView value = view.findViewById(R.id.userValue);
+        value.setText("" + user.getUserValue());
 
-        /*
-        TextView tv1 = view.findViewById(R.id.profUser);
-        tv1.setText(user.getUsername());
-        TextView tv2 = view.findViewById(R.id.profMail);
-        tv2.setText(user.getMail());
-        */
-        image.setImageURI(user.getImage());
+        setCreatedBuilds(this.getLayoutInflater());
+
+        if(user.getImage() != null)
+            image.setImageURI(user.getImage());
     }
+
+    private void setCreatedBuilds(LayoutInflater inflater) {
+
+        View childLayout = null;
+
+        for (int i = 0; i < user.getCreated().size(); i++) {
+            if(i%2 == 0) {
+                childLayout = inflater.inflate(R.layout.card_line, containerBuilds, false);
+                LinearLayout cardBubbleLayout = childLayout.findViewById(R.id.bubble_left);
+                View cardBubble = LayoutInflater.from(childLayout.getContext()).inflate(R.layout.card_bubble, cardBubbleLayout, false);
+
+                cardBubble = getCreatedBuildView(user.getCreated().get(i), cardBubble);
+
+                cardBubbleLayout.addView(cardBubble);
+            }
+            else {
+                LinearLayout cardBubbleLayout = childLayout.findViewById(R.id.bubble_right);
+                View cardBubble = LayoutInflater.from(childLayout.getContext()).inflate(R.layout.card_bubble, cardBubbleLayout, false);
+
+                cardBubble = getCreatedBuildView(user.getCreated().get(i), cardBubble);
+
+                cardBubbleLayout.addView(cardBubble);
+                containerBuilds.addView(childLayout);
+            }
+        }
+
+        if(user.getCreated().size() % 2 == 0 && childLayout != null)
+            containerBuilds.addView(childLayout);
+
+
+    }
+
+    private View getCreatedBuildView(Build b, View v) {
+        ImageView buildImage = v.findViewById(R.id.imageBuild);
+        buildImage.setImageURI(b.getImage());
+        TextView buildName = v.findViewById(R.id.nameBuild);
+        buildName.setText(b.getName());
+        TextView value = v.findViewById(R.id.creator);
+        value.setText(b.getValue() + "");
+        ImageView star = v.findViewById(R.id.saveBuild);
+        star.setVisibility(View.INVISIBLE);
+        star.setClickable(false);
+
+        return v;
+    }
+
+    private void setFavoriteBuilds(LayoutInflater inflater) {
+
+        View childLayout = null;
+
+        for (int i = 0; i < user.getFavorite().size(); i++) {
+            if(i%2 == 0) {
+                childLayout = inflater.inflate(R.layout.card_line, containerBuilds, false);
+                LinearLayout cardBubbleLayout = childLayout.findViewById(R.id.bubble_left);
+                View cardBubble = LayoutInflater.from(childLayout.getContext()).inflate(R.layout.card_bubble, cardBubbleLayout, false);
+
+                cardBubble = getFavoriteBuildView(user.getFavorite().get(i), cardBubble);
+
+                cardBubbleLayout.addView(cardBubble);
+            }
+            else {
+                LinearLayout cardBubbleLayout = childLayout.findViewById(R.id.bubble_right);
+                View cardBubble = LayoutInflater.from(childLayout.getContext()).inflate(R.layout.card_bubble, cardBubbleLayout, false);
+
+                cardBubble = getFavoriteBuildView(user.getFavorite().get(i), cardBubble);
+
+                cardBubbleLayout.addView(cardBubble);
+                containerBuilds.addView(childLayout);
+            }
+        }
+
+        if(user.getCreated().size() % 2 == 0 && childLayout != null)
+            containerBuilds.addView(childLayout);
+
+
+    }
+
+    private View getFavoriteBuildView(Build b, View v) {
+        ImageView buildImage = v.findViewById(R.id.imageBuild);
+        buildImage.setImageURI(b.getImage());
+        TextView buildName = v.findViewById(R.id.nameBuild);
+        buildName.setText(b.getName());
+        TextView value = v.findViewById(R.id.creator);
+        value.setText(b.getCreator().getUsername());
+
+        ImageView star = v.findViewById(R.id.saveBuild);
+        star.setOnClickListener(view -> {
+
+            if(user.getFavorite().contains(b)) {
+                user.getFavorite().remove(b);
+                star.setForegroundTintList(HomeFragment.BLUE_DARK);
+            }
+
+            else {
+                user.getFavorite().add(b);
+                star.setForegroundTintList(HomeFragment.GOLD);
+            }
+
+        });
+
+        return v;
+    }
+
+    public void switchBuildsListener() {
+
+        createdBuild.setOnClickListener(view -> {
+            if(!created) {
+                created = true;
+                createdBuild.setBackgroundTintList(BLUE);
+                favoriteBuild.setBackgroundTintList(BACKGROUND_LIGHT);
+                createdBuildLayout.setBackgroundColor(BACKGROUND_LIGHT.getDefaultColor());
+                favoriteBuildLayout.setBackgroundColor(BLUE.getDefaultColor());
+                createdBuild.setTextColor(BACKGROUND_LIGHT);
+                favoriteBuild.setTextColor(TEXT_LIGHT);
+                createdBuild.setBackgroundResource(R.drawable.round_bottom);
+                favoriteBuild.setBackgroundResource(R.drawable.round_top);
+
+                setCreatedBuilds(this.getLayoutInflater());
+            }
+        });
+
+        favoriteBuild.setOnClickListener(view -> {
+            if(created) {
+                created = false;
+                favoriteBuild.setBackgroundTintList(BLUE);
+                createdBuild.setBackgroundTintList(BACKGROUND_LIGHT);
+                favoriteBuildLayout.setBackgroundColor(BACKGROUND_LIGHT.getDefaultColor());
+                createdBuildLayout.setBackgroundColor(BLUE.getDefaultColor());
+                favoriteBuild.setTextColor(BACKGROUND_LIGHT);
+                createdBuild.setTextColor(TEXT_LIGHT);
+                favoriteBuild.setBackgroundResource(R.drawable.round_bottom);
+                createdBuild.setBackgroundResource(R.drawable.round_top);
+
+                setFavoriteBuilds(this.getLayoutInflater());
+            }
+        });
+
+    }
+
 }

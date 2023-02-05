@@ -18,12 +18,10 @@
     <color name="red_dark">#FF660708</color>
     <color name="text_night">#FFE9ECEF</color>
     <color name="text_light">#FF252525</color>
+    <color name = "gold">#FFFFD700</color>
 
-    <!-- Profile -->
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#292b3d</color>
-    <color name="grayLight">#fafafa</color>
-    <color name="startBlue">#09c6df</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="endBlue">#0bcce6</color>
+    <color name="endBlue">#FF415a77</color>
+    <color name="grayLight">#FFCCCCCC</color>
+    <color name="startBlue">#FF415a77</color>
+
 </resources>

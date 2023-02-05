@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/bubble_row"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:id="@+id/bubble_left"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bubble_right"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:orientation="vertical">
+    </LinearLayout>
+
+</LinearLayout>
