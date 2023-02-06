@@ -122,7 +122,6 @@ public class ComponentsFragment extends Fragment implements IComponentCallback {
         if(component == null) {
             return;
         }
-
         View templateView = inflater.inflate(R.layout.card_component, null);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
