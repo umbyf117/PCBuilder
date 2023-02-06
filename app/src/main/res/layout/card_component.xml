@@ -7,15 +7,15 @@
     android:layout_height="400px"
     android:orientation="horizontal"
     android:background="@drawable/shape_round"
-    android:backgroundTint="@color/blue_light"
-    android:layout_marginTop="8dp">
+    android:backgroundTint="@color/white">
 
     <ImageView
         android:id="@+id/buildImage"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="0.5"
-        app:srcCompat="@drawable/pcbuilder" />
+        app:srcCompat="@drawable/pcbuilder"
+        android:layout_marginLeft="8dp"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

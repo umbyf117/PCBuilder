@@ -25,9 +25,12 @@ import com.example.socialgaming.data.types.ComponentType;
 import com.example.socialgaming.repository.callbacks.IComponentCallback;
 import com.example.socialgaming.ui.Build.BuildFragment;
 import com.example.socialgaming.utils.BuildUtils;
+import com.example.socialgaming.utils.ImageUtils;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 public class ComponentsFragment extends Fragment implements IComponentCallback {
+
+    private static final int PX_VALUE = 400;
 
     private ComponentType type;
     private OnCardSelectedListener listener;
@@ -99,7 +102,6 @@ public class ComponentsFragment extends Fragment implements IComponentCallback {
         if(json == null || json.isEmpty())
             components = new ComponentBase[0];
         else {
-            Log.e("[DEBUG]", json);
             components = BuildUtils.getComponents(json, type);
         }
     }
@@ -118,17 +120,28 @@ public class ComponentsFragment extends Fragment implements IComponentCallback {
     public void setupCardView(ComponentBase component, LayoutInflater inflater) {
 
         if(component == null) {
-            Log.i("[COMPONENTE]", "Successfully null!");
             return;
         }
 
         View templateView = inflater.inflate(R.layout.card_component, null);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, 16, 0, 16);
+
+        templateView.setLayoutParams(params);
 
         TextView title = templateView.findViewById(R.id.nameComponent);
         title.setText(component.getBrand() + " " + component.getModel());
 
         ImageView image = templateView.findViewById(R.id.buildImage);
-        image.setImageURI(Uri.parse(component.getImg()));
+        image.setImageBitmap(ImageUtils.getBitmapFromURL(component.getImg()));
+        image.getLayoutParams().width = PX_VALUE;
+        image.getLayoutParams().height = PX_VALUE;
+
+        TextView price = templateView.findViewById(R.id.price);
+        price.setText(component.getPrice() + "€");
 
         templateView.setVisibility(View.VISIBLE);
         templateView.setClickable(true);

@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background_light"
+    android:layout_height="wrap_content"
+    android:background="@color/blue_light"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
@@ -57,7 +57,7 @@
         <LinearLayout
             android:id="@+id/containerComponents"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:orientation="vertical" />
     </ScrollView>
@@ -81,6 +81,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/bottomLayout"
-        app:layout_constraintTop_toTopOf="@+id/bottomLayout" />
+        app:layout_constraintTop_toTopOf="@+id/bottomLayout"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
