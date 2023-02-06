@@ -32,32 +32,42 @@ public class BuildUtils {
     public static String getComponentsJSON(ComponentType type, int limit, int offset) {
 
         ResponseWrapper responseWrapper = new ResponseWrapper();
-        String url = getUrl(type, limit, offset);
 
-        OkHttpClient client = new OkHttpClient();
+        Thread backgroundThread = new Thread(() -> {
+            OkHttpClient client = new OkHttpClient();
 
-        Request request = new Request.Builder()
-                .url(url)
-                .get()
-                .addHeader("X-RapidAPI-Key", "fb275a437bmsh9db28c43aebefc4p1ac617jsnb6bd17a71b69")
-                .addHeader("X-RapidAPI-Host", "computer-components-api.p.rapidapi.com")
-                .build();
+            Request request = new Request.Builder()
+                    .url("https://computer-components-api.p.rapidapi.com/" + getUrl(type) + "?limit=" + limit + "&offset=" + offset)
+                    .get()
+                    .addHeader("X-RapidAPI-Key", "fb275a437bmsh9db28c43aebefc4p1ac617jsnb6bd17a71b69")
+                    .addHeader("X-RapidAPI-Host", "computer-components-api.p.rapidapi.com")
+                    .build();
 
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    ResponseBody responseBody = response.body();
-                    responseWrapper.response = responseBody.string();
-                    Log.e("ComponentArray", url);
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                    e.printStackTrace();
                 }
-            }
+
+                @Override
+                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    if (response.isSuccessful()) {
+                        ResponseBody responseBody = response.body();
+                        responseWrapper.response = responseBody.string();
+                        Log.e("ComponetRead", responseBody.string());
+                    }
+                }
+            });
         });
+
+        backgroundThread.start();
+
+        // Attendere il completamento del thread secondario prima di accedere alla risposta
+        try {
+            backgroundThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         return responseWrapper.response;
     }
@@ -71,7 +81,9 @@ public class BuildUtils {
                 for (int i = 0; i < obs.length(); i++) {
                     JSONObject obj = obs.getJSONObject(i);
                     ComponentBase component = getComponent(obj, type);
+                    components[i] = component;
                 }
+                return components;
 
             } catch (final JSONException e) {
                 Log.e(MainActivity.class.getSimpleName(), "Json parsing error: " + e.getMessage());
@@ -95,37 +107,27 @@ public class BuildUtils {
         return component;
     }
 
-    public static String getUrl(ComponentType type, int limit, int offset) {
-        String url = URL.replace("%LIMIT%", limit + "");
-        url = url.replace("%OFFSET%", offset + "");
+    public static String getUrl(ComponentType type) {
         switch (type) {
             case CASE:
-                url = url.replace("%COMPONENT_TYPE%", "case");
-                break;
+                return "case";
             case CPU:
-                url = url.replace("%COMPONENT_TYPE%", "processor");
-                break;
+                return "processor";
             case CPU_FAN:
-                url = url.replace("%COMPONENT_TYPE%", "cpu_fan");
-                break;
+                return "cpu_fan";
             case GPU:
-                url = url.replace("%COMPONENT_TYPE%", "gpu");
-                break;
+                return "gpu";
             case MEMORY:
-                url = url.replace("%COMPONENT_TYPE%", "storage");
-                break;
+                return "storage";
             case MOTHERBOARD:
-                url = url.replace("%COMPONENT_TYPE%", "motherboard");
-                break;
+                return "motherboard";
             case PSU:
-                url = url.replace("%COMPONENT_TYPE%", "power_supply");
-                break;
+                return "power_supply";
             case RAM:
-                url = url.replace("%COMPONENT_TYPE%", "ram");
-                break;
+                return "ram";
         }
 
-        return url;
+        return "";
     }
 
 }

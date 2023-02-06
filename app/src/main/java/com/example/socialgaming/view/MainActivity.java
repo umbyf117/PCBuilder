@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.socialgaming.Interfaces.OnCardSelectedListener;
 import com.example.socialgaming.R;
+import com.example.socialgaming.api.ComponentsFetcher;
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.ui.Build.BuildFragment;
 import com.example.socialgaming.ui.Search.SearchFragment;

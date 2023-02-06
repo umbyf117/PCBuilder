@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.socialgaming.Interfaces.OnCardSelectedListener;
 import com.example.socialgaming.R;
+import com.example.socialgaming.api.ComponentsFetcher;
 import com.example.socialgaming.data.ComponentBase;
 import com.example.socialgaming.data.types.ComponentType;
 import com.example.socialgaming.repository.callbacks.IComponentCallback;
@@ -65,7 +66,7 @@ public class ComponentsFragment extends Fragment implements IComponentCallback {
         });
 
         //setComponents(BuildUtils.getComponentsJSON(MOTHERBOARD, BuildFragment.COMPONENT_PER_VIEW, 0, this));
-        setComponents(BuildUtils.getComponentsJSON(MOTHERBOARD, BuildFragment.COMPONENT_PER_VIEW, 0));
+        setComponents(new ComponentsFetcher().fetchItems(MOTHERBOARD, BuildFragment.COMPONENT_PER_VIEW, 0));
         setupCardViews();
         /*
         for(int i=0; i<numCards; i++){
@@ -95,8 +96,12 @@ public class ComponentsFragment extends Fragment implements IComponentCallback {
     }
 
     public void setComponents(String json) {
-        components = new ComponentBase[0];
-        components = BuildUtils.getComponents(json, type);
+        if(json == null || json.isEmpty())
+            components = new ComponentBase[0];
+        else {
+            Log.e("[DEBUG]", json);
+            components = BuildUtils.getComponents(json, type);
+        }
     }
 
     public void setupCardViews() {
@@ -105,13 +110,17 @@ public class ComponentsFragment extends Fragment implements IComponentCallback {
 
         if(components != null)
             for(int i = 0; i < components.length; i++) {
-                Log.i("[COMPONENTE " + i + "]", "Successfully loaded!");
                 setupCardView(components[i], inflater);
             }
 
     }
 
     public void setupCardView(ComponentBase component, LayoutInflater inflater) {
+
+        if(component == null) {
+            Log.i("[COMPONENTE]", "Successfully null!");
+            return;
+        }
 
         View templateView = inflater.inflate(R.layout.card_component, null);
 
