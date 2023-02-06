@@ -86,11 +86,11 @@ public class ComponentsFetcher {
 
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                    if (response.isSuccessful()) {
-                        ResponseBody responseBody = response.body();
-                        responseWrapper.response = responseBody.string();
-                    }
-                    latch.countDown();
+                       if (response.isSuccessful()) {
+                           ResponseBody responseBody = response.body();
+                           responseWrapper.response = responseBody.string();
+                       }
+                       latch.countDown();
                 }
             });
 

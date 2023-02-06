@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.example.socialgaming.Interfaces.OnCardSelectedListener;
 import com.example.socialgaming.R;
 import com.example.socialgaming.api.ComponentsFetcher;
+import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.ComponentBase;
 import com.example.socialgaming.data.types.ComponentType;
 import com.example.socialgaming.repository.callbacks.IComponentCallback;
@@ -38,6 +39,7 @@ public class ComponentsFragment extends Fragment implements IComponentCallback {
     private LinearLayout containerComponents;
     private ComponentBase[] components;
     private View currentView;
+    private Build build;
 
     private ComponentBase componentToReturn;
 
@@ -49,6 +51,7 @@ public class ComponentsFragment extends Fragment implements IComponentCallback {
 
         if(getArguments() != null){
             type = (ComponentType) getArguments().getSerializable("type");
+            build = (Build) getArguments().getSerializable("build");
         }
     }
 
@@ -65,11 +68,12 @@ public class ComponentsFragment extends Fragment implements IComponentCallback {
         saveButton.setOnClickListener(view1 -> {
             Bundle bundle = new Bundle();
             bundle.putSerializable("component", componentToReturn);
+            bundle.putSerializable("build", build);
             getParentFragmentManager().popBackStack();
         });
 
         //setComponents(BuildUtils.getComponentsJSON(MOTHERBOARD, BuildFragment.COMPONENT_PER_VIEW, 0, this));
-        setComponents(new ComponentsFetcher().fetchItems(MOTHERBOARD, BuildFragment.COMPONENT_PER_VIEW, 0));
+        setComponents(new ComponentsFetcher().fetchItems(type, BuildFragment.COMPONENT_PER_VIEW, 0));
         setupCardViews();
         /*
         for(int i=0; i<numCards; i++){

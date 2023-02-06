@@ -24,6 +24,11 @@ import com.example.socialgaming.ui.Lists.ComponentsFragment;
 import com.example.socialgaming.view.MainActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import okhttp3.OkHttpClient;
+
 public class BuildFragment extends Fragment implements IUserCallback {
 
     public static final int COMPONENT_PER_VIEW = 10;
@@ -57,6 +62,7 @@ public class BuildFragment extends Fragment implements IUserCallback {
 
         startCardViews(view);
         setCardviewsListeners();
+        Logger.getLogger(OkHttpClient.class.getName()).setLevel(Level.FINE);
 
         startFragment = this;
         currentView = view;
@@ -80,11 +86,33 @@ public class BuildFragment extends Fragment implements IUserCallback {
         cardviews[0].setOnClickListener(view -> {
             switchToComponentView(ComponentType.MOTHERBOARD);
         });
+        cardviews[1].setOnClickListener(view -> {
+            switchToComponentView(ComponentType.CPU);
+        });
+        cardviews[2].setOnClickListener(view -> {
+            switchToComponentView(ComponentType.RAM);
+        });
+        cardviews[3].setOnClickListener(view -> {
+            switchToComponentView(ComponentType.CPU_FAN);
+        });
+        cardviews[4].setOnClickListener(view -> {
+            switchToComponentView(ComponentType.GPU);
+        });
+        cardviews[5].setOnClickListener(view -> {
+            switchToComponentView(ComponentType.MEMORY);
+        });
+        cardviews[6].setOnClickListener(view -> {
+            switchToComponentView(ComponentType.PSU);
+        });
+        cardviews[7].setOnClickListener(view -> {
+            switchToComponentView(ComponentType.CASE);
+        });
     }
 
     private void switchToComponentView(ComponentType type) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("type", type);
+        bundle.putSerializable("build", build);
 
         componentFragment = new ComponentsFragment();
         componentFragment.setArguments(bundle);
