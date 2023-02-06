@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -41,6 +42,7 @@ public class BuildFragment extends Fragment implements IUserCallback {
     private Fragment startFragment;
     private Fragment componentFragment;
     private View currentView;
+    private Button saveBuild;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +64,14 @@ public class BuildFragment extends Fragment implements IUserCallback {
 
         startCardViews(view);
         setCardviewsListeners();
-        Logger.getLogger(OkHttpClient.class.getName()).setLevel(Level.FINE);
+
+        saveBuild = view.findViewById(R.id.saveBuild);
+        saveBuild.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //BISONGA METTERE DENTRO QUA LA CREAZIONE DELLA BUILD
+            }
+        });
 
         startFragment = this;
         currentView = view;
