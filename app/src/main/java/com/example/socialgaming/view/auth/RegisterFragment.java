@@ -64,7 +64,7 @@ public class RegisterFragment extends Fragment {
 
     }
 
-    private void listernersSetup(){
+    private void listernersSetup() {
 
         //SIGN UP BUTTON
         signUpButton.setOnClickListener(new View.OnClickListener() {
@@ -73,13 +73,14 @@ public class RegisterFragment extends Fragment {
                 String mail = emailTextRegister.getText().toString().trim();
                 String pass = passwordTextRegister.getText().toString();
                 String username = usernameTextRegister.getText().toString().trim();
-                if(checkCredentials(mail, pass, username))
+                if (checkCredentials(mail, pass, username))
                     viewModel.register(mail, pass, username);
 
             }
         });
 
         signInText.setOnClickListener(LoginActivity.getSwitchListener());
+
 
     }
 

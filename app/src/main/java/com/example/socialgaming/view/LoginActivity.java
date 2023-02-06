@@ -59,8 +59,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
-
-
     }
 
     public void switchMode() {
@@ -74,7 +72,6 @@ public class LoginActivity extends AppCompatActivity {
             loginScreen = true;
             FragmentUtils.loadFragment(new LoginFragment(), fragmentManager, R.id.login_activity);
         }
-
 
     }
 
