@@ -31,7 +31,7 @@ import androidx.fragment.app.Fragment;
 import com.example.socialgaming.R;
 import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.User;
-import com.example.socialgaming.databinding.FragmentHomeBinding;
+//import com.example.socialgaming.databinding.FragmentHomeBinding;
 import com.example.socialgaming.repository.callbacks.IBuildCallback;
 import com.example.socialgaming.repository.callbacks.IUserCallback;
 import com.example.socialgaming.repository.component.BuildRepository;
