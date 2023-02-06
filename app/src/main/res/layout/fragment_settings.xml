@@ -13,7 +13,7 @@ android:id="@+id/homeFrag">
         android:layout_height="50dp"
         android:background="?android:attr/colorBackground"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -92,7 +92,7 @@ android:id="@+id/homeFrag">
                 android:text="@string/nightMode"
                 android:textSize="30dp"/>
 
-            <androidx.appcompat.widget.SwitchCompat
+            <Switch
                 android:id="@+id/switch_night_mode"
                 android:layout_marginLeft="50dp"
                 android:layout_width="wrap_content"

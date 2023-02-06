@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity{
     private SearchFragment searchFragment;
     private SettingsFragment settingsFragment;
 
+
     private Fragment currentFragment;
 
 

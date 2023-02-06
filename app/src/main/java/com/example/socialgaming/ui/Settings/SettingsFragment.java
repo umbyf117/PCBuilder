@@ -3,34 +3,26 @@ package com.example.socialgaming.ui.Settings;
 import android.content.Intent;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.socialgaming.R;
-import com.example.socialgaming.ui.profile.OnFragmentInteractionListener;
-import com.example.socialgaming.ui.profile.ProfileFragment;
 import com.example.socialgaming.utils.FragmentUtils;
 import com.example.socialgaming.view.LoginActivity;
-import com.example.socialgaming.view.MainActivity;
-import com.example.socialgaming.view.MainActivity;
 
 public class SettingsFragment extends Fragment {
 
-    private androidx.appcompat.widget.SwitchCompat switchCompat;
+    private Switch switchmode;
 
     public SettingsFragment(){
 
@@ -39,10 +31,6 @@ public class SettingsFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 1;
 
     private SettingsViewModel viewModel;
-    private ImageView profileImageView;
-    private Button chooseImageButton;
-    private Bitmap profileImage;
-    private ImageButton imgbtn;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,29 +42,27 @@ public class SettingsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         viewModel = new SettingsViewModel(this.getActivity().getApplication());
 
+        //Switch between Light and Dark mode
+        switchmode = view.findViewById(R.id.switch_night_mode);
+        switchmode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("night_mode", isChecked);
+            editor.apply();
+
+            setNightMode(isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+
+        });
+        //SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        //boolean isNightModeEnabled = sharedPreferences.getBoolean("night_mode", false);
+        //switchmode.setChecked(isNightModeEnabled);
+
         Button logoutButton = view.findViewById(R.id.btnLogout);
         logoutButton.setOnClickListener(view1 -> {
             viewModel.getAuthRepository().logOut();
             FragmentUtils.startActivity((AppCompatActivity) this.getActivity(), new Intent(this.getContext(), LoginActivity.class), true);
         });
-        MainActivity activity = (MainActivity) getActivity();
-        activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
-        switchCompat = view.findViewById(R.id.switch_night_mode);
-        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("night_mode", isChecked);
-                editor.apply();
 
-                setNightMode(isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
-
-            }
-        });
-        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        boolean isNightModeEnabled = sharedPreferences.getBoolean("night_mode", false);
-        switchCompat.setChecked(isNightModeEnabled);
 
         return view;
     }
