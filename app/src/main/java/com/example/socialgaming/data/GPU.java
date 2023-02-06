@@ -3,9 +3,10 @@ package com.example.socialgaming.data;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class GPU extends ComponentBase {
+public class GPU extends ComponentBase  implements Serializable {
     private int memory;
     private String clockSpeed;
     private String chipset;

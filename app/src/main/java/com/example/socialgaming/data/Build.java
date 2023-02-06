@@ -6,6 +6,7 @@ import android.net.Uri;
 import com.example.socialgaming.utils.ImageUtils;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-public class Build {
+public class Build implements Serializable {
     private Motherboard board;
     private CPU cpu;
     private List<RAM> rams;

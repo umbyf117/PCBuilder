@@ -5,9 +5,10 @@ import com.example.socialgaming.data.types.MemoryType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class Memory extends ComponentBase {
+public class Memory extends ComponentBase  implements Serializable {
     private String rpm;
     private String cache;
     private MemoryType type;

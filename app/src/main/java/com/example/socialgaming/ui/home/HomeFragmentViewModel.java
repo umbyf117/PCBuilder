@@ -16,8 +16,6 @@ import org.checkerframework.checker.units.qual.A;
 
 public class HomeFragmentViewModel extends ViewModel {
 
-    private static final int BUILD_PER_LOAD = 10;
-
     private BuildRepository buildRepository;
     private AuthRepository authRepository;
     private UserRepository userRepository;

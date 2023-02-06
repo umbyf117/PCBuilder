@@ -81,5 +81,6 @@
     <string name="change_pass">Change Password</string>
     <string name="saveBuild">Save Build</string>
     <string name="psu">Power Supply</string>
+    <string name="buildName">Build Name</string>
 
 </resources>

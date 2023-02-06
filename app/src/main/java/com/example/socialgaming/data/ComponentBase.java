@@ -1,15 +1,18 @@
 package com.example.socialgaming.data;
 
+import android.os.Bundle;
+
 import com.example.socialgaming.data.types.ComponentType;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class ComponentBase {
+public class ComponentBase implements Serializable {
     private String id;
     private String title;
     private String link;

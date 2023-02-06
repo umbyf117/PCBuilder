@@ -5,9 +5,10 @@ import com.example.socialgaming.data.types.RamType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class RAM extends ComponentBase {
+public class RAM extends ComponentBase  implements Serializable {
 
     private int size;
     private int quantity;

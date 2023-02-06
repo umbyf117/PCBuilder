@@ -3,9 +3,10 @@ package com.example.socialgaming.data;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class CPU extends ComponentBase {
+public class CPU extends ComponentBase  implements Serializable {
     private String speed;
     private String socketType;
 

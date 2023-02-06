@@ -1,29 +1,36 @@
 package com.example.socialgaming.ui.Build;
 
+import android.app.Application;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.socialgaming.repository.component.BuildRepository;
+import com.example.socialgaming.repository.user.AuthRepository;
+import com.example.socialgaming.repository.user.UserRepository;
+
 public class BuildViewModel extends ViewModel {
 
-    private final MutableLiveData<String> Text;
-    private String selectedItem;
+    private BuildRepository buildRepository;
+    private AuthRepository authRepository;
+    private UserRepository userRepository;
 
-    public BuildViewModel(){
-        Text = new MutableLiveData<>();
-        Text.setValue("Build Fragment");
+    public BuildViewModel(Application application) {
+        buildRepository = new BuildRepository();
+        authRepository = new AuthRepository(application);
+        userRepository = new UserRepository();
     }
 
-    public LiveData<String> getText(){
-        return Text;
+    //GETTER
+    public BuildRepository getBuildRepository() {
+        return buildRepository;
     }
-
-    public String getSelectedItem(){
-        return selectedItem;
+    public AuthRepository getAuthRepository() {
+        return authRepository;
     }
-
-    public void setSelectedItem(String selectedItem){
-        this.selectedItem = selectedItem;
+    public UserRepository getUserRepository() {
+        return userRepository;
     }
 
 

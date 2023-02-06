@@ -3,30 +3,23 @@ package com.example.socialgaming.view;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 
-import com.example.socialgaming.PcBuilder;
 import com.example.socialgaming.Interfaces.OnCardSelectedListener;
 import com.example.socialgaming.R;
-import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.ui.Build.BuildFragment;
-import com.example.socialgaming.ui.Lists.MotherboardFragment;
 import com.example.socialgaming.ui.Search.SearchFragment;
 import com.example.socialgaming.ui.Settings.SettingsFragment;
 import com.example.socialgaming.ui.home.HomeFragment;
 import com.example.socialgaming.ui.profile.ProfileFragment;
 import com.example.socialgaming.utils.FragmentUtils;
-import com.example.socialgaming.view.auth.LoginFragment;
 import com.example.socialgaming.view.model.MainViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseUser;
 
 

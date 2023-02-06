@@ -3,9 +3,10 @@ package com.example.socialgaming.data;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class PSU extends ComponentBase {
+public class PSU extends ComponentBase  implements Serializable {
 
     private int power;
     private String color;

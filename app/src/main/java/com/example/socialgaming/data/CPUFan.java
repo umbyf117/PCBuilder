@@ -1,8 +1,9 @@
 package com.example.socialgaming.data;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class CPUFan extends ComponentBase {
+public class CPUFan extends ComponentBase  implements Serializable {
     private int rpm;
     private String color;
     private String noiseLevel;

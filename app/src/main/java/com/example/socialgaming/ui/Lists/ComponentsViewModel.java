@@ -2,7 +2,7 @@ package com.example.socialgaming.ui.Lists;
 
 import androidx.lifecycle.ViewModel;
 
-public class MotherboardViewModel extends ViewModel {
+public class ComponentsViewModel extends ViewModel {
     private String selectedItem;
 
     public String getSelectedItem(){

@@ -1,8 +1,9 @@
 package com.example.socialgaming.data;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class Motherboard extends ComponentBase {
+public class Motherboard extends ComponentBase  implements Serializable {
     private String formFactor;
     private String chipset;
     private int memorySlots;
