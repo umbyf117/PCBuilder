@@ -131,7 +131,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         // Crea una nuova istanza di LayoutInflater
         LayoutInflater inflater = LayoutInflater.from(buildList.getContext());
 
-        List<Build> builds = homeViewModel.getBuildRepository().getBuildList(BUILD_PER_LOAD, 0, this);
+        //List<Build> builds = homeViewModel.getBuildRepository().getBuildList(BUILD_PER_LOAD, 0, this);
         if(builds != null)
             for(Build b : builds) {
                 setBuildBubble(inflater, currentView, b);
@@ -208,12 +208,12 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
             });
 
             star.setOnClickListener(v -> {
-                if(user.getFavorite().contains(b)) {
-                    user.getFavorite().remove(b);
+                if(user.getFavorite().contains(b.getUuid().toString())) {
+                    user.getFavorite().remove(b.getUuid().toString());
                     star.setForegroundTintList(BLUE_DARK);
                 }
                 else {
-                    user.getFavorite().add(b);
+                    user.getFavorite().add(b.getUuid().toString());
                     star.setForegroundTintList(GOLD);
                 }
             });
@@ -247,7 +247,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
     }
 
     @Override
-    public void onBuildsReceived(List<DocumentSnapshot> documentsSnapshot) {
+    public void onBuildsReceived(List<DocumentSnapshot> documentsSnapshot, boolean created) {
         if(builds == null)
             builds = new ArrayList<>();
 

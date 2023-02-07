@@ -30,11 +30,12 @@ public class ComponentsFetcher {
 
     private static final String TAG = "ComponentsFetcher";
 
-    private static final String API_KEY = "c7dc647869msh660a01d6bceef08p1a9b40jsn9b99c892994a";
+    private static final String API_KEY = "10d84ab62bmshe4f51c0ed4a14c1p1fb8cajsnbbeed268e594";
     //35ef5df84fmshcae21a2a6092192p1edff1jsn9ddef0c06104
     //fb275a437bmsh9db28c43aebefc4p1ac617jsnb6bd17a71b69
     //c7dc647869msh660a01d6bceef08p1a9b40jsn9b99c892994a
     //0d99187280mshfaaa256149d07a5p196f2bjsnea45598f64ef
+    //10d84ab62bmshe4f51c0ed4a14c1p1fb8cajsnbbeed268e594
 
     public String fetchItems(ComponentType type, int limit, int offset) {
         final ResponseWrapper responseWrapper = new ResponseWrapper();
