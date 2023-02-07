@@ -12,6 +12,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -39,7 +40,11 @@ public class User {
         this(mail, password, username, new ArrayList<>(), new ArrayList<>(), DEFAULT_IMAGE);
     }
 
-    public User() {}
+    public User() {
+        favorite = new ArrayList<>();
+        created = new ArrayList<>();
+        image = DEFAULT_IMAGE;
+    }
 
     public void updateWithDocument(DocumentSnapshot documentSnapshot) {
         Map<String, Object> data = documentSnapshot.getData();

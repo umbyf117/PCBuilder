@@ -23,7 +23,7 @@ public class GPU extends ComponentBase  implements Serializable {
     @Override
     public void setJSONData(JSONObject o) throws JSONException {
         super.setJSONData(o);
-        setMemory(o.getString("memory"));
+        setMemoryFromString(o.getString("memory"));
         this.clockSpeed = o.getString("clockSpeed");
         this.chipset = o.getString("chipset");
     }
@@ -37,7 +37,7 @@ public class GPU extends ComponentBase  implements Serializable {
         return data;
     }
 
-    private void setMemory(String memory) {
+    private void setMemoryFromString(String memory) {
         this.memory = Integer.parseInt(memory.replace(" GB", ""));
     }
 

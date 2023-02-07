@@ -25,17 +25,17 @@ public class RAM extends ComponentBase  implements Serializable {
 
     public RAM(String id, String title, String link, String img, double price, String brand, String model, String size, String quantity, RamType type) {
         super(id, title, link, img, price, brand, model);
-        setSize(size);
-        setQuantity(quantity);
+        setSizeFromString(size);
+        setQuantityFromString(quantity);
         this.type = type;
     }
 
     @Override
     public void setJSONData(JSONObject o) throws JSONException {
         super.setJSONData(o);
-        setSize(o.getString("size"));
-        setQuantity(o.getString("quantity"));
-        setType(o.getString("type"));
+        setSizeFromString(o.getString("size"));
+        setQuantityFromString(o.getString("quantity"));
+        setTypeFromString(o.getString("type"));
     }
 
     @Override
@@ -47,15 +47,15 @@ public class RAM extends ComponentBase  implements Serializable {
         return data;
     }
 
-    private void setSize(String size) {
+    private void setSizeFromString(String size) {
         this.size = Integer.parseInt(size.replace(" GB", ""));
     }
 
-    private void setQuantity(String quantity) {
+    private void setQuantityFromString(String quantity) {
         this.quantity = Integer.parseInt(quantity.substring(0, quantity.indexOf(" x ")));
     }
 
-    private void setType(String type) {
+    private void setTypeFromString(String type) {
         if(type.equalsIgnoreCase("DDR3"))
             this.type = RamType.DDR3;
         else if(type.equalsIgnoreCase("DDR4"))

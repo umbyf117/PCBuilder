@@ -36,7 +36,7 @@ import com.example.socialgaming.utils.BuildUtils;
 import com.example.socialgaming.utils.ImageUtils;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-public class ComponentsFragment extends Fragment implements IComponentCallback {
+public class ComponentsFragment extends Fragment {
 
     private static final int PX_VALUE = 400;
 
@@ -56,7 +56,7 @@ public class ComponentsFragment extends Fragment implements IComponentCallback {
 
         viewModel = new ViewModelProvider(this).get(ComponentsViewModel.class);
 
-        if(getArguments() != null) {
+        if (getArguments() != null) {
             type = (ComponentType) getArguments().getSerializable("type");
             build = (Build) getArguments().getSerializable("build");
             mode = getArguments().getInt("mode");
@@ -95,7 +95,7 @@ public class ComponentsFragment extends Fragment implements IComponentCallback {
     }
 
     public void setComponents(String json) {
-        if(json == null || json.isEmpty())
+        if (json == null || json.isEmpty())
             components = new ComponentBase[0];
         else {
             components = BuildUtils.getComponents(json, type);
@@ -106,8 +106,8 @@ public class ComponentsFragment extends Fragment implements IComponentCallback {
 
         LayoutInflater inflater = LayoutInflater.from(containerComponents.getContext());
 
-        if(components != null)
-            for(int i = 0; i < components.length; i++) {
+        if (components != null)
+            for (int i = 0; i < components.length; i++) {
                 setupCardView(components[i], inflater);
             }
 
@@ -115,16 +115,16 @@ public class ComponentsFragment extends Fragment implements IComponentCallback {
 
     public void setupCardView(ComponentBase component, LayoutInflater inflater) {
 
-        if(component == null) {
+        if (component == null) {
             return;
         }
 
         ComponentType type = ComponentBase.getComponentType(component);
 
-        if(type == ComponentType.CPU && !build.getBoard().compatibleCPU(((CPU)component)))
+        if (type == ComponentType.CPU && !build.getBoard().compatibleCPU(((CPU) component)))
             return;
 
-        if(type == ComponentType.CASE && !build.getBoard().compatibleCase((Case) component))
+        if (type == ComponentType.CASE && !build.getBoard().compatibleCase((Case) component))
             return;
 
 
@@ -153,31 +153,26 @@ public class ComponentsFragment extends Fragment implements IComponentCallback {
 
         templateView.setOnClickListener(view -> {
 
-            if(type == ComponentType.RAM) {
+            if (type == ComponentType.RAM) {
                 RAM ram = (RAM) component;
-                if(!title.getTextColors().equals(HomeFragment.GOLD)) {
-                    if(build.canAddRam(ram)) {
+                if (!title.getTextColors().equals(HomeFragment.GOLD)) {
+                    if (build.canAddRam(ram)) {
                         build.addRam(ram);
                         title.setTextColor(HomeFragment.GOLD);
                     }
-                }
-                else {
+                } else {
                     title.setTextColor(ProfileFragment.TEXT_LIGHT);
                     build.removeRam(ram);
                 }
-            }
-
-            else if (type == ComponentType.MEMORY) {
-                if(!title.getTextColors().equals(HomeFragment.GOLD)) {
+            } else if (type == ComponentType.MEMORY) {
+                if (!title.getTextColors().equals(HomeFragment.GOLD)) {
                     title.setTextColor(HomeFragment.GOLD);
                     build.addComponent(component, type);
-                }
-                else {
+                } else {
                     title.setTextColor(ProfileFragment.TEXT_LIGHT);
                     build.removeComponent(component, type);
                 }
-            }
-            else {
+            } else {
                 if (!title.getTextColors().equals(HomeFragment.GOLD)) {
                     title.setTextColor(HomeFragment.GOLD);
                     ComponentBase c = build.getComponent(type);
@@ -201,33 +196,4 @@ public class ComponentsFragment extends Fragment implements IComponentCallback {
 
     }
 
-    /*public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (context instanceof OnCardSelectedListener) {
-            listener = (OnCardSelectedListener) context;
-        } else {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnCardSelectedListener");
-        }
-
-    }*/
-
-    public void onDetach(){
-        super.onDetach();
-        listener = null;
-    }
-
-    public void setOnCardSelectedListener(OnCardSelectedListener listener){
-        this.listener = listener;
-    }
-
-    @Override
-    public void onBuildReceived(String result) {
-        if(result == null) {
-            Log.e("[CallBack]", "Data not retived");
-            return;
-        }
-
-    }
 }

@@ -64,6 +64,9 @@ public class BuildFragment extends Fragment implements IUserCallback {
         if(getArguments() != null) {
             build = (Build) getArguments().getSerializable("build");
             AppCompatDelegate.setDefaultNightMode(getArguments().getInt("mode"));
+            for(Fragment f : this.getActivity().getSupportFragmentManager().getFragments())
+                if(!this.equals(f))
+                    this.getActivity().getSupportFragmentManager().beginTransaction().remove(f);
         }
         else {
             MainActivity activity = (MainActivity) getActivity();
@@ -73,22 +76,22 @@ public class BuildFragment extends Fragment implements IUserCallback {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         container.removeAllViews();
-        View view = inflater.inflate(R.layout.fragment_build, container, false);
+        currentView = inflater.inflate(R.layout.fragment_build, container, false);
         buildViewModel = new BuildViewModel(this.getActivity().getApplication());
 
         user = new User();
         buildViewModel.getUserRepository().getUserData(
                 buildViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName(), this);
 
-        buildName = view.findViewById(R.id.editTxtBuildName);
-        image = view.findViewById(R.id.imageView);
+        buildName = currentView.findViewById(R.id.editTxtBuildName);
+        image = currentView.findViewById(R.id.imageView);
         image.setBorderWidth(0);
         image.setOnClickListener(listener ->{
             Intent pickImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST_CODE);
         });
 
-        startCardViews(view);
+        startCardViews(currentView);
 
         if(build == null)
             build = new Build();
@@ -103,25 +106,22 @@ public class BuildFragment extends Fragment implements IUserCallback {
 
         setCardviewsListeners();
 
-        saveBuild = view.findViewById(R.id.saveBuild);
+        saveBuild = currentView.findViewById(R.id.saveBuild);
         saveBuild.setOnClickListener(v -> {
             if(build.getImage() == null && User.DEFAULT_IMAGE != null) {
                 build.setImage(User.DEFAULT_IMAGE);
             }
-            build.setCreator(user);
+            build.setCreator(user.getUsername());
             if(build.isFinished()) {
                 user.addBuild(build);
-                buildViewModel.getBuildRepository().setBuild(build);
+                buildViewModel.getBuildRepository().setBuild(build, user, buildViewModel.getUserRepository());
+
             }
             else {
                 Toast.makeText(getActivity().getApplicationContext(),
                         "You have to complete your build!", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
-        currentView = view;
 
         return currentView;
     }
@@ -182,6 +182,9 @@ public class BuildFragment extends Fragment implements IUserCallback {
         ComponentsFragment componentFragment = new ComponentsFragment();
         componentFragment.setArguments(bundle);
 
+        currentView.setFocusable(false);
+        currentView.setClickable(false);
+
         FragmentTransaction fragmentTransaction =
                 this.getActivity().getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.buildView, componentFragment);
@@ -204,6 +207,11 @@ public class BuildFragment extends Fragment implements IUserCallback {
             text.setText(build.getCpu().getBrand() + " " + build.getCpu().getModel());
         }
 
+        if(build.getRams().size() != 0) {
+            TextView text = cardviews[2].findViewById(R.id.ram);
+            text.setText("RAM Memory = " + build.getRam() + " GB");
+        }
+
         if(build.getFan() != null) {
             TextView text = cardviews[3].findViewById(R.id.cpuFan);
             text.setText(build.getFan().getBrand() + " " + build.getFan().getModel());
@@ -211,7 +219,12 @@ public class BuildFragment extends Fragment implements IUserCallback {
 
         if(build.getGpu() != null) {
             TextView text = cardviews[4].findViewById(R.id.gpu);
-            text.setText(build.getFan().getBrand() + " " + build.getFan().getModel());
+            text.setText(build.getGpu().getBrand() + " " + build.getGpu().getModel());
+        }
+
+        if(build.getHarddisks().size() != 0) {
+            TextView text = cardviews[5].findViewById(R.id.harddisk);
+            text.setText("HD Memory = " + build.getMemory() + " GB");
         }
 
         if(build.getPsu() != null) {
@@ -224,15 +237,6 @@ public class BuildFragment extends Fragment implements IUserCallback {
             text.setText(build.getHouse().getBrand() + " " + build.getHouse().getModel());
         }
 
-        if(build.getRams().size() != 0) {
-            TextView text = cardviews[2].findViewById(R.id.ram);
-            text.setText("RAM Memory = " + build.getRam() + " GB");
-        }
-
-        if(build.getHarddisks().size() != 0) {
-            TextView text = cardviews[5].findViewById(R.id.harddisk);
-            text.setText("HD Memory = " + build.getMemory() + " GB");
-        }
     }
 
     @Override

@@ -27,7 +27,7 @@ public class Memory extends ComponentBase  implements Serializable {
         super.setJSONData(o);
         this.rpm = o.getString("rpm");
         this.cache = o.getString("cacheMemory");
-        setType(o.getString("MemoryType"));
+        setTypeFromString(o.getString("MemoryType"));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class Memory extends ComponentBase  implements Serializable {
         return data;
     }
 
-    private void setType(String type) {
+    private void setTypeFromString(String type) {
         if(type.equalsIgnoreCase("SSD"))
             this.type = MemoryType.SSD;
         else if (type.equalsIgnoreCase("HDD"))
@@ -48,9 +48,9 @@ public class Memory extends ComponentBase  implements Serializable {
 
     public int getGBRpm() {
         if(rpm.indexOf("TB") != -1) {
-            return Integer.parseInt(rpm.substring(0, rpm.indexOf(" "))) * 1000;
+            return Integer.parseInt(rpm.substring(0, rpm.indexOf("TB") - 1)) * 1000;
         }
-        return Integer.parseInt(rpm.substring(0, rpm.indexOf(" ")));
+        return Integer.parseInt(rpm.substring(0, rpm.indexOf("GB") - 1));
     }
 
     public String getRpm() {

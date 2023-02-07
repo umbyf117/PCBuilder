@@ -8,9 +8,18 @@ import androidx.annotation.Nullable;
 
 import com.example.socialgaming.data.types.ComponentType;
 import com.example.socialgaming.data.types.MemoryType;
+import com.example.socialgaming.utils.BuildUtils;
 import com.example.socialgaming.utils.ImageUtils;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,6 +31,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.zip.GZIPInputStream;
 
 public class Build implements Serializable {
     private Motherboard board;
@@ -33,14 +43,14 @@ public class Build implements Serializable {
     private CPUFan fan;
     private PSU psu;
 
-    private User creator;
-    private Set<String> like, dislike;
+    private String creator;
+    private List<String> like, dislike;
     private UUID uuid;
 
     private Bitmap image;
     private String name;
 
-    public Build(Motherboard board, CPU cpu, List<RAM> rams, List<Memory> harddisks, GPU gpu, Case house, CPUFan fan, PSU psu, User creator, Set<String> like, Set<String> dislike, UUID uuid, String name, Bitmap uri) {
+    public Build(Motherboard board, CPU cpu, List<RAM> rams, List<Memory> harddisks, GPU gpu, Case house, CPUFan fan, PSU psu, String creator, List<String> like, List<String> dislike, UUID uuid, String name, Bitmap uri) {
         setBoard(board);
         setCpu(cpu);
         setRams(rams);
@@ -57,15 +67,16 @@ public class Build implements Serializable {
         this.image = uri;
     }
 
-    public Build(Motherboard board, CPU cpu, List<RAM> rams, List<Memory> harddisks, GPU gpu, Case house, CPUFan fan, PSU psu, User creator, String name, Bitmap image) {
-        this(board, cpu, rams, harddisks, gpu, house, fan, psu, creator, new HashSet<>(), new HashSet<>(), UUID.randomUUID(), name, image);
+    public Build(Motherboard board, CPU cpu, List<RAM> rams, List<Memory> harddisks, GPU gpu, Case house, CPUFan fan, PSU psu, String creator, String name, Bitmap image) {
+        this(board, cpu, rams, harddisks, gpu, house, fan, psu, creator, new ArrayList<>(), new ArrayList<>(), UUID.randomUUID(), name, image);
     }
 
     public Build() {
         rams = new ArrayList<>();
         harddisks = new ArrayList<>();
-        like = new HashSet<>();
-        dislike = new HashSet<>();
+        like = new ArrayList<>();
+        dislike = new ArrayList<>();
+        this.uuid = UUID.randomUUID();
     }
 
     public void updateWithDocument(DocumentSnapshot documentSnapshot) {
@@ -78,12 +89,12 @@ public class Build implements Serializable {
         this.house = (Case) data.get("case");
         this.fan = (CPUFan) data.get("fan");
         this.psu = (PSU) data.get("psu");
-        this.creator = (User) data.get("creator");
-        this.like = (Set<String>) data.get("like");
-        this.dislike = (Set<String>) data.get("dislike");
+        this.creator = (String) data.get("creator");
+        this.like = (List<String>) data.get("like");
+        this.dislike = (List<String>) data.get("dislike");
         this.uuid = (UUID) data.get("uuid");
         this.name = (String) data.get("name");
-        this.image = ImageUtils.decodeByteArrayToBitmap(ImageUtils.decodeListToArray((List<Long>) data.get("uri")));
+        this.image = ImageUtils.decodeByteArrayToBitmap(ImageUtils.decodeListToArray((List<Long>) data.get("image")));
     }
 
     @Override
@@ -140,8 +151,31 @@ public class Build implements Serializable {
         data.put("dislike", dislike);
         data.put("uuid", uuid);
         data.put("name", name);
-        data.put("uri", ImageUtils.encodeArrayToList(ImageUtils.encodeBitmapToByteArray(image)));
+        data.put("image", ImageUtils.encodeArrayToList(ImageUtils.encodeBitmapToByteArray(image)));
         return data;
+    }
+
+
+    public JSONObject getJson() {
+        return new JSONObject(this.getMap());
+    }
+
+    public Map<String, Object> decompressJSON(byte[] compressedBytes) throws IOException, JSONException {
+        ByteArrayInputStream bais = new ByteArrayInputStream(compressedBytes);
+        GZIPInputStream gzis = new GZIPInputStream(bais);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(gzis));
+        StringBuilder out = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            out.append(line);
+        }
+        reader.close();
+        gzis.close();
+        bais.close();
+
+        JSONObject jsonobj = new JSONObject(out.toString());
+
+        return BuildUtils.toMap(jsonobj);
     }
 
     public boolean isFinished() {
@@ -366,7 +400,10 @@ public class Build implements Serializable {
     }
 
     public int getMemory() {
-        return getHDDMemory() + getSSDMemory();
+        int size = 0;
+        for(Memory m : harddisks)
+            size = size + m.getGBRpm();
+        return size;
     }
 
     public boolean removeMemory(Memory memory) {
@@ -445,22 +482,22 @@ public class Build implements Serializable {
     public void setPsu(PSU psu) {
         this.psu = psu;
     }
-    public User getCreator() {
+    public String getCreator() {
         return creator;
     }
-    public void setCreator(User creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
-    public Set<String> getLike() {
+    public List<String> getLike() {
         return like;
     }
-    public void setLike(Set<String> like) {
+    public void setLike(List<String> like) {
         this.like = like;
     }
-    public Set<String> getDislike() {
+    public List<String> getDislike() {
         return dislike;
     }
-    public void setDislike(Set<String> dislike) {
+    public void setDislike(List<String> dislike) {
         this.dislike = dislike;
     }
     public UUID getUuid() {

@@ -30,37 +30,11 @@ public class ComponentsFetcher {
 
     private static final String TAG = "ComponentsFetcher";
 
-    private static final String API_KEY = "fb275a437bmsh9db28c43aebefc4p1ac617jsnb6bd17a71b69";
-
-    /*public byte[] getUrlBytes(String urlSpec) throws IOException{
-        URL url = new URL(urlSpec);
-        HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            InputStream in = connection.getInputStream();
-
-            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                throw new IOException(connection.getResponseMessage() +
-                        ": with " +
-                        urlSpec);
-            }
-
-            int bytesRead = 0;
-            byte[] buffer = new byte[1024];
-            while ((bytesRead = in.read(buffer)) > 0) {
-                out.write(buffer, 0, bytesRead);
-            }
-            out.close();
-            return out.toByteArray();
-        } finally {
-            connection.disconnect();
-        }
-    }
-
-    public String getURLString(String urlSpec) throws IOException {
-        return new String(getUrlBytes(urlSpec));
-    }*/
+    private static final String API_KEY = "0d99187280mshfaaa256149d07a5p196f2bjsnea45598f64ef";
+    //35ef5df84fmshcae21a2a6092192p1edff1jsn9ddef0c06104
+    //fb275a437bmsh9db28c43aebefc4p1ac617jsnb6bd17a71b69
+    //c7dc647869msh660a01d6bceef08p1a9b40jsn9b99c892994a
+    //0d99187280mshfaaa256149d07a5p196f2bjsnea45598f64ef
 
     public String fetchItems(ComponentType type, int limit, int offset) {
         final ResponseWrapper responseWrapper = new ResponseWrapper();
@@ -73,7 +47,7 @@ public class ComponentsFetcher {
             Request request = new Request.Builder()
                     .url("https://computer-components-api.p.rapidapi.com/" + BuildUtils.getUrl(type) + "?limit=" + limit + "&offset=" + offset)
                     .get()
-                    .addHeader("X-RapidAPI-Key", "fb275a437bmsh9db28c43aebefc4p1ac617jsnb6bd17a71b69")
+                    .addHeader("X-RapidAPI-Key", API_KEY)
                     .addHeader("X-RapidAPI-Host", "computer-components-api.p.rapidapi.com")
                     .build();
 
@@ -86,11 +60,12 @@ public class ComponentsFetcher {
 
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                       if (response.isSuccessful()) {
-                           ResponseBody responseBody = response.body();
-                           responseWrapper.response = responseBody.string();
-                       }
-                       latch.countDown();
+                    if (response.isSuccessful()) {
+                        ResponseBody responseBody = response.body();
+                        responseWrapper.response = responseBody.string();
+                    }
+                    latch.countDown();
+                    response.close();
                 }
             });
 

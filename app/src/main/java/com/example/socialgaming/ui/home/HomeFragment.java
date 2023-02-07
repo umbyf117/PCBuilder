@@ -137,12 +137,12 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         name.setText(b.getName());
 
         TextView creator = templateView.findViewById(R.id.creator);
-        creator.setText(b.getCreator().getUsername());
+        creator.setText(b.getCreator());
 
         TextView rate = templateView.findViewById(R.id.value);
         rate.setText(b.getValue() + "");
 
-        if(b.getCreator().getUsername().equals(user.getUsername())) {
+        if(b.getCreator().equals(user.getUsername())) {
             ImageView save = templateView.findViewById(R.id.saveBuild);
             save.setVisibility(View.INVISIBLE);
             save.setClickable(false);
