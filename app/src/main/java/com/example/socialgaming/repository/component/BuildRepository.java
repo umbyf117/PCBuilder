@@ -1,45 +1,22 @@
 package com.example.socialgaming.repository.component;
 
-import static android.content.ContentValues.TAG;
-
-import android.app.Application;
-import android.net.Uri;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.example.socialgaming.data.Build;
-import com.example.socialgaming.data.CPU;
-import com.example.socialgaming.data.CPUFan;
-import com.example.socialgaming.data.Case;
-import com.example.socialgaming.data.GPU;
-import com.example.socialgaming.data.Memory;
-import com.example.socialgaming.data.Motherboard;
-import com.example.socialgaming.data.PSU;
-import com.example.socialgaming.data.RAM;
+import com.example.socialgaming.data.BuildFirestore;
 import com.example.socialgaming.data.User;
-import com.example.socialgaming.data.types.ComponentType;
 import com.example.socialgaming.repository.callbacks.IBuildCallback;
 import com.example.socialgaming.repository.user.UserRepository;
-import com.example.socialgaming.view.MainActivity;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 public class BuildRepository {
@@ -66,17 +43,27 @@ public class BuildRepository {
      * @return true - viene aggiunta con successo
      * @return false - se non viene aggiunta
      */
-    public boolean setBuild(Build build) {
+    public boolean setBuild(BuildFirestore build, User user, UserRepository repo) {
 
-        Map<String, Object> upload = build.getMap();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-        firestore.collection("/" + BUILD_COLLECTION).add(upload)
-                .addOnSuccessListener(documentReference -> {
-                    Log.d("TAG", "Document written with ID: " + documentReference.getId());
-                })
-                .addOnFailureListener(e -> {
-                    Log.w("TAG", "Error adding document", e);
-                });
+                Map<String, Object> map = build.getAttributeMap();
+
+                firestore.collection("/" + BUILD_COLLECTION).document(build.getUuid().toString())
+                        .set(map)
+                        .addOnSuccessListener(documentReference -> {
+                            Log.d("TAG", "Document written with ID: " + build.getUuid());
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.w("TAG", "Error adding document", e);
+                        });
+
+                repo.updateUserBuilds(user);
+
+            }
+        }).run();
 
         return true;
     }
@@ -98,25 +85,37 @@ public class BuildRepository {
 
     }
 
-    public List<Build> getBuildList(int limit, int offset, IBuildCallback callback) {
+    public void getBuildList(int limit, int offset, IBuildCallback callback) {
 
         firestore.collection("/" + BUILD_COLLECTION)
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .limit(limit + offset)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots ->
-                        callback.onBuildsReceived(queryDocumentSnapshots.getDocuments()));
-
-        if(buildList == null)
-            return null;
-
-        if(buildList.size() < offset)
-            return null;
-
-        return buildList.subList(offset, buildList.size());
+                        callback.onBuildsReceived(queryDocumentSnapshots.getDocuments(), false));
     }
 
-    public void deleteBuild(Build b) {
+    public void getUserBuilds(List<String> uuids, IBuildCallback callback, boolean created) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                List<DocumentSnapshot> documents = new ArrayList<>();
+
+                for(String uuid : uuids) {
+                    documentReference = firestore.collection(BUILD_COLLECTION).document("/" + uuid.toString());
+                    documentReference.get()
+                            .addOnSuccessListener(documentSnapshot -> documents.add(documentSnapshot));
+                }
+
+                if(documents.size() != 0)
+                    callback.onBuildsReceived(documents, created);
+
+            }
+        }).run();
+    }
+
+    public void deleteBuild(BuildFirestore b) {
         firestore.collection("/" + BUILD_COLLECTION).document("/" + b.getUuid()).delete();
     }
 

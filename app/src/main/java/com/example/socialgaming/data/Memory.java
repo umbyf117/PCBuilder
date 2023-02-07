@@ -27,7 +27,7 @@ public class Memory extends ComponentBase  implements Serializable {
         super.setJSONData(o);
         this.rpm = o.getString("rpm");
         this.cache = o.getString("cacheMemory");
-        setTypeFromString(o.getString("MemoryType"));
+        setTypeFromString(o.getString("type"));
     }
 
     @Override
@@ -35,14 +35,14 @@ public class Memory extends ComponentBase  implements Serializable {
         Map<String, Object> data = super.getMap();
         data.put("rpm", rpm);
         data.put("cache", cache);
-        data.put("MemoryType", type);
+        data.put("type", type);
         return data;
     }
 
     private void setTypeFromString(String type) {
-        if(type.equalsIgnoreCase("SSD"))
+        if(type.indexOf("SSD") != -1)
             this.type = MemoryType.SSD;
-        else if (type.equalsIgnoreCase("HDD"))
+        else
             this.type = MemoryType.HDD;
     }
 

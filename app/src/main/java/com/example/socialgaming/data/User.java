@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 public class User {
     public static Bitmap DEFAULT_IMAGE;
@@ -23,11 +24,11 @@ public class User {
     private String mail;
     private String password;
     private String username;
-    private List<Build> favorite;
-    private List<Build> created;
+    private List<String> favorite;
+    private List<String> created;
     private Bitmap image;
 
-    public User(String mail, String password, String username, List<Build> favorite, List<Build> created, Bitmap image) {
+    public User(String mail, String password, String username, List<String> favorite, List<String> created, Bitmap image) {
         this.mail = mail;
         this.password = password;
         this.username = username;
@@ -51,8 +52,14 @@ public class User {
         this.mail = (String) data.get("mail");
         this.password = (String) data.get("password");
         this.username = (String) data.get("username");
-        this.favorite = (List<Build>) data.get("favorite");
-        this.created = (List<Build>) data.get("created");
+        if(data.get("favorite") instanceof Map)
+            this.favorite = new ArrayList<>(((Map<String, String>)data.get("favorite")).values());
+        else
+            this.favorite = (List<String>) data.get("favorite");
+        if(data.get("created") instanceof Map)
+            this.created = new ArrayList<>(((Map<String, String>)data.get("created")).values());
+        else
+            this.created = (List<String>) data.get("created");
         List<Long> byteList = ((List<Long>)data.get("image"));
         byte[] byteArray = ImageUtils.decodeListToArray(byteList);
         this.image = ImageUtils.decodeByteArrayToBitmap(byteArray);
@@ -71,31 +78,35 @@ public class User {
         return Objects.hash(mail, password, username, favorite, created, image);
     }
 
-    public boolean addFavoriteBuild(Build build) {
-        if(favorite.contains(build))
+    public boolean addFavoriteBuild(BuildFirestore build) {
+        String uuid = build.getUuid().toString();
+        if(favorite.contains(uuid))
             return false;
-        favorite.add(build);
+        favorite.add(uuid);
         return true;
     }
 
-    public boolean addBuild(Build build) {
-        if(created.contains(build))
+    public boolean addBuild(BuildFirestore build) {
+        String uuid = build.getUuid().toString();
+        if(created.contains(uuid))
             return false;
-        created.add(build);
+        created.add(uuid);
         return true;
     }
 
-    public boolean removeFavoriteBuild(Build build) {
-        if(favorite.contains(build)) {
-            favorite.remove(build);
+    public boolean removeFavoriteBuild(BuildFirestore build) {
+        String uuid = build.getUuid().toString();
+        if(favorite.contains(uuid)) {
+            favorite.remove(uuid);
             return true;
         }
         return false;
     }
 
-    public boolean removeBuild(Build build) {
-        if(created.contains(build)) {
-            created.remove(build);
+    public boolean removeBuild(BuildFirestore build) {
+        String uuid = build.getUuid().toString();
+        if(created.contains(uuid)) {
+            created.remove(uuid);
             return true;
         }
         return false;
@@ -120,21 +131,22 @@ public class User {
         return -1;
     }
 
+    /*
     /**
      * @return - User value based on all his build
-     */
+     *
     public double getUserValue() {
 
         if(created.size() == 0)
             return 0.0;
 
         int value = 0;
-        for(Build b : created)
+        for(BuildFirestore b : created)
             value = (int) (value + b.getValue() * 10);
         value = value / (created.size());
         return value / 10.0;
 
-    }
+    }*/
 
     public String getMail() {
         return mail;
@@ -154,16 +166,16 @@ public class User {
     public void setUsername(String username) {
         this.username = username;
     }
-    public List<Build> getFavorite() {
+    public List<String> getFavorite() {
         return favorite;
     }
-    public void setFavorite(List<Build> favorite) {
+    public void setFavorite(List<String> favorite) {
         this.favorite = favorite;
     }
-    public List<Build> getCreated() {
+    public List<String> getCreated() {
         return created;
     }
-    public void setCreated(List<Build> created) {
+    public void setCreated(List<String> created) {
         this.created = created;
     }
     public Bitmap getImage() {

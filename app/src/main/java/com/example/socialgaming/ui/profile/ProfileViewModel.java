@@ -14,10 +14,12 @@ public class ProfileViewModel extends ViewModel {
 
     private AuthRepository authRepository;
     private UserRepository userRepository;
+    private BuildRepository buildRepository;
 
     public ProfileViewModel(Application application) {
         authRepository = new AuthRepository(application);
         userRepository = new UserRepository();
+        buildRepository = new BuildRepository();
     }
 
     //GETTER
@@ -26,5 +28,8 @@ public class ProfileViewModel extends ViewModel {
     }
     public UserRepository getUserRepository() {
         return userRepository;
+    }
+    public BuildRepository getBuildRepository() {
+        return buildRepository;
     }
 }

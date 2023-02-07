@@ -1,47 +1,26 @@
 package com.example.socialgaming.ui.home;
 
-import static android.app.Activity.RESULT_OK;
-
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.socialgaming.R;
 import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.User;
-import com.example.socialgaming.databinding.FragmentHomeBinding;
 import com.example.socialgaming.repository.callbacks.IBuildCallback;
 import com.example.socialgaming.repository.callbacks.IUserCallback;
-import com.example.socialgaming.repository.component.BuildRepository;
-import com.example.socialgaming.repository.user.AuthRepository;
-import com.example.socialgaming.view.MainActivity;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,12 +93,6 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         // Crea una nuova istanza di LayoutInflater
         LayoutInflater inflater = LayoutInflater.from(buildList.getContext());
 
-        List<Build> builds = homeViewModel.getBuildRepository().getBuildList(BUILD_PER_LOAD, 0, this);
-        if(builds != null)
-            for(Build b : builds) {
-                setBuildBubble(inflater, currentView, b);
-            }
-
     }
 
     public void setBuildBubble(LayoutInflater inflater, View view, Build b) {
@@ -165,7 +138,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
                 like.setForegroundTintList(GREEN);
             else if (b.getDislike().contains(user.getUsername()))
                 dislike.setForegroundTintList(RED);
-            if (user.getFavorite().contains(b))
+            if (user.getFavorite().contains(b.getUuid().toString()))
                 star.setForegroundTintList(GOLD);
 
             like.setOnClickListener(v -> {
@@ -191,12 +164,12 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
             });
 
             star.setOnClickListener(v -> {
-                if(user.getFavorite().contains(b)) {
-                    user.getFavorite().remove(b);
+                if(user.getFavorite().contains(b.getUuid().toString())) {
+                    user.getFavorite().remove(b.getUuid().toString());
                     star.setForegroundTintList(BLUE_DARK);
                 }
                 else {
-                    user.getFavorite().add(b);
+                    user.getFavorite().add(b.getUuid().toString());
                     star.setForegroundTintList(GOLD);
                 }
             });
@@ -230,7 +203,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
     }
 
     @Override
-    public void onBuildsReceived(List<DocumentSnapshot> documentsSnapshot) {
+    public void onBuildsReceived(List<DocumentSnapshot> documentsSnapshot, boolean created) {
         if(builds == null)
             builds = new ArrayList<>();
 

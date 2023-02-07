@@ -26,6 +26,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.socialgaming.R;
 import com.example.socialgaming.data.Build;
+import com.example.socialgaming.data.BuildFirestore;
 import com.example.socialgaming.data.ComponentBase;
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.data.types.ComponentType;
@@ -113,8 +114,8 @@ public class BuildFragment extends Fragment implements IUserCallback {
             }
             build.setCreator(user.getUsername());
             if(build.isFinished()) {
-                user.addBuild(build);
-                buildViewModel.getBuildRepository().setBuild(build, user, buildViewModel.getUserRepository());
+                user.addBuild(new BuildFirestore(build));
+                buildViewModel.getBuildRepository().setBuild(new BuildFirestore(build), user, buildViewModel.getUserRepository());
 
             }
             else {

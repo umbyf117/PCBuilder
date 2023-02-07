@@ -1,6 +1,5 @@
 package com.example.socialgaming.ui.profile;
 
-import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -20,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.socialgaming.R;
 import com.example.socialgaming.data.Build;
+import com.example.socialgaming.data.BuildFirestore;
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.repository.callbacks.IBuildCallback;
 import com.example.socialgaming.repository.callbacks.IUserCallback;
@@ -31,9 +30,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
-public class ProfileFragment extends Fragment implements IUserCallback {
+public class ProfileFragment extends Fragment implements IUserCallback, IBuildCallback {
 
     public static final ColorStateList BACKGROUND_LIGHT = ColorStateList.valueOf(Color.parseColor("#F4F4F4"));
     public static final ColorStateList TEXT_LIGHT = ColorStateList.valueOf(Color.parseColor("#252525"));
@@ -43,6 +41,8 @@ public class ProfileFragment extends Fragment implements IUserCallback {
     private User user;
     private ProfileViewModel profileViewModel;
     private View view;
+    List<BuildFirestore> created;
+    List<BuildFirestore> favorite;
 
     private Button createdBuild;
     private Button favoriteBuild;
@@ -50,7 +50,7 @@ public class ProfileFragment extends Fragment implements IUserCallback {
     private LinearLayout favoriteBuildLayout;
     private LinearLayout containerBuilds;
 
-    private boolean created;
+    private boolean createdPanel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,7 +74,7 @@ public class ProfileFragment extends Fragment implements IUserCallback {
         favoriteBuild = view.findViewById(R.id.favoriteBuildButton);
         createdBuildLayout = view.findViewById(R.id.createdBuildBackground);
         favoriteBuildLayout = view.findViewById(R.id.favoriteBuildBackground);
-        created = true;
+        createdPanel = true;
 
         containerBuilds = view.findViewById(R.id.containerBuilds);
 
@@ -99,7 +99,7 @@ public class ProfileFragment extends Fragment implements IUserCallback {
                 LinearLayout cardBubbleLayout = childLayout.findViewById(R.id.bubble_left);
                 View cardBubble = LayoutInflater.from(childLayout.getContext()).inflate(R.layout.card_bubble, cardBubbleLayout, false);
 
-                cardBubble = getCreatedBuildView(user.getCreated().get(i), cardBubble);
+                cardBubble = getCreatedBuildView(created.get(i), cardBubble);
 
                 cardBubbleLayout.addView(cardBubble);
             }
@@ -107,7 +107,7 @@ public class ProfileFragment extends Fragment implements IUserCallback {
                 LinearLayout cardBubbleLayout = childLayout.findViewById(R.id.bubble_right);
                 View cardBubble = LayoutInflater.from(childLayout.getContext()).inflate(R.layout.card_bubble, cardBubbleLayout, false);
 
-                cardBubble = getCreatedBuildView(user.getCreated().get(i), cardBubble);
+                cardBubble = getCreatedBuildView(created.get(i), cardBubble);
 
                 cardBubbleLayout.addView(cardBubble);
                 containerBuilds.addView(childLayout);
@@ -119,7 +119,7 @@ public class ProfileFragment extends Fragment implements IUserCallback {
 
 
     }
-    private View getCreatedBuildView(Build b, View v) {
+    private View getCreatedBuildView(BuildFirestore b, View v) {
         ImageView buildImage = v.findViewById(R.id.imageBuild);
         buildImage.setImageBitmap(b.getImage());
         TextView buildName = v.findViewById(R.id.nameBuild);
@@ -133,9 +133,10 @@ public class ProfileFragment extends Fragment implements IUserCallback {
         delete.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
             builder.setMessage("Are you sure you want to delete this build?")
-                    .setPositiveButton("Yes", (dialog, id) ->
-                            user.getCreated().remove(b)
-                    )
+                    .setPositiveButton("Yes", (dialog, id) -> {
+                            user.getCreated().remove(b.getUuid());
+                            created.remove(b);
+                    })
                     .setNegativeButton("No", (dialog, id) -> {
                     });
             AlertDialog alert = builder.create();
@@ -154,7 +155,7 @@ public class ProfileFragment extends Fragment implements IUserCallback {
                 LinearLayout cardBubbleLayout = childLayout.findViewById(R.id.bubble_left);
                 View cardBubble = LayoutInflater.from(childLayout.getContext()).inflate(R.layout.card_bubble, cardBubbleLayout, false);
 
-                cardBubble = getFavoriteBuildView(user.getFavorite().get(i), cardBubble);
+                cardBubble = getFavoriteBuildView(favorite.get(i), cardBubble);
 
                 cardBubbleLayout.addView(cardBubble);
             }
@@ -162,7 +163,7 @@ public class ProfileFragment extends Fragment implements IUserCallback {
                 LinearLayout cardBubbleLayout = childLayout.findViewById(R.id.bubble_right);
                 View cardBubble = LayoutInflater.from(childLayout.getContext()).inflate(R.layout.card_bubble, cardBubbleLayout, false);
 
-                cardBubble = getFavoriteBuildView(user.getFavorite().get(i), cardBubble);
+                cardBubble = getFavoriteBuildView(favorite.get(i), cardBubble);
 
                 cardBubbleLayout.addView(cardBubble);
                 containerBuilds.addView(childLayout);
@@ -174,7 +175,7 @@ public class ProfileFragment extends Fragment implements IUserCallback {
 
 
     }
-    private View getFavoriteBuildView(Build b, View v) {
+    private View getFavoriteBuildView(BuildFirestore b, View v) {
         ImageView buildImage = v.findViewById(R.id.imageBuild);
         buildImage.setImageBitmap(b.getImage());
         TextView buildName = v.findViewById(R.id.nameBuild);
@@ -185,13 +186,13 @@ public class ProfileFragment extends Fragment implements IUserCallback {
         ImageView star = v.findViewById(R.id.saveBuild);
         star.setOnClickListener(view -> {
 
-            if(user.getFavorite().contains(b)) {
-                user.getFavorite().remove(b);
+            if(user.getFavorite().contains(b.getUuid().toString())) {
+                user.getFavorite().remove(b.getUuid().toString());
                 star.setForegroundTintList(HomeFragment.BLUE_DARK);
             }
 
             else {
-                user.getFavorite().add(b);
+                user.getFavorite().add(b.getUuid().toString());
                 star.setForegroundTintList(HomeFragment.GOLD);
             }
 
@@ -205,8 +206,8 @@ public class ProfileFragment extends Fragment implements IUserCallback {
     public void switchBuildsListener() {
 
         createdBuild.setOnClickListener(view -> {
-            if(!created) {
-                created = true;
+            if(!createdPanel) {
+                createdPanel = true;
                 favoriteBuild.setBackgroundTintList(BLUE);
                 createdBuild.setBackgroundTintList(BACKGROUND_LIGHT);
                 favoriteBuildLayout.setBackgroundColor(BACKGROUND_LIGHT.getDefaultColor());
@@ -221,8 +222,8 @@ public class ProfileFragment extends Fragment implements IUserCallback {
         });
 
         favoriteBuild.setOnClickListener(view -> {
-            if(created) {
-                created = false;
+            if(createdPanel) {
+                createdPanel = false;
                 createdBuild.setBackgroundTintList(BLUE);
                 favoriteBuild.setBackgroundTintList(BACKGROUND_LIGHT);
                 createdBuildLayout.setBackgroundColor(BACKGROUND_LIGHT.getDefaultColor());
@@ -246,7 +247,10 @@ public class ProfileFragment extends Fragment implements IUserCallback {
         TextView username = view.findViewById(R.id.username);
         username.setText(user.getUsername());
         TextView value = view.findViewById(R.id.userValue);
-        value.setText("" + user.getUserValue());
+        value.setText("Builds: " + user.getCreated().size());
+
+        profileViewModel.getBuildRepository().getUserBuilds(user.getCreated(), this, true);
+        profileViewModel.getBuildRepository().getUserBuilds(user.getFavorite(), this, false);
 
         setCreatedBuilds(this.getLayoutInflater());
 
@@ -254,4 +258,39 @@ public class ProfileFragment extends Fragment implements IUserCallback {
             image.setImageBitmap(user.getImage());
     }
 
+    @Override
+    public void onBuildReceived(DocumentSnapshot documentSnapshot) {}
+
+    @Override
+    public void onBuildsReceived(List<DocumentSnapshot> documentsSnapshot, boolean created) {
+
+        if(documentsSnapshot == null)
+            return;
+
+        if(this.created == null)
+            this.created = new ArrayList<>();
+
+        if(favorite == null)
+            favorite = new ArrayList<>();
+
+        BuildFirestore buildFirestore;
+
+        if(created)
+            for(DocumentSnapshot d : documentsSnapshot) {
+                if(d != null) {
+                    buildFirestore = new BuildFirestore(d.getData());
+                    this.created.add(buildFirestore);
+                }
+
+            }
+        else
+            for(DocumentSnapshot d : documentsSnapshot) {
+                if(d != null) {
+                    buildFirestore = new BuildFirestore(d.getData());
+                    this.favorite.add(buildFirestore);
+                }
+
+            }
+
+    }
 }

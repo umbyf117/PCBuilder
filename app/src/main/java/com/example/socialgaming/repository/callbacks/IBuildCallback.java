@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface IBuildCallback {
     void onBuildReceived(DocumentSnapshot documentSnapshot);
-    void onBuildsReceived(List<DocumentSnapshot> documentsSnapshot);
+    void onBuildsReceived(List<DocumentSnapshot> documentsSnapshot, boolean created);
 }

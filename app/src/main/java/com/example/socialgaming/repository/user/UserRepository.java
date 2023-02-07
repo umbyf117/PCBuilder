@@ -28,8 +28,6 @@ public class UserRepository {
     private DatabaseReference database;
     private DocumentReference documentReference;
 
-    private Map<String, Object> data;
-
     public UserRepository() {
         firestore = FirebaseFirestore.getInstance();
         database = FirebaseDatabase.getInstance().getReference();
@@ -88,6 +86,38 @@ public class UserRepository {
         database.updateChildren(upload);
 
         return true;*/
+    }
+
+    public void updateUserBuilds(User user) {
+
+        Map<String, Object> favoriteMap = new HashMap<>();
+        for (int i = 0; i < user.getFavorite().size(); i++) {
+            favoriteMap.put(String.valueOf(i), user.getFavorite().get(i));
+        }
+
+        Map<String, Object> createdMap = new HashMap<>();
+        for (int i = 0; i < user.getCreated().size(); i++) {
+            createdMap.put(String.valueOf(i), user.getCreated().get(i));
+        }
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("favorite", favoriteMap);
+        data.put("created", createdMap);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                documentReference = firestore.collection(USERS_COLLECTION).document(user.getUsername());
+
+                Map<String, Object> upload = new HashMap<>();
+                upload.put("/users/" + user.getUsername(), data);
+
+                database.updateChildren(upload);
+
+            }
+        }).run();
+
     }
 
 }
