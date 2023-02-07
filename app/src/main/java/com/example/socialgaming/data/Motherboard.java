@@ -1,5 +1,8 @@
 package com.example.socialgaming.data;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.Map;
 
@@ -17,6 +20,15 @@ public class Motherboard extends ComponentBase  implements Serializable {
         this.chipset = chipset;
         this.memorySlots = memorySlots;
         this.socketType = socketType;
+    }
+
+    @Override
+    public void setJSONData(JSONObject o) throws JSONException {
+        super.setJSONData(o);
+        this.formFactor = o.getString("formFactor");
+        this.chipset = o.getString("chipset");
+        this.socketType = o.getString("socketType");
+        this.memorySlots = Integer.parseInt(o.getString("memorySlots"));
     }
 
     @Override

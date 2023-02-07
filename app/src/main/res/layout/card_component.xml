@@ -32,6 +32,7 @@
             android:layout_marginTop="16dp"
             android:fontFamily="@font/manteka"
             android:text="Component Name"
+            android:textColor="@color/text_light"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

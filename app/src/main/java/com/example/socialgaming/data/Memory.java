@@ -46,6 +46,13 @@ public class Memory extends ComponentBase  implements Serializable {
             this.type = MemoryType.HDD;
     }
 
+    public int getGBRpm() {
+        if(rpm.indexOf("TB") != -1) {
+            return Integer.parseInt(rpm.substring(0, rpm.indexOf(" "))) * 1000;
+        }
+        return Integer.parseInt(rpm.substring(0, rpm.indexOf(" ")));
+    }
+
     public String getRpm() {
         return rpm;
     }

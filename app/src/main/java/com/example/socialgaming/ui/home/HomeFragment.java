@@ -49,7 +49,6 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
 
     private static final int BUILD_PER_LOAD = 50;
 
-
     public static final ColorStateList BLUE_DARK = ColorStateList.valueOf(Color.parseColor("#1b263b"));
     public static final ColorStateList GOLD = ColorStateList.valueOf(Color.parseColor("#FFD700"));
     public static final ColorStateList RED = ColorStateList.valueOf(Color.RED);

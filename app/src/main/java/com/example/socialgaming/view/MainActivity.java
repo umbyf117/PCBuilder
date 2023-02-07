@@ -13,8 +13,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.socialgaming.Interfaces.OnCardSelectedListener;
 import com.example.socialgaming.R;
 import com.example.socialgaming.api.ComponentsFetcher;
+import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.User;
+import com.example.socialgaming.data.types.ComponentType;
 import com.example.socialgaming.ui.Build.BuildFragment;
+import com.example.socialgaming.ui.Lists.ComponentsFragment;
 import com.example.socialgaming.ui.Search.SearchFragment;
 import com.example.socialgaming.ui.Settings.SettingsFragment;
 import com.example.socialgaming.ui.home.HomeFragment;
@@ -25,7 +28,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseUser;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "Main Activity";
 
@@ -116,4 +119,6 @@ public class MainActivity extends AppCompatActivity{
     public void setOnCardSelectedListener(OnCardSelectedListener listener){
         mlistener = listener;
     }
+
+
 }
