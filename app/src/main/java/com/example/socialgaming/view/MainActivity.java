@@ -1,5 +1,6 @@
 package com.example.socialgaming.view;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -44,9 +45,12 @@ public class MainActivity extends AppCompatActivity{
 
     //CREARE IL SALVATAGGIO DATI NEL CASO DI CAMBIO DI FRAGMENT
 
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().setWindowAnimations(R.anim.anim);
 
         User.DEFAULT_IMAGE = BitmapFactory.decodeResource(this.getResources(), R.drawable.logo);
 

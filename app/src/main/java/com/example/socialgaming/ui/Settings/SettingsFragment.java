@@ -22,14 +22,8 @@ import com.example.socialgaming.view.LoginActivity;
 
 public class SettingsFragment extends Fragment {
 
-    private Switch switchmode;
-
-    public SettingsFragment(){
-
-    }
-
+    private androidx.appcompat.widget.SwitchCompat switchmode;
     private static final int PICK_IMAGE_REQUEST = 1;
-
     private SettingsViewModel viewModel;
 
     @Override
@@ -40,22 +34,31 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(@NonNull  LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
 
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        viewModel = new SettingsViewModel(this.getActivity().getApplication());
 
         //Switch between Light and Dark mode
+        //------------------------------------------------------------------------------------------
         switchmode = view.findViewById(R.id.switch_night_mode);
         switchmode.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("night_mode", isChecked);
-            editor.apply();
 
-            setNightMode(isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
-
+            if(isChecked){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
         });
-        //SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        //boolean isNightModeEnabled = sharedPreferences.getBoolean("night_mode", false);
-        //switchmode.setChecked(isNightModeEnabled);
+
+        boolean isNightModeOn = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
+        switchmode.setChecked(isNightModeOn);
+        if(isNightModeOn){
+            switchmode.setText("Night Mode");
+        } else {
+            switchmode.setText("Light Mode");
+        }
+        //------------------------------------------------------------------------------------------
+
+        viewModel = new SettingsViewModel(this.getActivity().getApplication());
+
+
 
         Button logoutButton = view.findViewById(R.id.btnLogout);
         logoutButton.setOnClickListener(view1 -> {
@@ -65,10 +68,6 @@ public class SettingsFragment extends Fragment {
 
 
         return view;
-    }
-
-    private void setNightMode(int i) {
-        AppCompatDelegate.setDefaultNightMode(i);
     }
 
 }

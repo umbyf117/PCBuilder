@@ -2,6 +2,8 @@ package com.example.socialgaming;
 
 import android.app.Application;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 import com.example.socialgaming.view.MainActivity;
 import com.example.socialgaming.utils.ViewUtils;
 
