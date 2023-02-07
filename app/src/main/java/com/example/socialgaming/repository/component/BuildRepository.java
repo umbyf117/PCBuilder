@@ -119,7 +119,7 @@ public class BuildRepository {
      */
     public void getBuild(UUID uuid, IBuildCallback callback) {
 
-        documentReference = firestore.collection(BUILD_COLLECTION).document("/" + uuid.toString());
+        documentReference = firestore.collection("/" + BUILD_COLLECTION).document("/" + uuid.toString());
         documentReference.get()
                 .addOnSuccessListener(documentSnapshot -> callback.onBuildReceived(documentSnapshot));
 
@@ -128,7 +128,6 @@ public class BuildRepository {
     public void getBuildList(int limit, int offset, IBuildCallback callback) {
 
         firestore.collection("/" + BUILD_COLLECTION)
-                .orderBy("timestamp", Query.Direction.DESCENDING)
                 .limit(limit + offset)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots ->

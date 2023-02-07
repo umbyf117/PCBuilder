@@ -16,36 +16,6 @@
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/buildList"
-        app:layout_constraintTop_toBottomOf="@+id/top_bar">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:id="@+id/buildLayout"
-            android:orientation="vertical">
-
-        </LinearLayout>
-
-    </ScrollView>
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/prof_pic"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/profpic"
-        app:civ_border_color="?attr/colorPrimaryDark"
-        app:civ_circle_background_color="?attr/colorPrimaryDark"
-        app:civ_border_width="7dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
-
-
     <TextView
         android:id="@+id/pc_builder"
         android:layout_width="wrap_content"
@@ -74,18 +44,36 @@
         app:layout_constraintStart_toEndOf="@+id/prof_pic"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:layout_marginTop="80dp"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:id="@+id/buildList"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/top_bar">
 
-        <ListView
-            android:id="@+id/lvHome"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/buildLayout">
 
-        </ListView>
-    </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/prof_pic"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/profpic"
+        app:civ_border_color="?attr/colorPrimaryDark"
+        app:civ_circle_background_color="?attr/colorPrimaryDark"
+        app:civ_border_width="7dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -122,32 +122,78 @@ public class BuildFirestore {
 
     //MAPS
     public Map<String, Object> getAttributeMap() {
-        Map<String, Object> attributeMap = new HashMap<>();
-        Field[] fields = this.getClass().getDeclaredFields();
-        for (Field field : fields) {
-            if (!field.getName().equals("image"))
-                try {
-                    field.setAccessible(true);
-                    attributeMap.put(field.getName(), field.get(this));
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-        }
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("name", name);
+        attributes.put("creator", creator);
+        attributes.put("uuid", uuid.toString());
+        attributes.put("like", like);
+        attributes.put("dislike", dislike);
+        attributes.put("houseTitle", houseTitle);
+        attributes.put("cpuTitle", cpuTitle);
+        attributes.put("fanTitle", fanTitle);
+        attributes.put("gpuTitle", gpuTitle);
+        attributes.put("boardTitle", boardTitle);
+        attributes.put("psuTitle", psuTitle);
+        attributes.put("housePrice", housePrice);
+        attributes.put("cpuPrice", cpuPrice);
+        attributes.put("fanPrice", fanPrice);
+        attributes.put("gpuPrice", gpuPrice);
+        attributes.put("boardPrice", boardPrice);
+        attributes.put("psuPrice", psuPrice);
+        attributes.put("formFactor", formFactor);
+        attributes.put("speedCpu", speedCpu);
+        attributes.put("chipset", chipset);
+        attributes.put("rpmFan", rpmFan);
+        attributes.put("memoryGpu", memoryGpu);
+        attributes.put("speedGpu", speedGpu);
+        attributes.put("powerPsu", powerPsu);
+        attributes.put("ramsTitle", ramsTitle);
+        attributes.put("ramsPrice", ramsPrice);
+        attributes.put("sizeRams", sizeRams);
+        attributes.put("quantityRams", quantityRams);
+        attributes.put("ramsType", ramsType);
+        attributes.put("memoriesTitle", memoriesTitle);
+        attributes.put("memoriesPrice", memoriesPrice);
+        attributes.put("memoriesType", memoriesType);
+        attributes.put("memoriesDimension", memoriesDimension);
 
-        return attributeMap;
+        return attributes;
     }
 
-    public void setAttributes(Map<String, Object> attributeMap) {
-        Field[] fields = this.getClass().getDeclaredFields();
-        for (Field field : fields) {
-            if (!field.getName().equals("image"))
-                try {
-                    field.setAccessible(true);
-                    field.set(this, attributeMap.get(field.getName()));
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-        }
+    public void setAttributes(Map<String, Object> attributes) {
+        memoriesTitle = (List<String>) attributes.get("memoriesTitle");
+        memoriesPrice = (List<Double>) attributes.get("memoriesPrice");
+        memoriesType = (List<String>) attributes.get("memoriesType");
+        memoriesDimension = (List<Integer>) attributes.get("memoriesDimension");
+        this.ramsTitle = (List<String>) attributes.get("ramsTitle");
+        this.ramsPrice = (List<Double>) attributes.get("ramsPrice");
+        this.sizeRams = (List<Integer>) attributes.get("sizeRams");
+        this.quantityRams = (List<Integer>) attributes.get("quantityRams");
+        this.ramsType = (List<String>) attributes.get("ramsType");
+        this.name = (String) attributes.get("name");
+        this.creator = (String) attributes.get("creator");
+        this.uuid = UUID.fromString((String) attributes.get("uuid"));
+        this.like = (List<String>) attributes.get("like");
+        this.dislike = (List<String>) attributes.get("dislike");
+        this.houseTitle = (String) attributes.get("houseTitle");
+        this.cpuTitle = (String) attributes.get("cpuTitle");
+        this.fanTitle = (String) attributes.get("fanTitle");
+        this.gpuTitle = (String) attributes.get("gpuTitle");
+        this.boardTitle = (String) attributes.get("boardTitle");
+        this.psuTitle = (String) attributes.get("psuTitle");
+        this.housePrice = (double) attributes.get("housePrice");
+        this.cpuPrice = (double) attributes.get("cpuPrice");
+        this.fanPrice = (double) attributes.get("fanPrice");
+        this.gpuPrice = (double) attributes.get("gpuPrice");
+        this.boardPrice = (double) attributes.get("boardPrice");
+        this.psuPrice = (double) attributes.get("psuPrice");
+        this.formFactor = (String) attributes.get("formFactor");
+        this.speedCpu = (String) attributes.get("speedCpu");
+        this.chipset = (String) attributes.get("chipset");
+        this.rpmFan = (String) attributes.get("rpmFan");
+        this.memoryGpu = (String) attributes.get("memoryGpu");
+        this.speedGpu = (String) attributes.get("speedGpu");
+        this.powerPsu = (String) attributes.get("powerPsu");
 
     }
 

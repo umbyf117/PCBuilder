@@ -114,8 +114,10 @@ public class BuildFragment extends Fragment implements IUserCallback {
             }
             build.setCreator(user.getUsername());
             if(build.isFinished()) {
-                user.addBuild(new BuildFirestore(build));
-                buildViewModel.getBuildRepository().setBuild(new BuildFirestore(build), user, buildViewModel.getUserRepository());
+                BuildFirestore buildFirestore = new BuildFirestore(build);
+                buildFirestore.setCreator(user.getUsername());
+                user.addBuild(buildFirestore);
+                buildViewModel.getBuildRepository().setBuild(buildFirestore, user, buildViewModel.getUserRepository());
 
                 FragmentTransaction fragmentTransaction =
                         this.getActivity().getSupportFragmentManager().beginTransaction();

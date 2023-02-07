@@ -53,7 +53,7 @@ import java.util.UUID;
 
 public class HomeFragment extends Fragment implements IUserCallback, IBuildCallback {
 
-    private static final int BUILD_PER_LOAD = 50;
+    private static final int BUILD_PER_LOAD = 10;
 
     public static final ColorStateList BLUE_DARK = ColorStateList.valueOf(Color.parseColor("#1b263b"));
     public static final ColorStateList GOLD = ColorStateList.valueOf(Color.parseColor("#FFD700"));
@@ -97,15 +97,13 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
 
         homeViewModel.getBuildRepository().getBuildList(BUILD_PER_LOAD, 0, this);
 
+        buildList = currentView.findViewById(R.id.buildLayout);
+
         user = new User();
         builds = new ArrayList<>();
 
         username = currentView.findViewById(R.id.username);
         image = currentView.findViewById(R.id.prof_pic);
-        image.setOnClickListener(v -> {
-            //requestStoragePermission();
-            //pickImageFromGallery();
-        });
 
         if(user != null)
             username.setText(user.getUsername());
@@ -131,14 +129,14 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
 
     public void setBuildBubble(LayoutInflater inflater, View view, BuildFirestore b) {
         // Inflate il layout incluso (template.xml)
-        View templateView = inflater.from(view.getContext()).inflate(R.layout.bubble_template, buildList, false);
+        View templateView = inflater.inflate(R.layout.bubble_template, null);
 
         // Imposta i parametri richiesti sulla vista inflata
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        params.setMargins(0, 16, 0, 0);
+        params.setMargins(0, 16, 0, 16);
 
         TextView name = templateView.findViewById(R.id.nameBuild);
         name.setText(b.getName());
@@ -210,6 +208,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
 
         }
 
+        Log.e("[JAVA]", "Sono qui");
 
         templateView.setLayoutParams(params);
         buildList.addView(templateView);
@@ -235,6 +234,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
             builds.add(build);
             homeViewModel.getBuildRepository()
                     .downloadBitmapFromFirebaseStorage(build.getUuid().toString(), build, this);
+            setBuildBubble(LayoutInflater.from(buildList.getContext()), currentView, build);
         }
     }
 
@@ -245,13 +245,13 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
 
         for(DocumentSnapshot d : documentsSnapshot)
             this.onBuildReceived(d);
-        setHomePageBubbles();
+        //setHomePageBubbles();
     }
 
     @Override
     public void onImageReceived(Bitmap bitmap, BuildFirestore build) {
         build.setImage(bitmap);
-
+        setBuildBubble(LayoutInflater.from(buildList.getContext()), currentView, build);
     }
 
 }
