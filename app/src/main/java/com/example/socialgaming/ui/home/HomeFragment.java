@@ -80,9 +80,6 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         currentView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        MainActivity activity = (MainActivity) getActivity();
-        activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
-
         homeViewModel = new HomeFragmentViewModel(getActivity().getApplication());
 
         if(homeViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName().isEmpty())

@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:id="@+id/homeFrag">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground"
+    android:id="@+id/homeFrag">
 
     <LinearLayout
         android:id="@+id/top_bar_stg"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="?android:attr/colorBackground"
+        android:background="?android:attr/colorPrimaryDark"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -25,6 +26,7 @@ android:id="@+id/homeFrag">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
+        android:textColor="?android:attr/colorPrimaryDark"
         android:id="@+id/buildLayout"
         android:orientation="vertical">
 
@@ -49,8 +51,9 @@ android:id="@+id/homeFrag">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/manteka"
-            android:textColor="@color/blue_light"
+            android:textColor="?android:attr/colorAccent"
             android:textSize="20sp"
+            android:backgroundTint="?attr/colorAccent"
             app:layout_constraintBottom_toBottomOf="@+id/top_bar_stg"
             app:layout_constraintEnd_toStartOf="@+id/prof_pic_stg"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +67,7 @@ android:id="@+id/homeFrag">
             android:fontFamily="@font/jurabold"
             android:text="Username"
             android:textAlignment="center"
-            android:textColor="@color/background_light"
+            android:textColor="?android:attr/colorAccent"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/top_bar_stg"
@@ -77,6 +80,7 @@ android:id="@+id/homeFrag">
     <LinearLayout
         android:layout_marginTop="100dp"
         android:layout_width="match_parent"
+        android:textColor="?android:attr/textColorPrimary"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
@@ -89,13 +93,15 @@ android:id="@+id/homeFrag">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtNightMode"
+                android:textColor="?android:attr/textColorPrimary"
                 android:layout_marginStart="100dp"
                 android:text="@string/nightMode"
-                android:textSize="30dp"/>
+                android:textSize="30sp"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_night_mode"
                 android:layout_marginLeft="50dp"
+                android:textColor="?android:attr/textColorPrimary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"/>
@@ -107,6 +113,7 @@ android:id="@+id/homeFrag">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/change_pass"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="30dp"
             android:layout_marginTop="30dp"
             android:layout_gravity="center"/>
@@ -151,10 +158,10 @@ android:id="@+id/homeFrag">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Confirm"
+            android:textColor="?android:attr/textColorPrimary"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
-            android:background="@drawable/shape_round"
-            android:backgroundTintMode="add"/>
+            android:background="@drawable/shape_round"/>
 
         <TextView
             android:id="@+id/txtLogout"
@@ -162,7 +169,8 @@ android:id="@+id/homeFrag">
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:text="@string/logout"
-            android:textSize="30dp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="30sp"
             android:layout_gravity="center"/>
 
         <Button
@@ -172,6 +180,7 @@ android:id="@+id/homeFrag">
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:text="Press to Logout"
+            android:textColor="?android:attr/textColorPrimary"
             android:background="@drawable/shape_round"
             android:backgroundTintMode="add"
             />

@@ -11,14 +11,8 @@ import com.example.socialgaming.repository.user.UserRepository;
 
 public class SettingsViewModel extends ViewModel {
 
-    private MutableLiveData<String> text;
     private AuthRepository authRepository;
     private UserRepository userRepository;
-
-    public SettingsViewModel(MutableLiveData<String> text){
-        text = new MutableLiveData<>();
-        text.setValue("Settings Fragment");
-    }
 
     public SettingsViewModel(Application application) {
         authRepository = new AuthRepository(application);
@@ -33,9 +27,4 @@ public class SettingsViewModel extends ViewModel {
         return userRepository;
     }
 
-
-
-    public LiveData<String> getText(){
-        return text;
-    }
 }
