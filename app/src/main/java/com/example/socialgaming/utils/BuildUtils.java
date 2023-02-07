@@ -94,9 +94,8 @@ public class BuildUtils {
     }
 
     public static ComponentBase getComponent(JSONObject obj, ComponentType type) {
-        ComponentBase component = null;
 
-        component = ComponentBase.construct(type);
+        ComponentBase component = ComponentBase.construct(type);
 
         try {
             component.setJSONData(obj);

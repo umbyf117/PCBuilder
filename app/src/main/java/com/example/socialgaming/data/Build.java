@@ -3,13 +3,22 @@ package com.example.socialgaming.data;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.example.socialgaming.data.types.ComponentType;
+import com.example.socialgaming.data.types.MemoryType;
 import com.example.socialgaming.utils.ImageUtils;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -52,7 +61,12 @@ public class Build implements Serializable {
         this(board, cpu, rams, harddisks, gpu, house, fan, psu, creator, new HashSet<>(), new HashSet<>(), UUID.randomUUID(), name, image);
     }
 
-    public Build() {}
+    public Build() {
+        rams = new ArrayList<>();
+        harddisks = new ArrayList<>();
+        like = new HashSet<>();
+        dislike = new HashSet<>();
+    }
 
     public void updateWithDocument(DocumentSnapshot documentSnapshot) {
         Map<String, Object> data = documentSnapshot.getData();
@@ -69,7 +83,7 @@ public class Build implements Serializable {
         this.dislike = (Set<String>) data.get("dislike");
         this.uuid = (UUID) data.get("uuid");
         this.name = (String) data.get("name");
-        this.image = ImageUtils.decodeByteArrayToBitmap((byte[]) data.get("uri"));
+        this.image = ImageUtils.decodeByteArrayToBitmap(ImageUtils.decodeListToArray((List<Long>) data.get("uri")));
     }
 
     @Override
@@ -126,8 +140,120 @@ public class Build implements Serializable {
         data.put("dislike", dislike);
         data.put("uuid", uuid);
         data.put("name", name);
-        data.put("uri", image);
+        data.put("uri", ImageUtils.encodeArrayToList(ImageUtils.encodeBitmapToByteArray(image)));
         return data;
+    }
+
+    public boolean isFinished() {
+        if(board == null)
+            return false;
+        if(cpu == null)
+            return false;
+        if(gpu == null)
+            return false;
+        if(rams.size() == 0)
+            return false;
+        if(harddisks.size() == 0)
+            return false;
+        if(house == null)
+            return false;
+        if(fan == null)
+            return false;
+        if(psu == null)
+            return false;
+        if(name == null)
+            return false;
+        if(image == null)
+            return false;
+        if(creator == null)
+            return false;
+        return true;
+    }
+
+    //ADD A COMPONENT
+    public boolean addComponent(ComponentBase component, ComponentType type) {
+        switch(type) {
+            case CASE:
+                setHouse((Case) component);
+                return true;
+            case CPU:
+                setCpu((CPU) component);
+                return true;
+            case CPU_FAN:
+                setFan((CPUFan) component);
+                return true;
+            case GPU:
+                setGpu((GPU) component);
+                return true;
+            case MEMORY:
+                addMemory((Memory) component);
+                return true;
+            case MOTHERBOARD:
+                setBoard((Motherboard) component);
+                return true;
+            case PSU:
+                setPsu((PSU) component);
+                return true;
+            case RAM:
+                return addRam((RAM) component);
+        }
+
+        return false;
+    }
+
+    public boolean removeComponent(ComponentBase component, ComponentType type) {
+        switch(type) {
+            case CASE:
+                this.house = null;
+                return true;
+            case CPU:
+                this.cpu = null;
+                return true;
+            case CPU_FAN:
+                this.fan = null;
+                return true;
+            case GPU:
+                this.gpu = null;
+                return true;
+            case MEMORY:
+                return this.removeMemory((Memory) component);
+            case MOTHERBOARD:
+                this.board = null;
+                return true;
+            case PSU:
+                this.psu = null;
+                return true;
+            case RAM:
+                return this.removeRam((RAM) component);
+        }
+        return false;
+    }
+
+    public ComponentBase getComponent(ComponentType type) {
+        switch(type) {
+            case CASE:
+                return house;
+            case CPU:
+                return cpu;
+            case CPU_FAN:
+                return fan;
+            case GPU:
+                return gpu;
+            case MEMORY:
+                if(harddisks.size() > 0)
+                    return harddisks.get(harddisks.size() - 1);
+                return null;
+            case MOTHERBOARD:
+                return board;
+            case PSU:
+                return psu;
+            case RAM:
+                if(rams.size() > 0)
+                    return rams.get(rams.size() - 1);
+                return null;
+        }
+
+        return null;
     }
 
     //LIKE DISLIKE METHODS
@@ -201,9 +327,50 @@ public class Build implements Serializable {
         return true;
     }
 
+    public boolean canAddRam(RAM ram) {
+        if(getRamSlot() - getUsedSlot() < ram.getQuantity())
+            return false;
+        return true;
+    }
+
+    public boolean removeRam(RAM ram) {
+        return rams.remove(ram);
+    }
+
+    public int getRam() {
+        int ram = 0;
+        for(RAM r : rams)
+            ram = ram + r.getSize();
+        return ram;
+    }
+
     //HARD DISK METHOD
     public boolean addMemory(Memory memory) {
         return harddisks.add(memory);
+    }
+
+    public int getSSDMemory() {
+        int ssd = 0;
+        for(Memory m : harddisks)
+            if(m.getType() == MemoryType.SSD)
+                ssd = ssd + m.getGBRpm();
+        return ssd;
+    }
+
+    public int getHDDMemory() {
+        int hdd = 0;
+        for(Memory m : harddisks)
+            if(m.getType() == MemoryType.HDD)
+                hdd = hdd + m.getGBRpm();
+        return hdd;
+    }
+
+    public int getMemory() {
+        return getHDDMemory() + getSSDMemory();
+    }
+
+    public boolean removeMemory(Memory memory) {
+        return harddisks.remove(memory);
     }
 
     //VALUES METHODS
@@ -230,7 +397,9 @@ public class Build implements Serializable {
         return cpu;
     }
     public boolean setCpu(CPU cpu) {
-        if(board != null & !board.compatibleCPU(cpu))
+        if(board == null)
+            return false;
+        if(board != null && !board.compatibleCPU(cpu))
             return false;
         this.cpu = cpu;
         return true;
@@ -257,6 +426,8 @@ public class Build implements Serializable {
         return house;
     }
     public boolean setHouse(Case house) {
+        if(board == null)
+            return false;
         if(!board.compatibleCase(house))
             return false;
         this.house = house;

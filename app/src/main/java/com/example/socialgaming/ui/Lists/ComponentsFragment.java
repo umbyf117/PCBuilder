@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
@@ -21,10 +22,16 @@ import com.example.socialgaming.Interfaces.OnCardSelectedListener;
 import com.example.socialgaming.R;
 import com.example.socialgaming.api.ComponentsFetcher;
 import com.example.socialgaming.data.Build;
+import com.example.socialgaming.data.CPU;
+import com.example.socialgaming.data.Case;
 import com.example.socialgaming.data.ComponentBase;
+import com.example.socialgaming.data.Motherboard;
+import com.example.socialgaming.data.RAM;
 import com.example.socialgaming.data.types.ComponentType;
 import com.example.socialgaming.repository.callbacks.IComponentCallback;
 import com.example.socialgaming.ui.Build.BuildFragment;
+import com.example.socialgaming.ui.home.HomeFragment;
+import com.example.socialgaming.ui.profile.ProfileFragment;
 import com.example.socialgaming.utils.BuildUtils;
 import com.example.socialgaming.utils.ImageUtils;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -41,7 +48,7 @@ public class ComponentsFragment extends Fragment implements IComponentCallback {
     private View currentView;
     private Build build;
 
-    private ComponentBase componentToReturn;
+    private int mode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,9 +56,10 @@ public class ComponentsFragment extends Fragment implements IComponentCallback {
 
         viewModel = new ViewModelProvider(this).get(ComponentsViewModel.class);
 
-        if(getArguments() != null){
+        if(getArguments() != null) {
             type = (ComponentType) getArguments().getSerializable("type");
             build = (Build) getArguments().getSerializable("build");
+            mode = getArguments().getInt("mode");
         }
     }
 
@@ -64,41 +72,25 @@ public class ComponentsFragment extends Fragment implements IComponentCallback {
         TextView componentName = currentView.findViewById(R.id.componentName);
         componentName.setText(type.toCapitalCase());
 
+        setComponents(new ComponentsFetcher().fetchItems(type, BuildFragment.COMPONENT_PER_VIEW, 0));
+        setupCardViews();
+
         Button saveButton = currentView.findViewById(R.id.saveButton);
         saveButton.setOnClickListener(view1 -> {
             Bundle bundle = new Bundle();
-            bundle.putSerializable("component", componentToReturn);
             bundle.putSerializable("build", build);
-            getParentFragmentManager().popBackStack();
+            bundle.putSerializable("mode", mode);
+
+            BuildFragment fragment = new BuildFragment();
+            fragment.setArguments(bundle);
+
+            FragmentTransaction transaction =
+                    this.getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         });
 
-        //setComponents(BuildUtils.getComponentsJSON(MOTHERBOARD, BuildFragment.COMPONENT_PER_VIEW, 0, this));
-        setComponents(new ComponentsFetcher().fetchItems(type, BuildFragment.COMPONENT_PER_VIEW, 0));
-        setupCardViews();
-        /*
-        for(int i=0; i<numCards; i++){
-            CardView cardView = new CardView(requireContext());
-            cardView.setCardElevation(8);
-            cardView.setRadius(8);
-            cardView.setContentPadding(16,16,16,16);
-            cardView.setMaxCardElevation(15);
-
-            TextView textView = new TextView(getContext());
-            textView.setText(mbs[i].getBrand());
-            textView.setTextSize(20);
-            textView.setGravity(Gravity.CENTER);
-
-            cardView.addView(textView);
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(listener != null){
-                        listener.onCardSelected(textView.getText().toString());
-                    }
-                }
-            });
-            ll.addView(cardView);
-        }*/
         return currentView;
     }
 
@@ -126,6 +118,16 @@ public class ComponentsFragment extends Fragment implements IComponentCallback {
         if(component == null) {
             return;
         }
+
+        ComponentType type = ComponentBase.getComponentType(component);
+
+        if(type == ComponentType.CPU && !build.getBoard().compatibleCPU(((CPU)component)))
+            return;
+
+        if(type == ComponentType.CASE && !build.getBoard().compatibleCase((Case) component))
+            return;
+
+
         View templateView = inflater.inflate(R.layout.card_component, null);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -148,6 +150,52 @@ public class ComponentsFragment extends Fragment implements IComponentCallback {
 
         templateView.setVisibility(View.VISIBLE);
         templateView.setClickable(true);
+
+        templateView.setOnClickListener(view -> {
+
+            if(type == ComponentType.RAM) {
+                RAM ram = (RAM) component;
+                if(!title.getTextColors().equals(HomeFragment.GOLD)) {
+                    if(build.canAddRam(ram)) {
+                        build.addRam(ram);
+                        title.setTextColor(HomeFragment.GOLD);
+                    }
+                }
+                else {
+                    title.setTextColor(ProfileFragment.TEXT_LIGHT);
+                    build.removeRam(ram);
+                }
+            }
+
+            else if (type == ComponentType.MEMORY) {
+                if(!title.getTextColors().equals(HomeFragment.GOLD)) {
+                    title.setTextColor(HomeFragment.GOLD);
+                    build.addComponent(component, type);
+                }
+                else {
+                    title.setTextColor(ProfileFragment.TEXT_LIGHT);
+                    build.removeComponent(component, type);
+                }
+            }
+            else {
+                if (!title.getTextColors().equals(HomeFragment.GOLD)) {
+                    title.setTextColor(HomeFragment.GOLD);
+                    ComponentBase c = build.getComponent(type);
+                    if (build.addComponent(component, type) && c != null && type != ComponentType.MEMORY)
+                        for (int i = 0; i < containerComponents.getChildCount(); i++) {
+                            View v = containerComponents.getChildAt(i);
+                            if (!templateView.equals(v)) {
+                                TextView t = containerComponents.getChildAt(i).findViewById(R.id.nameComponent);
+                                t.setTextColor(ProfileFragment.TEXT_LIGHT);
+                            }
+                        }
+
+                } else {
+                    title.setTextColor(ProfileFragment.TEXT_LIGHT);
+                    build.removeComponent(component, type);
+                }
+            }
+        });
 
         containerComponents.addView(templateView);
 
