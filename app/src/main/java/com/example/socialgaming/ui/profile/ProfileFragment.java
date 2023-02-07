@@ -35,7 +35,7 @@ import java.util.zip.Inflater;
 
 public class ProfileFragment extends Fragment implements IUserCallback {
 
-    public static final ColorStateList BACKGROUND_LIGHT = ColorStateList.valueOf(Color.parseColor("#CCCCCC"));
+    public static final ColorStateList BACKGROUND_LIGHT = ColorStateList.valueOf(Color.parseColor("#F4F4F4"));
     public static final ColorStateList TEXT_LIGHT = ColorStateList.valueOf(Color.parseColor("#252525"));
     public static final ColorStateList BLUE = ColorStateList.valueOf(Color.parseColor("#415a77"));
 
@@ -180,7 +180,7 @@ public class ProfileFragment extends Fragment implements IUserCallback {
         TextView buildName = v.findViewById(R.id.nameBuild);
         buildName.setText(b.getName());
         TextView value = v.findViewById(R.id.creator);
-        value.setText(b.getCreator().getUsername());
+        value.setText(b.getCreator());
 
         ImageView star = v.findViewById(R.id.saveBuild);
         star.setOnClickListener(view -> {
@@ -207,22 +207,6 @@ public class ProfileFragment extends Fragment implements IUserCallback {
         createdBuild.setOnClickListener(view -> {
             if(!created) {
                 created = true;
-                createdBuild.setBackgroundTintList(BLUE);
-                favoriteBuild.setBackgroundTintList(BACKGROUND_LIGHT);
-                createdBuildLayout.setBackgroundColor(BACKGROUND_LIGHT.getDefaultColor());
-                favoriteBuildLayout.setBackgroundColor(BLUE.getDefaultColor());
-                createdBuild.setTextColor(BACKGROUND_LIGHT);
-                favoriteBuild.setTextColor(TEXT_LIGHT);
-                createdBuild.setBackgroundResource(R.drawable.round_bottom);
-                favoriteBuild.setBackgroundResource(R.drawable.round_top);
-
-                setCreatedBuilds(this.getLayoutInflater());
-            }
-        });
-
-        favoriteBuild.setOnClickListener(view -> {
-            if(created) {
-                created = false;
                 favoriteBuild.setBackgroundTintList(BLUE);
                 createdBuild.setBackgroundTintList(BACKGROUND_LIGHT);
                 favoriteBuildLayout.setBackgroundColor(BACKGROUND_LIGHT.getDefaultColor());
@@ -231,6 +215,22 @@ public class ProfileFragment extends Fragment implements IUserCallback {
                 createdBuild.setTextColor(TEXT_LIGHT);
                 favoriteBuild.setBackgroundResource(R.drawable.round_bottom);
                 createdBuild.setBackgroundResource(R.drawable.round_top);
+
+                setCreatedBuilds(this.getLayoutInflater());
+            }
+        });
+
+        favoriteBuild.setOnClickListener(view -> {
+            if(created) {
+                created = false;
+                createdBuild.setBackgroundTintList(BLUE);
+                favoriteBuild.setBackgroundTintList(BACKGROUND_LIGHT);
+                createdBuildLayout.setBackgroundColor(BACKGROUND_LIGHT.getDefaultColor());
+                favoriteBuildLayout.setBackgroundColor(BLUE.getDefaultColor());
+                createdBuild.setTextColor(BACKGROUND_LIGHT);
+                favoriteBuild.setTextColor(TEXT_LIGHT);
+                createdBuild.setBackgroundResource(R.drawable.round_bottom);
+                favoriteBuild.setBackgroundResource(R.drawable.round_top);
 
                 setFavoriteBuilds(this.getLayoutInflater());
             }

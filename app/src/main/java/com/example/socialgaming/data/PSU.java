@@ -26,7 +26,7 @@ public class PSU extends ComponentBase  implements Serializable {
         super.setJSONData(o);
         this.color = o.getString("color");
         this.efficiency = o.getString("efficiency");
-        setPower(o.getString("power"));
+        setPowerFromString(o.getString("power"));
     }
 
     @Override
@@ -38,7 +38,7 @@ public class PSU extends ComponentBase  implements Serializable {
         return data;
     }
 
-    private void setPower(String power) {
+    private void setPowerFromString(String power) {
         this.power = Integer.parseInt(power.replace(" W", ""));
     }
 
