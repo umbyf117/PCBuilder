@@ -1,26 +1,51 @@
 package com.example.socialgaming.ui.home;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.socialgaming.R;
 import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.User;
+import com.example.socialgaming.databinding.FragmentHomeBinding;
 import com.example.socialgaming.repository.callbacks.IBuildCallback;
 import com.example.socialgaming.repository.callbacks.IUserCallback;
+import com.example.socialgaming.repository.component.BuildRepository;
+import com.example.socialgaming.repository.user.AuthRepository;
+import com.example.socialgaming.ui.Search.SearchFragment;
+import com.example.socialgaming.view.MainActivity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +67,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
     private LinearLayout buildList;
     private TextView username;
     private ImageView image;
+    private ListView lv;
 
     public static HomeFragment newInstance(User user) {
         HomeFragment homeFragment = new HomeFragment();
@@ -81,6 +107,18 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         if(user != null)
             username.setText(user.getUsername());
 
+        List<BuildPc> buildPcList = new ArrayList<>();
+        buildPcList.add(new BuildPc("Build 1", "CPU: Intel i7, GPU: Nvidia RTX 3080, RAM: 16 GB"));
+        buildPcList.add(new BuildPc("Build 2", "CPU: AMD Ryzen 9, GPU: AMD Radeon RX 6900 XT, RAM: 32 GB"));
+        buildPcList.add(new BuildPc("Build 3", "CPU: Intel i5, GPU: Nvidia GTX 1660, RAM: 8 GB"));
+        buildPcList.add(new BuildPc("Build 4", "CPU: Intel i5, GPU: Nvidia GTX 1660, RAM: 8 GB"));
+        buildPcList.add(new BuildPc("Build 5", "CPU: Intel i5, GPU: Nvidia GTX 1660, RAM: 8 GB"));
+        buildPcList.add(new BuildPc("Build 6", "CPU: Intel i5, GPU: Nvidia GTX 1660, RAM: 8 GB"));
+
+        BuildPcAdapter adapter = new BuildPcAdapter(currentView.getContext(), buildPcList);
+
+        lv = currentView.findViewById(R.id.lvHome);
+        lv.setAdapter(adapter);
 
         return currentView;
     }
@@ -92,6 +130,12 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
 
         // Crea una nuova istanza di LayoutInflater
         LayoutInflater inflater = LayoutInflater.from(buildList.getContext());
+
+        List<Build> builds = homeViewModel.getBuildRepository().getBuildList(BUILD_PER_LOAD, 0, this);
+        if(builds != null)
+            for(Build b : builds) {
+                setBuildBubble(inflater, currentView, b);
+            }
 
     }
 
@@ -138,7 +182,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
                 like.setForegroundTintList(GREEN);
             else if (b.getDislike().contains(user.getUsername()))
                 dislike.setForegroundTintList(RED);
-            if (user.getFavorite().contains(b.getUuid().toString()))
+            if (user.getFavorite().contains(b))
                 star.setForegroundTintList(GOLD);
 
             like.setOnClickListener(v -> {
@@ -164,12 +208,12 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
             });
 
             star.setOnClickListener(v -> {
-                if(user.getFavorite().contains(b.getUuid().toString())) {
-                    user.getFavorite().remove(b.getUuid().toString());
+                if(user.getFavorite().contains(b)) {
+                    user.getFavorite().remove(b);
                     star.setForegroundTintList(BLUE_DARK);
                 }
                 else {
-                    user.getFavorite().add(b.getUuid().toString());
+                    user.getFavorite().add(b);
                     star.setForegroundTintList(GOLD);
                 }
             });
@@ -203,7 +247,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
     }
 
     @Override
-    public void onBuildsReceived(List<DocumentSnapshot> documentsSnapshot, boolean created) {
+    public void onBuildsReceived(List<DocumentSnapshot> documentsSnapshot) {
         if(builds == null)
             builds = new ArrayList<>();
 
@@ -211,4 +255,47 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
             this.onBuildReceived(d);
         setHomePageBubbles();
     }
+
+    class BuildPc {
+        private String title;
+        private String details;
+
+        public BuildPc(String title, String details) {
+            this.title = title;
+            this.details = details;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDetails() {
+            return details;
+        }
+    }
+
+    class BuildPcAdapter extends ArrayAdapter<BuildPc> {
+        public BuildPcAdapter(Context context, List<BuildPc> buildPcList) {
+            super(context, 0, buildPcList);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            BuildPc buildPc = getItem(position);
+
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.card_bubble, parent, false);
+            }
+
+            TextView titleTextView = convertView.findViewById(R.id.nameBuild);
+            TextView detailsTextView = convertView.findViewById(R.id.creator);
+
+            titleTextView.setText(buildPc.getTitle());
+            detailsTextView.setText(buildPc.getDetails());
+
+            return convertView;
+        }
+
+    }
+
 }
