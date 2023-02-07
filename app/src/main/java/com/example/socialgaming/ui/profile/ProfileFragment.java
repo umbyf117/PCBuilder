@@ -1,6 +1,7 @@
 package com.example.socialgaming.ui.profile;
 
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -70,6 +71,7 @@ public class ProfileFragment extends Fragment implements IUserCallback, IBuildCa
                 this);
 
         image = view.findViewById(R.id.prof_pic);
+
         createdBuild = view.findViewById(R.id.createdBuildButton);
         favoriteBuild = view.findViewById(R.id.favoriteBuildButton);
         createdBuildLayout = view.findViewById(R.id.createdBuildBackground);
@@ -280,6 +282,8 @@ public class ProfileFragment extends Fragment implements IUserCallback, IBuildCa
                 if(d != null) {
                     buildFirestore = new BuildFirestore(d.getData());
                     this.created.add(buildFirestore);
+                    profileViewModel.getBuildRepository().downloadBitmapFromFirebaseStorage(
+                            buildFirestore.getUuid().toString(), buildFirestore, this);
                 }
 
             }
@@ -288,9 +292,16 @@ public class ProfileFragment extends Fragment implements IUserCallback, IBuildCa
                 if(d != null) {
                     buildFirestore = new BuildFirestore(d.getData());
                     this.favorite.add(buildFirestore);
+                    profileViewModel.getBuildRepository().downloadBitmapFromFirebaseStorage(
+                            buildFirestore.getUuid().toString(), buildFirestore, this);
                 }
 
             }
 
+    }
+
+    @Override
+    public void onImageReceived(Bitmap bitmap, BuildFirestore build) {
+        build.setImage(bitmap);
     }
 }

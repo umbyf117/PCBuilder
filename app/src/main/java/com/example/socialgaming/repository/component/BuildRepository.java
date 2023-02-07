@@ -1,19 +1,30 @@
 package com.example.socialgaming.repository.component;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.BuildFirestore;
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.repository.callbacks.IBuildCallback;
 import com.example.socialgaming.repository.user.UserRepository;
+import com.example.socialgaming.utils.ImageUtils;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +33,8 @@ import java.util.UUID;
 public class BuildRepository {
 
     public static final String BUILD_COLLECTION = "Builds";
+    public static final String RAM_COLLECTION = "Rams";
+    public static final String MEMORY_COLLECTION = "Memory";
 
     private FirebaseFirestore firestore;
     private DatabaseReference database;
@@ -51,6 +64,7 @@ public class BuildRepository {
 
                 Map<String, Object> map = build.getAttributeMap();
 
+
                 firestore.collection("/" + BUILD_COLLECTION).document(build.getUuid().toString())
                         .set(map)
                         .addOnSuccessListener(documentReference -> {
@@ -60,6 +74,7 @@ public class BuildRepository {
                             Log.w("TAG", "Error adding document", e);
                         });
 
+                uploadBitmapToFirebaseStorage(build.getImage(), build.getUuid().toString());
                 repo.updateUserBuilds(user);
 
             }
@@ -70,6 +85,31 @@ public class BuildRepository {
 
     public void getBuild(Build build, IBuildCallback callback) {
         getBuild(build.getUuid(), callback);
+    }
+
+    public void uploadBitmapToFirebaseStorage(Bitmap bitmap, final String imageName) {
+        // Get the reference to the Firebase Storage
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        // Create a reference to the file to be uploaded with the given name
+        StorageReference bitmapRef = storageRef.child("images/" + imageName + ".jpeg");
+        UploadTask uploadTask = bitmapRef.putBytes(ImageUtils.encodeBitmapToByteArray(bitmap));
+    }
+
+    public void downloadBitmapFromFirebaseStorage(final String imageName, BuildFirestore build, IBuildCallback callback) {
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = firebaseStorage.getReference().child("images/" + imageName);
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        storageReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
+            callback.onImageReceived(ImageUtils.decodeByteArrayToBitmap(bytes), build);
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+
     }
 
     /**
@@ -93,6 +133,8 @@ public class BuildRepository {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots ->
                         callback.onBuildsReceived(queryDocumentSnapshots.getDocuments(), false));
+
+
     }
 
     public void getUserBuilds(List<String> uuids, IBuildCallback callback, boolean created) {

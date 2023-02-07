@@ -33,6 +33,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.socialgaming.R;
 import com.example.socialgaming.data.Build;
+import com.example.socialgaming.data.BuildFirestore;
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.databinding.FragmentHomeBinding;
 import com.example.socialgaming.repository.callbacks.IBuildCallback;
@@ -48,6 +49,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class HomeFragment extends Fragment implements IUserCallback, IBuildCallback {
 
@@ -62,12 +64,11 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
     private View currentView;
 
     private User user;
-    private List<Build> builds;
+    private List<BuildFirestore> builds;
 
     private LinearLayout buildList;
     private TextView username;
     private ImageView image;
-    private ListView lv;
 
     public static HomeFragment newInstance(User user) {
         HomeFragment homeFragment = new HomeFragment();
@@ -94,6 +95,8 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
                     homeViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName(),
                     this);
 
+        homeViewModel.getBuildRepository().getBuildList(BUILD_PER_LOAD, 0, this);
+
         user = new User();
         builds = new ArrayList<>();
 
@@ -106,19 +109,6 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
 
         if(user != null)
             username.setText(user.getUsername());
-
-        List<BuildPc> buildPcList = new ArrayList<>();
-        buildPcList.add(new BuildPc("Build 1", "CPU: Intel i7, GPU: Nvidia RTX 3080, RAM: 16 GB"));
-        buildPcList.add(new BuildPc("Build 2", "CPU: AMD Ryzen 9, GPU: AMD Radeon RX 6900 XT, RAM: 32 GB"));
-        buildPcList.add(new BuildPc("Build 3", "CPU: Intel i5, GPU: Nvidia GTX 1660, RAM: 8 GB"));
-        buildPcList.add(new BuildPc("Build 4", "CPU: Intel i5, GPU: Nvidia GTX 1660, RAM: 8 GB"));
-        buildPcList.add(new BuildPc("Build 5", "CPU: Intel i5, GPU: Nvidia GTX 1660, RAM: 8 GB"));
-        buildPcList.add(new BuildPc("Build 6", "CPU: Intel i5, GPU: Nvidia GTX 1660, RAM: 8 GB"));
-
-        BuildPcAdapter adapter = new BuildPcAdapter(currentView.getContext(), buildPcList);
-
-        lv = currentView.findViewById(R.id.lvHome);
-        lv.setAdapter(adapter);
 
         return currentView;
     }
@@ -133,13 +123,13 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
 
         //List<Build> builds = homeViewModel.getBuildRepository().getBuildList(BUILD_PER_LOAD, 0, this);
         if(builds != null)
-            for(Build b : builds) {
+            for(BuildFirestore b : builds) {
                 setBuildBubble(inflater, currentView, b);
             }
 
     }
 
-    public void setBuildBubble(LayoutInflater inflater, View view, Build b) {
+    public void setBuildBubble(LayoutInflater inflater, View view, BuildFirestore b) {
         // Inflate il layout incluso (template.xml)
         View templateView = inflater.from(view.getContext()).inflate(R.layout.bubble_template, buildList, false);
 
@@ -239,10 +229,12 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
 
     @Override
     public void onBuildReceived(DocumentSnapshot documentSnapshot) {
-        Build build = new Build();
+        BuildFirestore build = new BuildFirestore();
         if(documentSnapshot.exists()) {
             build.updateWithDocument(documentSnapshot);
             builds.add(build);
+            homeViewModel.getBuildRepository()
+                    .downloadBitmapFromFirebaseStorage(build.getUuid().toString(), build, this);
         }
     }
 
@@ -256,45 +248,9 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         setHomePageBubbles();
     }
 
-    class BuildPc {
-        private String title;
-        private String details;
-
-        public BuildPc(String title, String details) {
-            this.title = title;
-            this.details = details;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public String getDetails() {
-            return details;
-        }
-    }
-
-    class BuildPcAdapter extends ArrayAdapter<BuildPc> {
-        public BuildPcAdapter(Context context, List<BuildPc> buildPcList) {
-            super(context, 0, buildPcList);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            BuildPc buildPc = getItem(position);
-
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.card_bubble, parent, false);
-            }
-
-            TextView titleTextView = convertView.findViewById(R.id.nameBuild);
-            TextView detailsTextView = convertView.findViewById(R.id.creator);
-
-            titleTextView.setText(buildPc.getTitle());
-            detailsTextView.setText(buildPc.getDetails());
-
-            return convertView;
-        }
+    @Override
+    public void onImageReceived(Bitmap bitmap, BuildFirestore build) {
+        build.setImage(bitmap);
 
     }
 

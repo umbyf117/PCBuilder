@@ -117,6 +117,11 @@ public class BuildFragment extends Fragment implements IUserCallback {
                 user.addBuild(new BuildFirestore(build));
                 buildViewModel.getBuildRepository().setBuild(new BuildFirestore(build), user, buildViewModel.getUserRepository());
 
+                FragmentTransaction fragmentTransaction =
+                        this.getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.buildView, new BuildFragment());
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
             else {
                 Toast.makeText(getActivity().getApplicationContext(),

@@ -3,6 +3,7 @@ package com.example.socialgaming.data;
 import android.graphics.Bitmap;
 
 import com.example.socialgaming.utils.ImageUtils;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -115,6 +116,10 @@ public class BuildFirestore {
     public BuildFirestore() {
     }
 
+    public void updateWithDocument(DocumentSnapshot documentSnapshot) {
+        this.setAttributes(documentSnapshot.getData());
+    }
+
     //MAPS
     public Map<String, Object> getAttributeMap() {
         Map<String, Object> attributeMap = new HashMap<>();
@@ -128,7 +133,7 @@ public class BuildFirestore {
                     e.printStackTrace();
                 }
         }
-        attributeMap.put("image", ImageUtils.encodeArrayToList(ImageUtils.encodeBitmapToByteArray(image)));
+
         return attributeMap;
     }
 
@@ -143,7 +148,7 @@ public class BuildFirestore {
                     e.printStackTrace();
                 }
         }
-        this.image = ImageUtils.decodeByteArrayToBitmap(ImageUtils.decodeListToArray((List<Long>) attributeMap.get("image")));
+
     }
 
     public Map<String, Object> getMemoryAttributes() {
