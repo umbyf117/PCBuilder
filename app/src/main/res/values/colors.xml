@@ -9,7 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="background_night">#FF161a1d</color>
-    <color name="background_light">#FFCCCCCC</color>
+    <color name="background_light">#FFF4F4F4</color>
     <color name="blue_light">#FF778da9</color>
     <color name="blue">#FF415a77</color>
     <color name="blue_dark">#FF1b263b</color>
@@ -21,7 +21,7 @@
     <color name = "gold">#FFFFD700</color>
 
     <color name="endBlue">#FF415a77</color>
-    <color name="grayLight">#FFCCCCCC</color>
+    <color name="grayLight">#FFF4F4F4</color>
     <color name="startBlue">#FF415a77</color>
 
 </resources>
