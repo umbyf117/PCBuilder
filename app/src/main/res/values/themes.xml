@@ -4,9 +4,10 @@
         <item name="colorPrimary">#3030FF</item>
         <item name="colorPrimaryDark">#FF415a77</item>
         <item name="colorAccent">#FFFFFF</item>
-        <item name="android:textColorPrimary">#FF000000</item>
-        <item name="android:windowBackground">#FFCCCCCC</item>
+        <item name="android:textColorPrimary">@color/text_light</item>
+        <item name="android:windowBackground">#FFF4F4F4</item>
         <item name="colorSecondary">#FF415a77</item>
-        <item name="colorButtonNormal">#FFFFFF</item>
+        <item name="colorButtonNormal">@color/blue</item>
+        <item name="cardBackgroundColor">#FFCCCCCC</item>
     </style>
 </resources>

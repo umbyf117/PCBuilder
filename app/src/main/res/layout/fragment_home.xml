@@ -74,4 +74,18 @@
         app:layout_constraintStart_toEndOf="@+id/prof_pic"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <LinearLayout
+        android:layout_marginTop="80dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
