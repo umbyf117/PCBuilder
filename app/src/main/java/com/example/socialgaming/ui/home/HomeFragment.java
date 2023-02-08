@@ -53,7 +53,7 @@ import java.util.UUID;
 
 public class HomeFragment extends Fragment implements IUserCallback, IBuildCallback {
 
-    private static final int BUILD_PER_LOAD = 10;
+    private static final int BUILD_PER_LOAD = 2;
 
     public static final ColorStateList BLUE_DARK = ColorStateList.valueOf(Color.parseColor("#1b263b"));
     public static final ColorStateList GOLD = ColorStateList.valueOf(Color.parseColor("#FFD700"));
@@ -147,7 +147,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         TextView rate = templateView.findViewById(R.id.value);
         rate.setText(b.getValue() + "");
 
-        if(b.getCreator().equals(user.getUsername())) {
+        if(b.getCreator().equalsIgnoreCase(user.getUsername())) {
             ImageView save = templateView.findViewById(R.id.saveBuild);
             save.setVisibility(View.INVISIBLE);
             save.setClickable(false);
@@ -207,8 +207,6 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
             });
 
         }
-
-        Log.e("[JAVA]", "Sono qui");
 
         templateView.setLayoutParams(params);
         buildList.addView(templateView);

@@ -74,8 +74,6 @@ public class ProfileFragment extends Fragment implements IUserCallback, IBuildCa
 
         createdBuild = view.findViewById(R.id.createdBuildButton);
         favoriteBuild = view.findViewById(R.id.favoriteBuildButton);
-        createdBuildLayout = view.findViewById(R.id.createdBuildBackground);
-        favoriteBuildLayout = view.findViewById(R.id.favoriteBuildBackground);
         createdPanel = true;
 
         containerBuilds = view.findViewById(R.id.containerBuilds);
@@ -153,9 +151,10 @@ public class ProfileFragment extends Fragment implements IUserCallback, IBuildCa
 
         for (int i = 0; i < user.getFavorite().size(); i++) {
             if(i%2 == 0) {
+
                 childLayout = inflater.inflate(R.layout.card_line, containerBuilds, false);
                 LinearLayout cardBubbleLayout = childLayout.findViewById(R.id.bubble_left);
-                View cardBubble = LayoutInflater.from(childLayout.getContext()).inflate(R.layout.card_bubble, cardBubbleLayout, false);
+                View cardBubble = inflater.inflate(R.layout.card_bubble, cardBubbleLayout);
 
                 cardBubble = getFavoriteBuildView(favorite.get(i), cardBubble);
 
@@ -163,7 +162,7 @@ public class ProfileFragment extends Fragment implements IUserCallback, IBuildCa
             }
             else {
                 LinearLayout cardBubbleLayout = childLayout.findViewById(R.id.bubble_right);
-                View cardBubble = LayoutInflater.from(childLayout.getContext()).inflate(R.layout.card_bubble, cardBubbleLayout, false);
+                View cardBubble = inflater.inflate(R.layout.card_bubble, cardBubbleLayout);
 
                 cardBubble = getFavoriteBuildView(favorite.get(i), cardBubble);
 
