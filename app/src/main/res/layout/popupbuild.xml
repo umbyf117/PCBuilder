@@ -25,14 +25,14 @@
 
 
         <TextView
-            android:id="@+id/nameComponent"
+            android:id="@+id/buildName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/manteka"
-            android:text="Component Name"
+            android:text="Build Name"
             android:textColor="@color/text_light"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +46,7 @@
             android:layout_marginTop="16dp"
             android:fontFamily="@font/jurasemibold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameComponent" />
+            app:layout_constraintTop_toBottomOf="@+id/nameBuild" />
 
         <TextView
             android:id="@+id/info2"
