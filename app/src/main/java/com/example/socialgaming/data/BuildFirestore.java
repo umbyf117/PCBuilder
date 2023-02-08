@@ -288,7 +288,7 @@ public class BuildFirestore {
         this.powerPsu = (String) attributes.get("powerPsu");
     }
 
-    /*
+
     //PRICE METHOD
     public double getTotalPrice() {
         double totPrice;
@@ -313,7 +313,7 @@ public class BuildFirestore {
         }
         return totMemoriesPrice;
     }
-    */
+
 
     //LIKE DISLIKE METHODS
     public boolean addLike(String username) {
