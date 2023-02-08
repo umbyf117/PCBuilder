@@ -62,7 +62,7 @@ import java.util.UUID;
 
 public class HomeFragment extends Fragment implements IUserCallback, IBuildCallback {
 
-    private static final int BUILD_PER_LOAD = 2;
+    private static final int BUILD_PER_LOAD = 10;
 
     public static final ColorStateList BLUE_DARK = ColorStateList.valueOf(Color.parseColor("#1b263b"));
     public static final ColorStateList GOLD = ColorStateList.valueOf(Color.parseColor("#FFD700"));
@@ -148,6 +148,10 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         params.setMargins(0, 16, 0, 16);
 
         ImageView image = templateView.findViewById(R.id.buildImage);
+        image.setImageBitmap(b.getImage());
+        image.getLayoutParams().width = 400;
+        image.getLayoutParams().height = 400;
+
 
         TextView name = templateView.findViewById(R.id.nameBuild);
         name.setText(b.getName());
@@ -284,6 +288,9 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View popUpView = inflater.inflate(R.layout.popupbuild, null);
 
+        ImageView image = popUpView.findViewById(R.id.buildImage);
+        image.setImageBitmap(b.getImage());
+
         TextView nameBuild = popUpView.findViewById(R.id.buildName);
         nameBuild.setText(b.getName());
         TextView motherboard = popUpView.findViewById(R.id.info1);
@@ -303,7 +310,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         TextView mcase = popUpView.findViewById(R.id.info8);
         mcase.setText("Case: " + b.getHouseTitle());
         TextView price = popUpView.findViewById(R.id.price);
-        price.setText();
+        price.setText(b.getTotalPrice() + "");
 
         int width = ViewGroup.LayoutParams.WRAP_CONTENT;
         int height = ViewGroup.LayoutParams.WRAP_CONTENT;

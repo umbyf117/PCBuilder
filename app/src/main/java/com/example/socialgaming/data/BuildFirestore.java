@@ -291,18 +291,26 @@ public class BuildFirestore {
     //PRICE METHOD
     public double getTotalPrice() {
         double totPrice;
-        totPrice = boardPrice + cpuPrice + ramsPrice + fanPrice + gpuPrice + memoriesPrice +
+        totPrice = boardPrice + cpuPrice + totRamsPrice() + fanPrice + gpuPrice + totMemoriesPrice() +
                 psuPrice + housePrice;
 
         return totPrice;
     }
 
     public double totRamsPrice() {
-
+        Double totRamPrice = 0.0;
+        for (double ram: ramsPrice) {
+            totRamPrice += ram;
+        }
+        return totRamPrice;
     }
 
     public double totMemoriesPrice() {
-
+        Double totMemoriesPrice = 0.0;
+        for (double memory: memoriesPrice) {
+            totMemoriesPrice += memory;
+        }
+        return totMemoriesPrice;
     }
 
     //LIKE DISLIKE METHODS
