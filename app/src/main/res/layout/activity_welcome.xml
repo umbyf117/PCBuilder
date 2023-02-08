@@ -4,6 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.WelcomeActivity"
-    android:background="@drawable/pc_adobe_express">
+    android:background="@drawable/cpu_adobe_express">
 
 </androidx.constraintlayout.widget.ConstraintLayout>
