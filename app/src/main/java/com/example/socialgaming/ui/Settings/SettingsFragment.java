@@ -50,9 +50,9 @@ public class SettingsFragment extends Fragment {
         boolean isNightModeOn = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
         switchmode.setChecked(isNightModeOn);
         if(isNightModeOn){
-            switchmode.setText("Night Mode");
+            switchmode.setText("");
         } else {
-            switchmode.setText("Light Mode");
+            switchmode.setText("");
         }
         //------------------------------------------------------------------------------------------
 
