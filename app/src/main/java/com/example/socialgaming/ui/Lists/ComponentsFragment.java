@@ -23,9 +23,13 @@ import com.example.socialgaming.R;
 import com.example.socialgaming.api.ComponentsFetcher;
 import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.CPU;
+import com.example.socialgaming.data.CPUFan;
 import com.example.socialgaming.data.Case;
 import com.example.socialgaming.data.ComponentBase;
+import com.example.socialgaming.data.GPU;
+import com.example.socialgaming.data.Memory;
 import com.example.socialgaming.data.Motherboard;
+import com.example.socialgaming.data.PSU;
 import com.example.socialgaming.data.RAM;
 import com.example.socialgaming.data.types.ComponentType;
 import com.example.socialgaming.repository.callbacks.IComponentCallback;
@@ -139,6 +143,64 @@ public class ComponentsFragment extends Fragment {
 
         TextView title = templateView.findViewById(R.id.nameComponent);
         title.setText(component.getBrand() + " " + component.getModel());
+
+        if (type == ComponentType.MOTHERBOARD) {
+            Motherboard motherboard = (Motherboard) component;
+            TextView info1 = templateView.findViewById(R.id.info1);
+            info1.setText("Chipset: " + motherboard.getChipset());
+            TextView info2 = templateView.findViewById(R.id.info2);
+            info2.setText("MemorySlot: " + motherboard.getMemorySlots());
+            TextView info3 = templateView.findViewById(R.id.info3);
+            info3.setText("SocketType: " + motherboard.getSocketType());
+        } else if (type == ComponentType.RAM) {
+            RAM ram = (RAM) component;
+            TextView info1 = templateView.findViewById(R.id.info1);
+            info1.setText("Size: " + ram.getSize());
+            TextView info2 = templateView.findViewById(R.id.info2);
+            info2.setText("Quantity: " + ram.getQuantity());
+            TextView info3 = templateView.findViewById(R.id.info3);
+            info3.setText("Type: " + ram.getType());
+        } else if (type == ComponentType.MEMORY) {
+            Memory memory = (Memory) component;
+            TextView info1 = templateView.findViewById(R.id.info1);
+            info1.setText("Rpm: " + memory.getRpm());
+            TextView info2 = templateView.findViewById(R.id.info2);
+            info2.setText("Cache: " + memory.getCache());
+            TextView info3 = templateView.findViewById(R.id.info3);
+            info3.setText("Type: " + memory.getType());
+        } else if (type == ComponentType.CPU) {
+            CPU cpu = (CPU) component;
+            TextView info1 = templateView.findViewById(R.id.info1);
+            info1.setText("Speed: " + cpu.getSpeed());
+            TextView info2 = templateView.findViewById(R.id.info2);
+            info2.setText("SocketType: " + cpu.getSocketType());
+            TextView info3 = templateView.findViewById(R.id.info3);
+            info3.setText("");
+        } else if (type == ComponentType.CPU_FAN) {
+            CPUFan cpuFan = (CPUFan) component;
+            TextView info1 = templateView.findViewById(R.id.info1);
+            info1.setText("Rpm: " + cpuFan.getRpm());
+            TextView info2 = templateView.findViewById(R.id.info2);
+            info2.setText("Color: " + cpuFan.getColor());
+            TextView info3 = templateView.findViewById(R.id.info3);
+            info3.setText("Noise Level: " + cpuFan.getNoiseLevel());
+        } else if (type == ComponentType.GPU) {
+            GPU gpu = (GPU) component;
+            TextView info1 = templateView.findViewById(R.id.info1);
+            info1.setText("Memory: " + gpu.getMemory());
+            TextView info2 = templateView.findViewById(R.id.info2);
+            info2.setText("Clock Speed: " + gpu.getClockSpeed());
+            TextView info3 = templateView.findViewById(R.id.info3);
+            info3.setText("Chipset: " + gpu.getChipset());
+        } else if (type == ComponentType.PSU) {
+            PSU psu = (PSU) component;
+            TextView info1 = templateView.findViewById(R.id.info1);
+            info1.setText("Power: " + psu.getPower());
+            TextView info2 = templateView.findViewById(R.id.info2);
+            info2.setText("Color: " + psu.getColor());
+            TextView info3 = templateView.findViewById(R.id.info3);
+            info3.setText("Efficency: " + psu.getEfficiency());
+        }
 
         ImageView image = templateView.findViewById(R.id.buildImage);
         image.setImageBitmap(ImageUtils.getBitmapFromURL(component.getImg()));
