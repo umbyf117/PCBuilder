@@ -16,6 +16,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -230,6 +231,16 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
     }
 
 
+    private void showPopupWindow(View view){
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.card_bubble, null);
+
+        int width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+    }
 
     @Override
     public void onUserReceived(DocumentSnapshot documentSnapshot) {

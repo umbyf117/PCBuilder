@@ -82,5 +82,6 @@
     <string name="saveBuild">Save Build</string>
     <string name="psu">Power Supply</string>
     <string name="buildName">Build Name</string>
+    <string name="build_image">Build Image</string>
 
 </resources>

@@ -44,7 +44,7 @@ public class BuildUtils {
             Request request = new Request.Builder()
                     .url("https://computer-components-api.p.rapidapi.com/" + getUrl(type) + "?limit=" + limit + "&offset=" + offset)
                     .get()
-                    .addHeader("X-RapidAPI-Key", "fb275a437bmsh9db28c43aebefc4p1ac617jsnb6bd17a71b69")
+                    .addHeader("X-RapidAPI-Key", "fdbfa22cf4msh97186c76be5b4f1p114081jsnb3c96c865973")
                     .addHeader("X-RapidAPI-Host", "computer-components-api.p.rapidapi.com")
                     .build();
 
