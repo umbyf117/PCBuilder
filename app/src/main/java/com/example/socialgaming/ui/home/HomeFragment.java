@@ -303,7 +303,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         TextView mcase = popUpView.findViewById(R.id.info8);
         mcase.setText("Case: " + b.getHouseTitle());
         TextView price = popUpView.findViewById(R.id.price);
-        price.setText();
+        //price.setText();
 
         int width = ViewGroup.LayoutParams.WRAP_CONTENT;
         int height = ViewGroup.LayoutParams.WRAP_CONTENT;
