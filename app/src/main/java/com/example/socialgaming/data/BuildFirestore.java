@@ -1,6 +1,7 @@
 package com.example.socialgaming.data;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.example.socialgaming.utils.ImageUtils;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -366,7 +367,7 @@ public class BuildFirestore {
     }
 
     public String getCreator() {
-        return name;
+        return creator;
     }
 
     public UUID getUuid() {
