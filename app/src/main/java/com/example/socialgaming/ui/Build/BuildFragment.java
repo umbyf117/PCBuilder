@@ -32,6 +32,7 @@ import com.example.socialgaming.data.User;
 import com.example.socialgaming.data.types.ComponentType;
 import com.example.socialgaming.repository.callbacks.IUserCallback;
 import com.example.socialgaming.ui.Lists.ComponentsFragment;
+import com.example.socialgaming.ui.Settings.SettingsFragment;
 import com.example.socialgaming.ui.profile.ProfileFragment;
 import com.example.socialgaming.view.MainActivity;
 import com.google.android.material.textfield.TextInputEditText;
@@ -48,6 +49,7 @@ public class BuildFragment extends Fragment implements IUserCallback {
 
     public static final int COMPONENT_PER_VIEW = 20;
     private static final int PICK_IMAGE_REQUEST_CODE = 1;
+    public static boolean darkMode;
 
     private BuildViewModel buildViewModel;
     private CardView[] cardviews;
@@ -201,12 +203,18 @@ public class BuildFragment extends Fragment implements IUserCallback {
     }
 
     public void updateCardViews() {
+        boolean isNightModeOn = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
         if(build.getBoard() != null) {
             TextView text = cardviews[0].findViewById(R.id.motherboard);
             text.setText(build.getBoard().getBrand() + " " + build.getBoard().getModel());
             for(int i = 1; i < cardviews.length; i++) {
-                cardviews[i].setCardBackgroundColor(ProfileFragment.BLUE);
-                cardviews[i].setClickable(true);
+                if(!isNightModeOn) {
+                    cardviews[i].setCardBackgroundColor(ProfileFragment.BLUE);
+                    cardviews[i].setClickable(true);
+                } else {
+                    cardviews[i].setCardBackgroundColor(ProfileFragment.RED);
+                    cardviews[i].setClickable(true);
+                }
             }
         }
 

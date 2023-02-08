@@ -60,12 +60,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@drawable/shape_round"
         app:layout_constraintEnd_toEndOf="@id/guideDx"
         app:layout_constraintStart_toEndOf="@id/guideSx"
         app:layout_constraintTop_toBottomOf="@+id/txtLogin"
         app:startIconDrawable="@drawable/ic_account">
-
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtMailLogin"
@@ -84,7 +82,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-
         app:layout_constraintEnd_toEndOf="@id/guideDx"
         app:layout_constraintStart_toEndOf="@id/guideSx"
         app:layout_constraintTop_toBottomOf="@+id/textInputMailLogin"

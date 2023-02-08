@@ -37,6 +37,7 @@ public class ProfileFragment extends Fragment implements IUserCallback, IBuildCa
     public static final ColorStateList BACKGROUND_LIGHT = ColorStateList.valueOf(Color.parseColor("#F4F4F4"));
     public static final ColorStateList TEXT_LIGHT = ColorStateList.valueOf(Color.parseColor("#252525"));
     public static final ColorStateList BLUE = ColorStateList.valueOf(Color.parseColor("#415a77"));
+    public static final ColorStateList RED = ColorStateList.valueOf(Color.parseColor("#FF660708"));
 
     private ImageView image;
     private User user;
