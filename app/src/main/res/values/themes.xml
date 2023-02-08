@@ -9,6 +9,8 @@
         <item name="colorSecondary">#FF415a77</item>
         <item name="colorButtonNormal">@color/blue</item>
         <item name="cardBackgroundColor">#FFCCCCCC</item>
+        <item name="background">@color/background_light</item>
+        <item name="backgroundColor">#FFCCCCCC</item>
         <item name="colorSurface">#FF1b263b</item>
     </style>
 </resources>
