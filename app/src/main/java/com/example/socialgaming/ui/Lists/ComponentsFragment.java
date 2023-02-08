@@ -200,6 +200,14 @@ public class ComponentsFragment extends Fragment {
             info2.setText("Color: " + psu.getColor());
             TextView info3 = templateView.findViewById(R.id.info3);
             info3.setText("Efficency: " + psu.getEfficiency());
+        } else if (type == ComponentType.CASE) {
+            Case mcase = (Case) component;
+            TextView info1 = templateView.findViewById(R.id.info1);
+            info1.setText("Side Panel: " + mcase.getSidePanel());
+            TextView info2 = templateView.findViewById(R.id.info2);
+            info2.setText("Color: " + mcase.getColor());
+            TextView info3 = templateView.findViewById(R.id.info3);
+            info3.setText("Cabinet: " + mcase.getCabinet());
         }
 
         ImageView image = templateView.findViewById(R.id.buildImage);
