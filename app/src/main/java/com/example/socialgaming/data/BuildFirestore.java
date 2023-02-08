@@ -288,7 +288,22 @@ public class BuildFirestore {
         this.powerPsu = (String) attributes.get("powerPsu");
     }
 
+    //PRICE METHOD
+    public double getTotalPrice() {
+        double totPrice;
+        totPrice = boardPrice + cpuPrice + ramsPrice + fanPrice + gpuPrice + memoriesPrice +
+                psuPrice + housePrice;
 
+        return totPrice;
+    }
+
+    public double totRamsPrice() {
+
+    }
+
+    public double totMemoriesPrice() {
+
+    }
 
     //LIKE DISLIKE METHODS
     public boolean addLike(String username) {
