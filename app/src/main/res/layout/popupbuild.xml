@@ -7,7 +7,7 @@
     android:layout_height="650px"
     android:orientation="horizontal"
     android:background="@drawable/shape_round"
-    android:backgroundTint="@color/white">
+    android:backgroundTint="?attr/colorSecondary">
 
     <ImageView
         android:id="@+id/buildImage"
@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
         android:layout_weight="0.5"
-        app:srcCompat="@drawable/pcbuilder" />
+        app:srcCompat="@drawable/pcbuilder"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
             android:layout_marginTop="16dp"
             android:fontFamily="@font/manteka"
             android:text="Build Name"
-            android:textColor="@color/text_light"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
