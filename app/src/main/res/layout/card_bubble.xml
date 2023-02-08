@@ -7,7 +7,7 @@
     android:layout_marginHorizontal="8dp"
     android:layout_marginTop="16dp"
     android:background="@drawable/shape_round"
-    android:backgroundTint="@color/blue_light">
+    android:backgroundTint="?attr/colorPrimaryVariant">
 
     <ImageView
         android:id="@+id/imageBuild"
@@ -57,7 +57,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
             android:foreground="@drawable/star"
-            android:foregroundTint="@color/gold"
+            android:foregroundTint="?attr/colorPrimaryDark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
@@ -68,7 +68,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
             android:foreground="@drawable/minus"
-            android:foregroundTint="@color/red"
+            android:foregroundTint="?attr/colorPrimaryDark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 

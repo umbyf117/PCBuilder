@@ -4,13 +4,13 @@
     android:id="@+id/fragment_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_light">
+    android:background="?attr/colorPrimaryVariant">
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/blue"
+        android:background="?attr/colorPrimary"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,13 +23,13 @@
         android:fontFamily="@font/manteka"
         android:text="Component"
         android:textAlignment="center"
-        android:textColor="@color/background_light"
+        android:textColor="?attr/backgroundColor"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout"/>
+        app:layout_constraintTop_toTopOf="@+id/linearLayout" />
 
     <ImageView
         android:id="@+id/componentIcon"
@@ -37,10 +37,10 @@
         android:layout_height="24dp"
         android:layout_marginEnd="24dp"
         android:background="@drawable/ic_build"
-        android:backgroundTint="@color/background_light"
+        android:backgroundTint="?attr/backgroundColor"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,6 +54,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="64dp"
             app:layout_constraintBottom_toTopOf="@+id/bottomLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +66,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="8dp"
-                android:layout_marginBottom="64dp"
                 android:orientation="vertical" />
         </ScrollView>
     </LinearLayout>
@@ -77,14 +77,17 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="64dp"
         android:background="@drawable/shape_round"
-        android:text="Save components"
+        android:backgroundTint="?attr/backgroundColor"
+        android:text="Save component"
+        android:textColor="?android:attr/textColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/bottomLayout"

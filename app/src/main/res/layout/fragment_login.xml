@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_screen"
-    android:background="?android:attr/windowBackground"
+    android:background="?attr/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.LoginActivity">
@@ -30,40 +30,21 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="34sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/guideDx"
-        app:layout_constraintStart_toStartOf="@+id/guideSx"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideSx"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="16dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideDx"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="16dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideBot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_end="24dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputMailLogin"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@id/guideDx"
-        app:layout_constraintStart_toEndOf="@id/guideSx"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtLogin"
-        app:startIconDrawable="@drawable/ic_account">
+        app:startIconDrawable="@drawable/ic_account"
+        app:startIconTint="?attr/colorPrimaryDark">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtMailLogin"
@@ -71,8 +52,10 @@
             android:layout_height="wrap_content"
             android:autofillHints="emailAddress"
             android:background="@drawable/shape_round"
+            android:backgroundTint="?attr/backgroundColor"
+            android:textColor="?android:attr/textColor"
             android:hint="@string/mail"
-            app:hintTextColor="?android:attr/textColorPrimary"
+            app:hintTextColor="?android:attr/textColor"
             android:inputType="textEmailAddress"
             tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -82,11 +65,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@id/guideDx"
-        app:layout_constraintStart_toEndOf="@id/guideSx"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputMailLogin"
         app:passwordToggleEnabled="true"
-        app:startIconDrawable="@drawable/ic_baseline_lock_24">
+        app:startIconDrawable="@drawable/ic_baseline_lock_24"
+        app:startIconTint="?attr/colorPrimaryDark">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtPasswordLogin"
@@ -94,8 +79,10 @@
             android:layout_height="wrap_content"
             android:autofillHints="password"
             android:background="@drawable/shape_round"
+            android:backgroundTint="?attr/backgroundColor"
+            android:textColor="?android:attr/textColor"
             android:hint="@string/password"
-            app:hintTextColor="?android:attr/textColorPrimary"
+            app:hintTextColor="?android:attr/textColor"
             android:inputType="textPassword"
             tools:ignore="SpeakableTextPresentCheck" />
 
@@ -105,35 +92,18 @@
         android:id="@+id/loginButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/shape_round"
-        android:backgroundTint="?android:attr/colorButtonNormal"
+        android:backgroundTint="?attr/colorPrimary"
         android:text="@string/login"
-        android:textColor="?android:attr/textColorPrimary"
         android:textAlignment="center"
         android:textAllCaps="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideDx"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/guideSx"
-        app:layout_constraintTop_toBottomOf="@+id/textInputPasswordLogin"
-        app:layout_constraintVertical_bias="0.019" />
-
-    <TextView
-        android:id="@+id/noAcc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="Don't have an account?"
-        android:textColor="?android:attr/textColorPrimary"
-        app:layout_constraintBottom_toTopOf="@+id/guideBot"
-        app:layout_constraintEnd_toStartOf="@+id/signup_text"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:textColor="?attr/background"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="HardcodedText" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputPasswordLogin"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/forgetPassword"
@@ -147,10 +117,24 @@
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="?attr/colorPrimary"
-        app:layout_constraintEnd_toStartOf="@+id/guideDx"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="@+id/guideSx"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+
+    <TextView
+        android:id="@+id/noAcc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Don't have an account?"
+        android:textColor="?android:attr/textColor"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/signup_text"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/signup_text"

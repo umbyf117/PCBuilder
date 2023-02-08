@@ -1,16 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">#FF5733</item>
-        <item name="colorPrimaryDark">#FFa4161a</item>
-        <item name="colorAccent">#000000</item>
-        <item name="android:textColorPrimary">@color/text_night</item>
-        <item name="android:windowBackground">#FF161a1d</item>
-        <item name="colorSecondary">#FFa4161a</item>
-        <item name="colorButtonNormal">@color/red</item>
-        <item name="cardBackgroundColor">#FF3f3f3f</item>
+        <item name="colorPrimary">@color/red</item>
+        <item name="colorPrimaryDark">@color/red_dark</item>
+        <item name="colorPrimaryVariant">@color/red_light</item>
+        <item name="android:textColor">@color/text_night</item>
         <item name="background">@color/background_night</item>
-        <item name="backgroundColor">#FF3f3f3f</item>
-        <item name="colorSurface">#FF660708</item>
+        <item name="backgroundColor">@color/background_night2</item>
+        <item name="android:strokeColor">@color/gold_night</item>
     </style>
 </resources>

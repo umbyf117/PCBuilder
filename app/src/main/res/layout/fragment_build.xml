@@ -5,7 +5,7 @@
     android:id="@+id/buildView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/windowBackground">
+    android:background="?attr/background">
 
     <LinearLayout
         android:id="@+id/buildViewLLayout"
@@ -22,6 +22,8 @@
             android:layout_gravity="center"
             android:layout_marginTop="8dp"
             android:src="@drawable/logo"
+            app:civ_border_color="?attr/colorPrimary"
+            app:civ_border_width="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,7 +36,8 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/shape_round"
             app:hintTextColor="@color/text_light"
-            app:startIconDrawable="@drawable/ic_build">
+            app:startIconDrawable="@drawable/ic_build"
+            app:startIconTint="?attr/colorPrimaryVariant">
 
 
             <com.google.android.material.textfield.TextInputEditText
@@ -44,7 +47,9 @@
                 android:background="@drawable/shape_round"
                 android:hint="@string/buildName"
                 android:textAlignment="textStart"
-                app:backgroundTint="#00000000" />
+                android:textColor="?attr/colorPrimaryVariant"
+                android:textColorHint="?attr/colorPrimaryVariant"
+                app:backgroundTint="?attr/background" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
@@ -65,7 +70,7 @@
                 android:clickable="true"
                 android:elevation="5dp"
                 android:radius="10dp"
-                app:cardBackgroundColor="?attr/colorButtonNormal"
+                app:cardBackgroundColor="?attr/colorPrimary"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
                 app:cardPreventCornerOverlap="false"
@@ -78,7 +83,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Motherboard"
-                    android:textColor="@color/background_light" />
+                    android:textColor="?attr/backgroundColor"
+                    android:textStyle="bold" />
 
             </androidx.cardview.widget.CardView>
 
@@ -92,7 +98,7 @@
                 android:clickable="false"
                 android:elevation="5dp"
                 android:radius="10dp"
-                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardBackgroundColor="?attr/colorPrimary"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
                 app:cardPreventCornerOverlap="false"
@@ -105,7 +111,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="CPU"
-                    android:textColor="@color/background_light" />
+                    android:textColor="?attr/backgroundColor"
+                    android:textStyle="bold" />
 
             </androidx.cardview.widget.CardView>
 
@@ -128,7 +135,7 @@
                 android:clickable="false"
                 android:elevation="5dp"
                 android:radius="10dp"
-                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardBackgroundColor="?attr/colorPrimary"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
                 app:cardPreventCornerOverlap="false"
@@ -141,7 +148,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="RAM"
-                    android:textColor="@color/background_light" />
+                    android:textColor="?attr/backgroundColor"
+                    android:textStyle="bold" />
 
             </androidx.cardview.widget.CardView>
 
@@ -155,7 +163,7 @@
                 android:clickable="false"
                 android:elevation="5dp"
                 android:radius="10dp"
-                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardBackgroundColor="?attr/colorPrimary"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
                 app:cardPreventCornerOverlap="false"
@@ -168,7 +176,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="CPU Cooler"
-                    android:textColor="@color/background_light" />
+                    android:textColor="?attr/backgroundColor"
+                    android:textStyle="bold" />
 
             </androidx.cardview.widget.CardView>
 
@@ -191,7 +200,7 @@
                 android:clickable="false"
                 android:elevation="5dp"
                 android:radius="10dp"
-                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardBackgroundColor="?attr/colorPrimary"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
                 app:cardPreventCornerOverlap="false"
@@ -204,7 +213,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Graphics Card"
-                    android:textColor="@color/background_light" />
+                    android:textColor="?attr/backgroundColor"
+                    android:textStyle="bold" />
 
             </androidx.cardview.widget.CardView>
 
@@ -218,7 +228,7 @@
                 android:clickable="false"
                 android:elevation="5dp"
                 android:radius="10dp"
-                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardBackgroundColor="?attr/colorPrimary"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
                 app:cardPreventCornerOverlap="false"
@@ -231,7 +241,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Storage"
-                    android:textColor="@color/background_light" />
+                    android:textColor="?attr/backgroundColor"
+                    android:textStyle="bold" />
 
             </androidx.cardview.widget.CardView>
 
@@ -254,7 +265,7 @@
                 android:clickable="false"
                 android:elevation="5dp"
                 android:radius="10dp"
-                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardBackgroundColor="?attr/colorPrimary"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
                 app:cardPreventCornerOverlap="false"
@@ -267,7 +278,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/psu"
-                    android:textColor="@color/background_light" />
+                    android:textColor="?attr/backgroundColor"
+                    android:textStyle="bold" />
 
             </androidx.cardview.widget.CardView>
 
@@ -281,7 +293,7 @@
                 android:clickable="false"
                 android:elevation="5dp"
                 android:radius="10dp"
-                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardBackgroundColor="?attr/colorPrimary"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
                 app:cardPreventCornerOverlap="false"
@@ -294,7 +306,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Case"
-                    android:textColor="@color/background_light" />
+                    android:textColor="?attr/backgroundColor"
+                    android:textStyle="bold" />
 
             </androidx.cardview.widget.CardView>
 
@@ -302,12 +315,16 @@
 
         <Button
             android:id="@+id/saveBuild"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginHorizontal="64dp"
             android:background="@drawable/shape_round"
+            android:backgroundTint="?attr/colorPrimary"
             android:text="@string/saveBuild"
+            android:textColor="?attr/backgroundColor"
+            android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/buildLL4" />
     </LinearLayout>
 

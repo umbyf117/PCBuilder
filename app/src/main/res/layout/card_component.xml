@@ -7,7 +7,7 @@
     android:layout_height="400px"
     android:orientation="horizontal"
     android:background="@drawable/shape_round"
-    android:backgroundTint="@color/white">
+    android:backgroundTint="?attr/background">
 
     <ImageView
         android:id="@+id/buildImage"
@@ -32,7 +32,7 @@
             android:layout_marginTop="16dp"
             android:fontFamily="@font/manteka"
             android:text="Component Name"
-            android:textColor="@color/text_light"
+            android:textColor="?android:attr/textColor"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

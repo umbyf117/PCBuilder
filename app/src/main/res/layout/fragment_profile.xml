@@ -5,14 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light"
+    android:background="?attr/background"
     android:id="@+id/profileFragment">
 
     <LinearLayout
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:background="?attr/colorPrimaryDark"
+        android:background="?attr/colorPrimary"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -40,7 +40,7 @@
         android:fontFamily="@font/jurabold"
         android:text="Username"
         android:textAlignment="center"
-        android:textColor="?android:attr/colorAccent"
+        android:textColor="?attr/colorPrimaryDark"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/top_bar"
@@ -57,7 +57,7 @@
         android:text="0.0"
         android:textAlignment="textStart"
         android:textAllCaps="true"
-        android:textColor="?attr/colorAccent"
+        android:textColor="?attr/colorPrimaryDark"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/top_bar"
@@ -79,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@color/blue"
+            android:background="?attr/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -90,8 +90,8 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/round_top"
                 android:text="Created Build"
-                android:textColor="?android:attr/textColorPrimary"
-                app:backgroundTint="@color/background_light" />
+                android:textColor="?android:attr/textColor"
+                app:backgroundTint="?attr/background" />
         </LinearLayout>
 
         <LinearLayout
@@ -100,7 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="?attr/colorPrimaryDark"
+            android:background="?attr/background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -109,9 +109,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Favorite Build"
-                android:textColor="?android:attr/textColorPrimary"
+                android:textColor="?android:attr/textColor"
                 android:background="@drawable/round_bottom"
-                android:backgroundTint="@color/blue"/>
+                android:backgroundTint="?attr/colorPrimary"/>
         </LinearLayout>
     </LinearLayout>
 
