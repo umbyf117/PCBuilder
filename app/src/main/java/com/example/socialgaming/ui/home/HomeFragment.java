@@ -1,6 +1,9 @@
 package com.example.socialgaming.ui.home;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+
+import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -14,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -30,6 +35,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.transition.Fade;
 
 import com.example.socialgaming.R;
 import com.example.socialgaming.data.Build;
@@ -44,6 +50,8 @@ import com.example.socialgaming.ui.Search.SearchFragment;
 import com.example.socialgaming.view.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+
+import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -138,6 +146,8 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         );
         params.setMargins(0, 16, 0, 16);
 
+        ImageView image = templateView.findViewById(R.id.buildImage);
+
         TextView name = templateView.findViewById(R.id.nameBuild);
         name.setText(b.getName());
 
@@ -208,6 +218,13 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
 
         }
 
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createpopupwindow(templateView, b);
+            }
+        });
+
         templateView.setLayoutParams(params);
         buildList.addView(templateView);
     }
@@ -250,6 +267,22 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
     public void onImageReceived(Bitmap bitmap, BuildFirestore build) {
         build.setImage(bitmap);
         setBuildBubble(LayoutInflater.from(buildList.getContext()), currentView, build);
+    }
+
+    public void createpopupwindow(View templateView, BuildFirestore b) {
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popUpView = inflater.inflate(R.layout.card_component, null);
+
+        int width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+        PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
+        templateView.post(new Runnable() {
+            @Override
+            public void run() {
+                popupWindow.showAtLocation(templateView, Gravity.CENTER, 0, 0);
+            }
+        });
     }
 
 }
