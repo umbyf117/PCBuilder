@@ -96,18 +96,13 @@ public class BuildRepository {
         UploadTask uploadTask = bitmapRef.putBytes(ImageUtils.encodeBitmapToByteArray(bitmap));
     }
 
-    public void downloadBitmapFromFirebaseStorage(final String imageName, BuildFirestore build, IBuildCallback callback) {
-        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-        StorageReference storageReference = firebaseStorage.getReference().child("images/" + imageName);
+    public void downloadBitmapFromFirebaseStorage(String imageName, BuildFirestore build, IBuildCallback callback) {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference()
+                .child("images/").child(imageName + ".jpeg");
 
         final long ONE_MEGABYTE = 1024 * 1024;
-        storageReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
-            callback.onImageReceived(ImageUtils.decodeByteArrayToBitmap(bytes), build);
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
+        storageReference.getBytes(ONE_MEGABYTE * 10).addOnSuccessListener(bytes -> {
+            callback.onImageReceived(BitmapFactory.decodeByteArray(bytes, 0, bytes.length), build);
         });
 
     }

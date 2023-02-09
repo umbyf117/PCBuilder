@@ -54,7 +54,7 @@ public class RegisterFragment extends Fragment {
     private void inizializeUI(View view) {
 
         signUpButton = view.findViewById(R.id.registerButton);
-        signInText = view.findViewById(R.id.signin_text);
+        signInText = view.findViewById(R.id.signup_text);
         emailInputRegister = view.findViewById(R.id.textInputMailReg);
         emailTextRegister = view.findViewById(R.id.txtMailRegister);
         passwordInputRegister = view.findViewById(R.id.textInputPassword);

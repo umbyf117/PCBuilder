@@ -29,10 +29,13 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -42,7 +45,6 @@ import com.example.socialgaming.R;
 import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.BuildFirestore;
 import com.example.socialgaming.data.User;
-import com.example.socialgaming.databinding.FragmentHomeBinding;
 import com.example.socialgaming.repository.callbacks.IBuildCallback;
 import com.example.socialgaming.repository.callbacks.IUserCallback;
 import com.example.socialgaming.repository.component.BuildRepository;
@@ -79,12 +81,6 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
     private TextView username;
     private ImageView image;
 
-    public static HomeFragment newInstance(User user) {
-        HomeFragment homeFragment = new HomeFragment();
-        homeFragment.user = user;
-        return homeFragment;
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,22 +116,6 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         return currentView;
     }
 
-    public void setHomePageBubbles() {
-
-        // Recupera l'istanza della ScrollView
-        buildList = currentView.findViewById(R.id.buildLayout);
-
-        // Crea una nuova istanza di LayoutInflater
-        LayoutInflater inflater = LayoutInflater.from(buildList.getContext());
-
-        //List<Build> builds = homeViewModel.getBuildRepository().getBuildList(BUILD_PER_LOAD, 0, this);
-        if(builds != null)
-            for(BuildFirestore b : builds) {
-                setBuildBubble(inflater, currentView, b);
-            }
-
-    }
-
     public void setBuildBubble(LayoutInflater inflater, View view, BuildFirestore b) {
         // Inflate il layout incluso (template.xml)
         View templateView = inflater.inflate(R.layout.bubble_template, null);
@@ -149,8 +129,8 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
 
         ImageView image = templateView.findViewById(R.id.buildImage);
         image.setImageBitmap(b.getImage());
-        image.getLayoutParams().width = 400;
-        image.getLayoutParams().height = 400;
+        image.setMaxWidth(125);
+        image.setMaxHeight(125);
 
 
         TextView name = templateView.findViewById(R.id.nameBuild);
@@ -223,26 +203,114 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
 
         }
 
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createpopupwindow(templateView, b);
+        ConstraintLayout information = templateView.findViewById(R.id.elementsBuildLayout);
+        setupInformation(b, information);
+
+        ViewGroup.LayoutParams params1 = information.getLayoutParams();
+        params1.height = 0;
+
+        information.setLayoutParams(params1);
+        information.requestLayout();
+        templateView.setLayoutParams(params);
+
+        templateView.setOnClickListener(view1 -> {
+
+            if (params1.height == 0) {
+                params1.height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+                Toast.makeText(this.getContext(), "Listener Estensione", Toast.LENGTH_SHORT).show();
             }
+            else {
+                params1.height = 0;
+                Toast.makeText(this.getContext(), "Listener Compressione", Toast.LENGTH_SHORT).show();
+            }
+            information.setLayoutParams(params1);
+            information.requestLayout();
+
         });
 
-        templateView.setLayoutParams(params);
         buildList.addView(templateView);
+
     }
 
+    @SuppressLint("SetTextI18n")
+    private void setupInformation(BuildFirestore b, ConstraintLayout information) {
 
-    private void showPopupWindow(View view){
-        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.card_bubble, null);
+        int elements = 8;
 
-        int width = ViewGroup.LayoutParams.WRAP_CONTENT;
-        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true;
-        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+        TextView[] textViewsTitle = new TextView[elements];
+        TextView[] textViewsPrice = new TextView[elements];
+
+        textViewsTitle[0] = information.findViewById(R.id.title1);
+        textViewsPrice[0] = information.findViewById(R.id.price1);
+        textViewsTitle[1] = information.findViewById(R.id.title2);
+        textViewsPrice[1] = information.findViewById(R.id.price2);
+        textViewsTitle[2] = information.findViewById(R.id.title3);
+        textViewsPrice[2] = information.findViewById(R.id.price3);
+        textViewsTitle[3] = information.findViewById(R.id.title4);
+        textViewsPrice[3] = information.findViewById(R.id.price4);
+        textViewsTitle[4] = information.findViewById(R.id.title5);
+        textViewsPrice[4] = information.findViewById(R.id.price5);
+        textViewsTitle[5] = information.findViewById(R.id.title6);
+        textViewsPrice[5] = information.findViewById(R.id.price6);
+        textViewsTitle[6] = information.findViewById(R.id.title7);
+        textViewsPrice[6] = information.findViewById(R.id.price7);
+        textViewsTitle[7] = information.findViewById(R.id.title8);
+        textViewsPrice[7] = information.findViewById(R.id.price8);
+
+        textViewsTitle[0].setText("Motherboard: \n" + b.getBoardTitle() +
+                "\n\t\tForm Factor: " +
+                "\n\t\tChipset:");
+        textViewsPrice[0].setText("€ " + b.getBoardPrice() +
+                "\n" + b.getFormFactor() +
+                "\n" + b.getChipset());
+        textViewsTitle[1].setText("CPU: \n" + b.getCpuTitle() +
+                "\n\t\tClock Speed: ");
+        textViewsPrice[1].setText("€ " + b.getCpuPrice() +
+                "\n" + b.getSpeedCpu());
+        String rams = "Rams >";
+        for(String s : b.getRamsTitle()) {
+            rams = rams + "\n\t\t" + s +
+                    "\n\t\t\t\tSpeed:" +
+                    "\n\t\t\t\tType:";
+        }
+        String ramsPrices = "€ " + b.totRamsPrice();
+        for(int i = 0; i < b.getRamsPrice().size(); i++) {
+            ramsPrices = ramsPrices + "\n\t\t€ " + b.getRamsPrice().get(i) +
+                    "\n" + b.getSizeRams().get(i) +
+                    "\n"+ b.getRamsType().get(i);
+        }
+        textViewsTitle[2].setText(rams);
+        textViewsPrice[2].setText(ramsPrices);
+        String memories = "Hard Disks >";
+        for(String s : b.getMemoriesTitle())
+            memories = memories + "\n\t\t" + s+
+                    "\n\t\t\t\tDimension:" +
+                    "\n\t\t\t\tType:";
+        String memoriesPrices = "€ " + b.totMemoriesPrice();
+        for(int i = 0; i < b.getMemoriesPrice().size(); i++) {
+            memoriesPrices = memoriesPrices + "\n€ " + b.getMemoriesPrice().get(i) +
+                    "\n" + b.getMemoriesDimension().get(i) +
+                    "\n"+ b.getMemoriesType().get(i);
+        }
+        textViewsTitle[3].setText(memories);
+        textViewsPrice[3].setText(memoriesPrices);
+        textViewsTitle[4].setText("GPU: \n" + b.getGpuTitle() +
+                "\n\t\tSpeed: " +
+                "\n\t\tMemory:");
+        textViewsPrice[4].setText("€ " + b.getGpuPrice() +
+                "\n" + b.getSpeedGpu() +
+                "\n" + b.getMemoryGpu());
+        textViewsTitle[5].setText("Case: \n" + b.getHouseTitle());
+        textViewsPrice[5].setText("€ " + b.getHousePrice());
+        textViewsTitle[6].setText("Power Supply Unit: \n" + b.getPsuTitle() +
+                "\n\t\tPower:");
+        textViewsPrice[6].setText("€ " + b.getPsuPrice() +
+                "\n" + b.getPowerPsu() + " W");
+        textViewsTitle[7].setText("CPU Fan: \n" + b.getFanTitle() +
+                "\n\t\tRPM:");
+        textViewsPrice[7].setText("€ " + b.getFanPrice() +
+                "\n" + b.getRpmFan());
+
 
     }
 
@@ -264,7 +332,6 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
             builds.add(build);
             homeViewModel.getBuildRepository()
                     .downloadBitmapFromFirebaseStorage(build.getUuid().toString(), build, this);
-            setBuildBubble(LayoutInflater.from(buildList.getContext()), currentView, build);
         }
     }
 
@@ -275,12 +342,16 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
 
         for(DocumentSnapshot d : documentsSnapshot)
             this.onBuildReceived(d);
-        //setHomePageBubbles();
     }
 
     @Override
     public void onImageReceived(Bitmap bitmap, BuildFirestore build) {
-        build.setImage(bitmap);
+        int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
+        Bitmap croppedBitmap = Bitmap.createBitmap(bitmap,
+                (bitmap.getWidth() - dimension) / 2,
+                (bitmap.getHeight() - dimension) / 2,
+                dimension, dimension);
+        build.setImage(croppedBitmap);
         setBuildBubble(LayoutInflater.from(buildList.getContext()), currentView, build);
     }
 

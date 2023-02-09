@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
+    android:layout_marginTop="16dp"
     android:layout_marginHorizontal="16dp"
     android:background="@drawable/shape_round"
-    android:backgroundTint="?attr/colorPrimaryDark">
+    android:backgroundTint="?attr/colorPrimary">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -22,7 +22,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/shape_circe"
+        android:background="@drawable/shape_circle"
         android:backgroundTint="?attr/colorPrimaryDark"
         android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,7 +71,8 @@
             android:layout_height="match_parent"
             android:layout_marginHorizontal="8dp"
             android:orientation="vertical"
-            android:backgroundTint=""/>
+            android:background="@drawable/shape_round"
+            android:backgroundTint="?attr/colorPrimaryVariant"/>
 
     </ScrollView>
 

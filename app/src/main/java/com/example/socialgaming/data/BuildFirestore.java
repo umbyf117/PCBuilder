@@ -70,7 +70,7 @@ public class BuildFirestore {
 
         //INFORMAZIONI PSU
         PSU psu = build.getPsu();
-        this.psuTitle = psu.getTitle();
+        this.psuTitle = psu.getBrand() + " " + psu.getModel();
         this.psuPrice = psu.getPrice();
         this.powerPsu = psu.getPower() + " W";
 
@@ -299,19 +299,19 @@ public class BuildFirestore {
     }
 
     public double totRamsPrice() {
-        Double totRamPrice = 0.0;
+        int totRamPrice = 0;
         for (double ram: ramsPrice) {
-            totRamPrice += ram;
+            totRamPrice += ram * 100;
         }
-        return totRamPrice;
+        return totRamPrice/100.0;
     }
 
     public double totMemoriesPrice() {
-        Double totMemoriesPrice = 0.0;
+        int totMemoriesPrice = 0;
         for (double memory: memoriesPrice) {
-            totMemoriesPrice += memory;
+            totMemoriesPrice += memory * 100;
         }
-        return totMemoriesPrice;
+        return totMemoriesPrice / 100.0;
     }
 
 
