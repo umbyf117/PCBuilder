@@ -50,6 +50,7 @@ import com.example.socialgaming.repository.callbacks.IUserCallback;
 import com.example.socialgaming.repository.component.BuildRepository;
 import com.example.socialgaming.repository.user.AuthRepository;
 import com.example.socialgaming.ui.Search.SearchFragment;
+import com.example.socialgaming.utils.BubbleUtils;
 import com.example.socialgaming.view.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -204,7 +205,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         }
 
         ConstraintLayout information = templateView.findViewById(R.id.elementsBuildLayout);
-        setupInformation(b, information);
+        BubbleUtils.setupInformation(b, information);
 
         ViewGroup.LayoutParams params1 = information.getLayoutParams();
         params1.height = 0;
@@ -229,88 +230,6 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         });
 
         buildList.addView(templateView);
-
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void setupInformation(BuildFirestore b, ConstraintLayout information) {
-
-        int elements = 8;
-
-        TextView[] textViewsTitle = new TextView[elements];
-        TextView[] textViewsPrice = new TextView[elements];
-
-        textViewsTitle[0] = information.findViewById(R.id.title1);
-        textViewsPrice[0] = information.findViewById(R.id.price1);
-        textViewsTitle[1] = information.findViewById(R.id.title2);
-        textViewsPrice[1] = information.findViewById(R.id.price2);
-        textViewsTitle[2] = information.findViewById(R.id.title3);
-        textViewsPrice[2] = information.findViewById(R.id.price3);
-        textViewsTitle[3] = information.findViewById(R.id.title4);
-        textViewsPrice[3] = information.findViewById(R.id.price4);
-        textViewsTitle[4] = information.findViewById(R.id.title5);
-        textViewsPrice[4] = information.findViewById(R.id.price5);
-        textViewsTitle[5] = information.findViewById(R.id.title6);
-        textViewsPrice[5] = information.findViewById(R.id.price6);
-        textViewsTitle[6] = information.findViewById(R.id.title7);
-        textViewsPrice[6] = information.findViewById(R.id.price7);
-        textViewsTitle[7] = information.findViewById(R.id.title8);
-        textViewsPrice[7] = information.findViewById(R.id.price8);
-
-        textViewsTitle[0].setText("Motherboard: \n" + b.getBoardTitle() +
-                "\n\t\tForm Factor: " +
-                "\n\t\tChipset:");
-        textViewsPrice[0].setText("€ " + b.getBoardPrice() +
-                "\n" + b.getFormFactor() +
-                "\n" + b.getChipset());
-        textViewsTitle[1].setText("CPU: \n" + b.getCpuTitle() +
-                "\n\t\tClock Speed: ");
-        textViewsPrice[1].setText("€ " + b.getCpuPrice() +
-                "\n" + b.getSpeedCpu());
-        String rams = "Rams >";
-        for(String s : b.getRamsTitle()) {
-            rams = rams + "\n\t\t" + s +
-                    "\n\t\t\t\tSpeed:" +
-                    "\n\t\t\t\tType:";
-        }
-        String ramsPrices = "€ " + b.totRamsPrice();
-        for(int i = 0; i < b.getRamsPrice().size(); i++) {
-            ramsPrices = ramsPrices + "\n\t\t€ " + b.getRamsPrice().get(i) +
-                    "\n" + b.getSizeRams().get(i) +
-                    "\n"+ b.getRamsType().get(i);
-        }
-        textViewsTitle[2].setText(rams);
-        textViewsPrice[2].setText(ramsPrices);
-        String memories = "Hard Disks >";
-        for(String s : b.getMemoriesTitle())
-            memories = memories + "\n\t\t" + s+
-                    "\n\t\t\t\tDimension:" +
-                    "\n\t\t\t\tType:";
-        String memoriesPrices = "€ " + b.totMemoriesPrice();
-        for(int i = 0; i < b.getMemoriesPrice().size(); i++) {
-            memoriesPrices = memoriesPrices + "\n€ " + b.getMemoriesPrice().get(i) +
-                    "\n" + b.getMemoriesDimension().get(i) +
-                    "\n"+ b.getMemoriesType().get(i);
-        }
-        textViewsTitle[3].setText(memories);
-        textViewsPrice[3].setText(memoriesPrices);
-        textViewsTitle[4].setText("GPU: \n" + b.getGpuTitle() +
-                "\n\t\tSpeed: " +
-                "\n\t\tMemory:");
-        textViewsPrice[4].setText("€ " + b.getGpuPrice() +
-                "\n" + b.getSpeedGpu() +
-                "\n" + b.getMemoryGpu());
-        textViewsTitle[5].setText("Case: \n" + b.getHouseTitle());
-        textViewsPrice[5].setText("€ " + b.getHousePrice());
-        textViewsTitle[6].setText("Power Supply Unit: \n" + b.getPsuTitle() +
-                "\n\t\tPower:");
-        textViewsPrice[6].setText("€ " + b.getPsuPrice() +
-                "\n" + b.getPowerPsu() + " W");
-        textViewsTitle[7].setText("CPU Fan: \n" + b.getFanTitle() +
-                "\n\t\tRPM:");
-        textViewsPrice[7].setText("€ " + b.getFanPrice() +
-                "\n" + b.getRpmFan());
-
 
     }
 

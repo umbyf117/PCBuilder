@@ -288,8 +288,24 @@ public class BuildFirestore {
         this.powerPsu = (String) attributes.get("powerPsu");
     }
 
+    //RAMS METHODS
+    public int getRamsTotalDimension() {
+        int dim = 0;
+        for(int d : sizeRams)
+            dim = dim + d;
+        return dim;
+    }
 
-    //PRICE METHOD
+    //HARD DISK METHODS
+    public int getMemoriesTotalDimension() {
+        int dim = 0;
+        for(int d : memoriesDimension)
+            dim = dim + d;
+        return dim;
+    }
+
+
+    //PRICE METHODS
     public double getTotalPrice() {
         double totPrice;
         totPrice = boardPrice + cpuPrice + totRamsPrice() + fanPrice + gpuPrice + totMemoriesPrice() +
