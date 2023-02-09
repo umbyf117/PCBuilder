@@ -162,14 +162,23 @@ public class BuildFirestore {
     }
 
     public void setAttributes(Map<String, Object> attributes) {
-        memoriesTitle = (List<String>) attributes.get("memoriesTitle");
-        memoriesPrice = (List<Double>) attributes.get("memoriesPrice");
-        memoriesType = (List<String>) attributes.get("memoriesType");
-        memoriesDimension = (List<Integer>) attributes.get("memoriesDimension");
+        this.memoriesTitle = (List<String>) attributes.get("memoriesTitle");
+        this.memoriesPrice = (List<Double>) attributes.get("memoriesPrice");
+        this.memoriesType = (List<String>) attributes.get("memoriesType");
+        this.memoriesDimension = new ArrayList<>();
+        List<Long> memoriesDimensionRemote = (List<Long>) attributes.get("memoriesDimension");
+        for(Long l : memoriesDimensionRemote)
+            memoriesDimension.add(l.intValue());
         this.ramsTitle = (List<String>) attributes.get("ramsTitle");
         this.ramsPrice = (List<Double>) attributes.get("ramsPrice");
-        this.sizeRams = (List<Integer>) attributes.get("sizeRams");
-        this.quantityRams = (List<Integer>) attributes.get("quantityRams");
+        this.sizeRams = new ArrayList<>();
+        List<Long> sizeRamsRemote = (List<Long>) attributes.get("sizeRams");
+        for(Long l : sizeRamsRemote)
+            sizeRams.add(l.intValue());
+        this.quantityRams = new ArrayList<>();
+        List<Long> quantityRamsRemote = (List<Long>) attributes.get("quantityRams");
+        for(Long l : quantityRamsRemote)
+            quantityRams.add(l.intValue());
         this.ramsType = (List<String>) attributes.get("ramsType");
         this.name = (String) attributes.get("name");
         this.creator = (String) attributes.get("creator");
@@ -291,16 +300,16 @@ public class BuildFirestore {
     //RAMS METHODS
     public int getRamsTotalDimension() {
         int dim = 0;
-        for(int d : sizeRams)
-            dim = dim + d;
+        for(int i = 0; i < sizeRams.size(); i++)
+            dim = dim + sizeRams.get(i).intValue();
         return dim;
     }
 
     //HARD DISK METHODS
     public int getMemoriesTotalDimension() {
         int dim = 0;
-        for(int d : memoriesDimension)
-            dim = dim + d;
+        for(int i = 0; i < memoriesDimension.size(); i++)
+            dim = dim + memoriesDimension.get(i).intValue();
         return dim;
     }
 
