@@ -11,6 +11,7 @@ import com.example.socialgaming.utils.ImageUtils;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-public class User {
+public class User implements Serializable {
     public static Bitmap DEFAULT_IMAGE;
 
     private String mail;
@@ -60,9 +61,6 @@ public class User {
             this.created = new ArrayList<>(((Map<String, String>)data.get("created")).values());
         else
             this.created = (List<String>) data.get("created");
-        List<Long> byteList = ((List<Long>)data.get("image"));
-        byte[] byteArray = ImageUtils.decodeListToArray(byteList);
-        this.image = ImageUtils.decodeByteArrayToBitmap(byteArray);
     }
 
     public Map<String, Object> getMap() {

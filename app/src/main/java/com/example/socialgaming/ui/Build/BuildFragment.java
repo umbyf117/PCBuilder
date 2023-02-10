@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.OkHttpClient;
 
-public class BuildFragment extends Fragment implements IUserCallback {
+public class BuildFragment extends Fragment {
 
     public static final int COMPONENT_PER_VIEW = 20;
     private static final int PICK_IMAGE_REQUEST_CODE = 1;
@@ -65,7 +65,9 @@ public class BuildFragment extends Fragment implements IUserCallback {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getArguments() != null) {
-            build = (Build) getArguments().getSerializable("build");
+            if(getArguments().getSerializable("build") != null)
+                build = (Build) getArguments().getSerializable("build");
+
             AppCompatDelegate.setDefaultNightMode(getArguments().getInt("mode"));
             for(Fragment f : this.getActivity().getSupportFragmentManager().getFragments())
                 if(!this.equals(f))
@@ -73,18 +75,16 @@ public class BuildFragment extends Fragment implements IUserCallback {
         }
 
         activity = (MainActivity) getActivity();
+        user = activity.getUser();
         activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
 
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         container.removeAllViews();
         currentView = inflater.inflate(R.layout.fragment_build, container, false);
         buildViewModel = new BuildViewModel(this.getActivity().getApplication());
-
-        user = new User();
-        buildViewModel.getUserRepository().getUserData(
-                buildViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName(), this);
 
         buildName = currentView.findViewById(R.id.editTxtBuildName);
         image = currentView.findViewById(R.id.imageView);
@@ -201,6 +201,7 @@ public class BuildFragment extends Fragment implements IUserCallback {
         Bundle bundle = new Bundle();
         bundle.putSerializable("type", type);
         bundle.putSerializable("build", build);
+        bundle.putSerializable("user", user);
         bundle.putInt("mode", AppCompatDelegate.getDefaultNightMode());
 
         ComponentsFragment componentFragment = new ComponentsFragment();
@@ -312,10 +313,4 @@ public class BuildFragment extends Fragment implements IUserCallback {
         }
     }
 
-    @Override
-    public void onUserReceived(DocumentSnapshot documentSnapshot) {
-        if(user == null)
-            user = new User();
-        user.updateWithDocument(documentSnapshot);
-    }
 }

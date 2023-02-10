@@ -64,7 +64,7 @@ import java.util.List;
 import java.util.UUID;
 
 @SuppressLint("ResourceType")
-public class HomeFragment extends Fragment implements IUserCallback, IBuildCallback {
+public class HomeFragment extends Fragment implements IBuildCallback {
 
     private static final int BUILD_PER_LOAD = 10;
 
@@ -89,44 +89,24 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         activity = (MainActivity) this.getActivity();
+        user = activity.getUser();
+
         currentView = inflater.inflate(R.layout.fragment_home, container, false);
 
         homeViewModel = new HomeFragmentViewModel(getActivity().getApplication());
-
-        if(homeViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName().isEmpty())
-            homeViewModel.getAuthRepository().logOut();
-        else
-            homeViewModel.getUserRepository().getUserData(
-                    homeViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName(),
-                    this);
-
         homeViewModel.getBuildRepository().getBuildList(BUILD_PER_LOAD, 0, this);
 
         buildList = currentView.findViewById(R.id.buildLayout);
 
-        user = new User();
         builds = new ArrayList<>();
 
         username = currentView.findViewById(R.id.username);
-        image = currentView.findViewById(R.id.prof_pic);
-
-        if(user != null)
-            username.setText(user.getUsername());
-
-        return currentView;
-    }
-
-    @SuppressLint("ResourceType")
-
-
-    @Override
-    public void onUserReceived(DocumentSnapshot documentSnapshot) {
-        if(user == null)
-            user = new User();
-        user.updateWithDocument(documentSnapshot);
         username.setText(user.getUsername());
+
+        image = currentView.findViewById(R.id.prof_pic);
         image.setImageBitmap(user.getImage());
 
+        return currentView;
     }
 
     @Override

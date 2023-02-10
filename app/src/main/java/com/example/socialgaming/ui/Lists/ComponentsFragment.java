@@ -42,14 +42,14 @@ import com.example.socialgaming.utils.ImageUtils;
 import com.example.socialgaming.view.MainActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.io.Serializable;
+
 public class ComponentsFragment extends Fragment {
 
     private static final int PX_VALUE = 400;
 
     private MainActivity activity;
     private ComponentType type;
-    private OnCardSelectedListener listener;
-    private ComponentsViewModel viewModel;
     private LinearLayout containerComponents;
     private ComponentBase[] components;
     private View currentView;
@@ -63,7 +63,6 @@ public class ComponentsFragment extends Fragment {
 
         activity = (MainActivity) getActivity();
         activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
-        viewModel = new ViewModelProvider(this).get(ComponentsViewModel.class);
 
         if (getArguments() != null) {
             type = (ComponentType) getArguments().getSerializable("type");

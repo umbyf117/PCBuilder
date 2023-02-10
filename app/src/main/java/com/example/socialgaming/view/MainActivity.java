@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -16,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.socialgaming.Interfaces.OnCardSelectedListener;
 import com.example.socialgaming.R;
 import com.example.socialgaming.data.User;
+import com.example.socialgaming.repository.callbacks.IUserCallback;
 import com.example.socialgaming.ui.Build.BuildFragment;
 import com.example.socialgaming.ui.Search.SearchFragment;
 import com.example.socialgaming.ui.Settings.SettingsFragment;
@@ -25,12 +27,12 @@ import com.example.socialgaming.utils.FragmentUtils;
 import com.example.socialgaming.view.model.MainViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 @SuppressLint("ResourceType")
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements IUserCallback {
 
     public static final String TAG = "Main Activity";
-
 
     public ColorStateList colorDark;
     public ColorStateList color;
@@ -39,9 +41,9 @@ public class MainActivity extends AppCompatActivity {
     public ColorStateList textColor;
     public ColorStateList gold;
 
-
     private MainViewModel viewModel;
-    private OnCardSelectedListener mlistener;
+    private User user;
+    private boolean modifiedUser;
 
     private BottomNavigationView bottomNavigationView;
     private HomeFragment homeFragment;
@@ -67,25 +69,15 @@ public class MainActivity extends AppCompatActivity {
         instantiateColors();
 
         viewModel = new MainViewModel(getApplication());
-
         viewModel.getUserLiveData().observe(this, firebaseUser -> {
             if(firebaseUser == null)
                 FragmentUtils.startActivity(this, new Intent(MainActivity.this, LoginActivity.class), true);
             });
+        viewModel.getUserRepository().getUserData(viewModel.getUserLiveData().getValue().getDisplayName(), this);
 
-        homeFragment = new HomeFragment();
-        profileFragment = new ProfileFragment();
-        buildFragment = new BuildFragment();
-        searchFragment = new SearchFragment();
-        settingsFragment = new SettingsFragment();
-
-        currentFragment = homeFragment;
+        modifiedUser = false;
 
         setContentView(R.layout.activity_main);
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.container_home, currentFragment);
-        fragmentTransaction.commit();
-
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         setupNavigationListener();
@@ -97,9 +89,19 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch(item.getItemId()){
                 case R.id.homepage:
+                    if(modifiedUser == true) {
+                        modifiedUser = false;
+                        viewModel.getUserRepository().updateUserBuilds(user);
+                        homeFragment = new HomeFragment();
+                    }
                     getSupportFragmentManager().beginTransaction().replace(R.id.container_home, homeFragment).commit();
                     return true;
                 case R.id.profile:
+                    if(modifiedUser == true) {
+                        modifiedUser = false;
+                        viewModel.getUserRepository().updateUserBuilds(user);
+                        profileFragment = new ProfileFragment();
+                    }
                     getSupportFragmentManager().beginTransaction().replace(R.id.container_home, profileFragment).commit();
                     return true;
                 case R.id.create_build:
@@ -148,9 +150,43 @@ public class MainActivity extends AppCompatActivity {
         return viewModel.getUserLiveData().getValue();
     }
 
-    public void setOnCardSelectedListener(OnCardSelectedListener listener){
-        mlistener = listener;
+
+    @Override
+    public void onUserReceived(DocumentSnapshot documentSnapshot) {
+        if(user == null)
+            user = new User();
+        if(documentSnapshot != null) {
+            user.updateWithDocument(documentSnapshot);
+            viewModel.getUserRepository().downloadBitmapFromFirebaseStorage(user.getUsername(), this);
+        }
     }
 
+    @Override
+    public void onImageReceived(Bitmap image) {
+        if(image != null)
+            user.setImage(image);
+        else
+            user.setImage(User.DEFAULT_IMAGE);
 
+        homeFragment = new HomeFragment();
+        profileFragment = new ProfileFragment();
+        buildFragment = new BuildFragment();
+        searchFragment = new SearchFragment();
+        settingsFragment = new SettingsFragment();
+
+        currentFragment = homeFragment;
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.container_home, currentFragment);
+        fragmentTransaction.commit();
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        modifiedUser = true;
+    }
 }

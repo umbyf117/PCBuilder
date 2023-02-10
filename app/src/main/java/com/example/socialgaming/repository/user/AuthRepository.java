@@ -101,17 +101,13 @@ public class AuthRepository {
                                                             put("username", username);
                                                             put("favorite", new ArrayList<Build>());
                                                             put("created", new ArrayList<Build>());
-                                                            try {
-                                                                byte[] byteArray = ImageUtils.encodeBitmapToByteArray(BitmapFactory.decodeStream(application.getContentResolver().openInputStream(
-                                                                        Uri.parse("android.resource://com.example.socialgaming/" + R.drawable.logo))));
-                                                                List<Integer> byteList = ImageUtils.encodeArrayToList(byteArray);
-                                                                put("image", byteList);
-                                                            } catch (FileNotFoundException e) {
-                                                                e.printStackTrace();
-                                                            }
                                                         }
-                                                    }).addOnCompleteListener(task -> Objects.requireNonNull(userLiveData.getValue())
-                                                            .updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(username).build()))
+                                                    }).addOnCompleteListener(task -> {
+                                                        Objects.requireNonNull(userLiveData.getValue());
+                                                        new UserRepository().uploadBitmapToFirebaseStorage(
+                                                                BitmapFactory.decodeFile("android.resource://com.example.socialgaming/" + R.drawable.logo), username);
+                                                        user.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(username).build());
+                                                    })
                                                     .addOnFailureListener(e -> ViewUtils.displayToast(application,e.getMessage()));
 
                                             }

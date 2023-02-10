@@ -185,7 +185,7 @@ public class BubbleUtils {
 
         if(b.getCreator().equalsIgnoreCase(user.getUsername())) {
             ImageView save = templateView.findViewById(R.id.saveBuild);
-            save.setImageURI(Uri.parse("android.resource://" + activity.getPackageResourcePath() + "/drawable/minus.png"));
+            save.setImageURI(Uri.parse("android.resource://com.example.socialgaming/drawable/minus.png"));
 
             save.setOnClickListener(view -> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);

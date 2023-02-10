@@ -117,17 +117,17 @@ public class UserRepository {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
         // Create a reference to the file to be uploaded with the given name
-        StorageReference bitmapRef = storageRef.child("user/" + imageName + ".jpeg");
+        StorageReference bitmapRef = storageRef.child("users/" + imageName + ".png");
         UploadTask uploadTask = bitmapRef.putBytes(ImageUtils.encodeBitmapToByteArray(bitmap));
     }
 
-    public void downloadBitmapFromFirebaseStorage(String imageName, BuildFirestore build, IBuildCallback callback, boolean created) {
+    public void downloadBitmapFromFirebaseStorage(String imageName, IUserCallback callback) {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference()
-                .child("user/").child(imageName + ".jpeg");
+                .child("users/").child(imageName + ".png");
 
         final long ONE_MEGABYTE = 1024 * 1024;
         storageReference.getBytes(ONE_MEGABYTE * 5).addOnSuccessListener(bytes -> {
-            callback.onImageReceived(BitmapFactory.decodeByteArray(bytes, 0, bytes.length), build, created);
+            callback.onImageReceived(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
         });
 
     }

@@ -35,7 +35,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfileFragment extends Fragment implements IUserCallback, IBuildCallback {
+public class ProfileFragment extends Fragment implements IBuildCallback {
 
     private MainActivity activity;
     private ImageView image;
@@ -61,16 +61,12 @@ public class ProfileFragment extends Fragment implements IUserCallback, IBuildCa
         super.onCreate(savedInstanceState);
         activity = (MainActivity) this.getActivity();
         activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
+        user = activity.getUser();
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         profileViewModel = new ProfileViewModel(getActivity().getApplication());
-
-        user = new User();
-        profileViewModel.getUserRepository().getUserData(
-                profileViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName(),
-                this);
 
         image = view.findViewById(R.id.prof_pic);
 
@@ -85,6 +81,16 @@ public class ProfileFragment extends Fragment implements IUserCallback, IBuildCa
         createdBuilds = view.findViewById(R.id.containerCreatedBuilds);
         favoriteBuilds = view.findViewById(R.id.containerFavoriteBuilds);
 
+        TextView username = view.findViewById(R.id.username);
+        username.setText(user.getUsername());
+        TextView value = view.findViewById(R.id.userValue);
+        value.setText("Builds: " + user.getCreated().size());
+
+        profileViewModel.getBuildRepository().getUserBuilds(user.getCreated(), this, true);
+        profileViewModel.getBuildRepository().getUserBuilds(user.getFavorite(), this, false);
+
+        if (user.getImage() != null)
+            image.setImageBitmap(user.getImage());
 
         switchBuildsListener();
 
@@ -140,23 +146,6 @@ public class ProfileFragment extends Fragment implements IUserCallback, IBuildCa
             }
         });
 
-    }
-
-    @Override
-    public void onUserReceived(DocumentSnapshot documentSnapshot) {
-        if (user == null)
-            user = new User();
-        user.updateWithDocument(documentSnapshot);
-        TextView username = view.findViewById(R.id.username);
-        username.setText(user.getUsername());
-        TextView value = view.findViewById(R.id.userValue);
-        value.setText("Builds: " + user.getCreated().size());
-
-        profileViewModel.getBuildRepository().getUserBuilds(user.getCreated(), this, true);
-        profileViewModel.getBuildRepository().getUserBuilds(user.getFavorite(), this, false);
-
-        if (user.getImage() != null)
-            image.setImageBitmap(user.getImage());
     }
 
     @Override
