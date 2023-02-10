@@ -43,7 +43,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:fontFamily="@font/jurasemibold"
+            android:fontFamily="@font/juraregular"
             android:text="Info 1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/nameComponent" />
@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/jurasemibold"
+            android:fontFamily="@font/juraregular"
             android:text="Info 2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/info1" />
@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/jurasemibold"
+            android:fontFamily="@font/juraregular"
             android:text="Info 3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/info2" />
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="16dp"
-            android:fontFamily="@font/juramedium"
+            android:fontFamily="@font/juraregular"
             android:text="Price"
             android:textAlignment="textEnd"
             app:layout_constraintBottom_toBottomOf="parent"

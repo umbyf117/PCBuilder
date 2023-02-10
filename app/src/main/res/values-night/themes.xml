@@ -8,5 +8,6 @@
         <item name="background">@color/background_night</item>
         <item name="backgroundColor">@color/background_night2</item>
         <item name="android:strokeColor">@color/gold_night</item>
+        <item name="android:textColorPrimary">@color/background_night</item>
     </style>
 </resources>
