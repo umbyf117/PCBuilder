@@ -90,9 +90,23 @@ public class BuildFragment extends Fragment implements IUserCallback {
         image = currentView.findViewById(R.id.imageView);
         image.setBorderWidth(0);
         image.setOnClickListener(listener ->{
+            ImageView hoverImage = currentView.findViewById(R.id.hoverImage);
+            hoverImage.setVisibility(View.GONE);
+            TextView hoverText = currentView.findViewById(R.id.hoverText);
+            hoverText.setVisibility(View.GONE);
             Intent pickImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST_CODE);
         });
+
+        if(build == null)
+            build = new Build();
+
+        if (build.getImage() != null) {
+            ImageView hoverImage = currentView.findViewById(R.id.hoverImage);
+            hoverImage.setVisibility(View.GONE);
+            TextView hoverText = currentView.findViewById(R.id.hoverText);
+            hoverText.setVisibility(View.GONE);
+        }
 
         startCardViews(currentView);
 
@@ -222,35 +236,63 @@ public class BuildFragment extends Fragment implements IUserCallback {
             TextView text = cardviews[1].findViewById(R.id.cpu);
             text.setText(build.getCpu().getBrand() + " " + build.getCpu().getModel());
         }
+        else {
+            TextView text = cardviews[1].findViewById(R.id.cpu);
+            text.setText("CPU");
+        }
 
         if(build.getRams().size() != 0) {
             TextView text = cardviews[2].findViewById(R.id.ram);
             text.setText("RAM Memory = " + build.getRam() + " GB");
+        }
+        else {
+            TextView text = cardviews[2].findViewById(R.id.ram);
+            text.setText("RAM");
         }
 
         if(build.getFan() != null) {
             TextView text = cardviews[3].findViewById(R.id.cpuFan);
             text.setText(build.getFan().getBrand() + " " + build.getFan().getModel());
         }
+        else {
+            TextView text = cardviews[3].findViewById(R.id.cpuFan);
+            text.setText("CPU Cooler");
+        }
 
         if(build.getGpu() != null) {
             TextView text = cardviews[4].findViewById(R.id.gpu);
             text.setText(build.getGpu().getBrand() + " " + build.getGpu().getModel());
+        }
+        else {
+            TextView text = cardviews[4].findViewById(R.id.gpu);
+            text.setText("Graphic Card");
         }
 
         if(build.getHarddisks().size() != 0) {
             TextView text = cardviews[5].findViewById(R.id.harddisk);
             text.setText("HD Memory = " + build.getMemory() + " GB");
         }
+        else {
+            TextView text = cardviews[5].findViewById(R.id.harddisk);
+            text.setText("Storage");
+        }
 
         if(build.getPsu() != null) {
             TextView text = cardviews[6].findViewById(R.id.psu);
             text.setText(build.getPsu().getBrand() + " " + build.getPsu().getModel());
         }
+        else {
+            TextView text = cardviews[6].findViewById(R.id.psu);
+            text.setText("Power Supply");
+        }
 
         if(build.getHouse() != null) {
             TextView text = cardviews[7].findViewById(R.id.house);
             text.setText(build.getHouse().getBrand() + " " + build.getHouse().getModel());
+        }
+        else {
+            TextView text = cardviews[7].findViewById(R.id.house);
+            text.setText("Case");
         }
 
     }

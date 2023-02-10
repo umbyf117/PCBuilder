@@ -14,4 +14,5 @@
     <color name="text_light">#FF252525</color>
     <color name="gold_light">#FFFFD700</color>
     <color name="gold_night">#FFDAA520</color>
+    <color name="obscure">#AA000000</color>
 </resources>

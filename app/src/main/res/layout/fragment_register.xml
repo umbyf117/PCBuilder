@@ -53,6 +53,8 @@
             android:background="@drawable/shape_round"
             android:backgroundTint="?attr/backgroundColor"
             android:hint="@string/mail"
+            android:textColor="?android:attr/textColor"
+            app:hintTextColor="?android:attr/textColor"
             android:inputType="textEmailAddress"
             tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -75,6 +77,8 @@
             android:background="@drawable/shape_round"
             android:backgroundTint="?attr/backgroundColor"
             android:hint="@string/username"
+            android:textColor="?android:attr/textColor"
+            app:hintTextColor="?android:attr/textColor"
             android:inputType="text"
             tools:ignore="SpeakableTextPresentCheck"
             android:autofillHints="username" />
@@ -101,6 +105,8 @@
             android:background="@drawable/shape_round"
             android:backgroundTint="?attr/backgroundColor"
             android:hint="@string/password"
+            android:textColor="?android:attr/textColor"
+            app:hintTextColor="?android:attr/textColor"
             android:inputType="textPassword"
             tools:ignore="SpeakableTextPresentCheck" />
 

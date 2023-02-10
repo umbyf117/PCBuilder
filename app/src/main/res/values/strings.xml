@@ -83,5 +83,6 @@
     <string name="psu">Power Supply</string>
     <string name="buildName">Build Name</string>
     <string name="build_image">Build Image</string>
+    <string name="hover">Click to change Image</string>
 
 </resources>

@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     public ColorStateList background;
     public ColorStateList backgroundDark;
     public ColorStateList textColor;
+    public ColorStateList gold;
 
 
     private MainViewModel viewModel;
@@ -134,6 +135,9 @@ public class MainActivity extends AppCompatActivity {
 
         theme.resolveAttribute(android.R.attr.textColor, typedValue, true);
         textColor = ColorStateList.valueOf(typedValue.data);
+
+        theme.resolveAttribute(android.R.attr.strokeColor, typedValue, true);
+        gold = ColorStateList.valueOf(typedValue.data);
     }
 
     public void setNightMode(int mode){

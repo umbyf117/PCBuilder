@@ -230,26 +230,26 @@ public class ComponentsFragment extends Fragment {
 
             if (type == ComponentType.RAM) {
                 RAM ram = (RAM) component;
-                if (!title.getTextColors().equals(activity.colorDark)) {
+                if (!title.getTextColors().equals(activity.gold)) {
                     if (build.canAddRam(ram)) {
                         build.addRam(ram);
-                        title.setTextColor(activity.colorDark);
+                        title.setTextColor(activity.gold);
                     }
                 } else {
                     title.setTextColor(activity.textColor);
                     build.removeRam(ram);
                 }
             } else if (type == ComponentType.MEMORY) {
-                if (!title.getTextColors().equals(activity.colorDark)) {
-                    title.setTextColor(activity.colorDark);
+                if (!title.getTextColors().equals(activity.gold)) {
+                    title.setTextColor(activity.gold);
                     build.addComponent(component, type);
                 } else {
                     title.setTextColor(activity.textColor);
                     build.removeComponent(component, type);
                 }
             } else {
-                if (!title.getTextColors().equals(activity.colorDark)) {
-                    title.setTextColor(activity.colorDark);
+                if (!title.getTextColors().equals(activity.gold)) {
+                    title.setTextColor(activity.gold);
                     ComponentBase c = build.getComponent(type);
                     if (build.addComponent(component, type) && c != null && type != ComponentType.MEMORY)
                         for (int i = 0; i < containerComponents.getChildCount(); i++) {

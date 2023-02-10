@@ -45,11 +45,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_round"
+                android:fontFamily="@font/juraregular"
                 android:hint="@string/buildName"
                 android:textAlignment="textStart"
-                android:textColor="?attr/colorPrimaryVariant"
-                android:textColorHint="?attr/colorPrimaryVariant"
-                app:backgroundTint="?attr/background" />
+                android:textColor="?android:attr/textColor"
+                app:backgroundTint="?attr/backgroundColor"
+                app:hintTextColor="?android:attr/textColor" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
@@ -83,7 +84,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Motherboard"
-                    android:textColor="?attr/backgroundColor"
+                    android:fontFamily="@font/juraregular"
+                    android:textColor="?attr/background"
                     android:textStyle="bold" />
 
             </androidx.cardview.widget.CardView>
@@ -98,7 +100,7 @@
                 android:clickable="false"
                 android:elevation="5dp"
                 android:radius="10dp"
-                app:cardBackgroundColor="?attr/colorPrimary"
+                app:cardBackgroundColor="?attr/colorPrimaryDark"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
                 app:cardPreventCornerOverlap="false"
@@ -111,7 +113,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="CPU"
-                    android:textColor="?attr/backgroundColor"
+                    android:fontFamily="@font/juraregular"
+                    android:textColor="?attr/background"
                     android:textStyle="bold" />
 
             </androidx.cardview.widget.CardView>
@@ -135,7 +138,7 @@
                 android:clickable="false"
                 android:elevation="5dp"
                 android:radius="10dp"
-                app:cardBackgroundColor="?attr/colorPrimary"
+                app:cardBackgroundColor="?attr/colorPrimaryDark"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
                 app:cardPreventCornerOverlap="false"
@@ -148,7 +151,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="RAM"
-                    android:textColor="?attr/backgroundColor"
+                    android:fontFamily="@font/juraregular"
+                    android:textColor="?attr/background"
                     android:textStyle="bold" />
 
             </androidx.cardview.widget.CardView>
@@ -163,7 +167,7 @@
                 android:clickable="false"
                 android:elevation="5dp"
                 android:radius="10dp"
-                app:cardBackgroundColor="?attr/colorPrimary"
+                app:cardBackgroundColor="?attr/colorPrimaryDark"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
                 app:cardPreventCornerOverlap="false"
@@ -176,7 +180,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="CPU Cooler"
-                    android:textColor="?attr/backgroundColor"
+                    android:fontFamily="@font/juraregular"
+                    android:textColor="?attr/background"
                     android:textStyle="bold" />
 
             </androidx.cardview.widget.CardView>
@@ -200,7 +205,7 @@
                 android:clickable="false"
                 android:elevation="5dp"
                 android:radius="10dp"
-                app:cardBackgroundColor="?attr/colorPrimary"
+                app:cardBackgroundColor="?attr/colorPrimaryDark"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
                 app:cardPreventCornerOverlap="false"
@@ -213,7 +218,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Graphics Card"
-                    android:textColor="?attr/backgroundColor"
+                    android:fontFamily="@font/juraregular"
+                    android:textColor="?attr/background"
                     android:textStyle="bold" />
 
             </androidx.cardview.widget.CardView>
@@ -228,7 +234,7 @@
                 android:clickable="false"
                 android:elevation="5dp"
                 android:radius="10dp"
-                app:cardBackgroundColor="?attr/colorPrimary"
+                app:cardBackgroundColor="?attr/colorPrimaryDark"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
                 app:cardPreventCornerOverlap="false"
@@ -241,7 +247,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Storage"
-                    android:textColor="?attr/backgroundColor"
+                    android:fontFamily="@font/juraregular"
+                    android:textColor="?attr/background"
                     android:textStyle="bold" />
 
             </androidx.cardview.widget.CardView>
@@ -253,6 +260,7 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:weightSum="2"
+            android:fontFamily="@font/juraregular"
             app:layout_constraintTop_toBottomOf="@id/buildLL3">
 
             <androidx.cardview.widget.CardView
@@ -265,7 +273,7 @@
                 android:clickable="false"
                 android:elevation="5dp"
                 android:radius="10dp"
-                app:cardBackgroundColor="?attr/colorPrimary"
+                app:cardBackgroundColor="?attr/colorPrimaryDark"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
                 app:cardPreventCornerOverlap="false"
@@ -278,7 +286,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/psu"
-                    android:textColor="?attr/backgroundColor"
+                    android:fontFamily="@font/juraregular"
+                    android:textColor="?attr/background"
                     android:textStyle="bold" />
 
             </androidx.cardview.widget.CardView>
@@ -293,7 +302,7 @@
                 android:clickable="false"
                 android:elevation="5dp"
                 android:radius="10dp"
-                app:cardBackgroundColor="?attr/colorPrimary"
+                app:cardBackgroundColor="?attr/colorPrimaryDark"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
                 app:cardPreventCornerOverlap="false"
@@ -306,8 +315,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="Case"
-                    android:textColor="?attr/backgroundColor"
-                    android:textStyle="bold" />
+                    android:textColor="?attr/background" />
 
             </androidx.cardview.widget.CardView>
 
@@ -323,9 +331,39 @@
             android:background="@drawable/shape_round"
             android:backgroundTint="?attr/colorPrimary"
             android:text="@string/saveBuild"
-            android:textColor="?attr/backgroundColor"
+            android:fontFamily="@font/juraregular"
+            android:textColor="?attr/background"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/buildLL4" />
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/hoverImage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/shape_circle"
+        android:backgroundTint="@color/obscure"
+        android:clickable="false"
+        android:focusable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/buildViewLLayout" />
+
+    <TextView
+        android:id="@+id/hoverText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manteka"
+        android:text="@string/hover"
+        android:textAlignment="center"
+        android:textColor="@color/background_light"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:clickable="false"
+        android:focusable="false"
+        app:layout_constraintBottom_toBottomOf="@+id/hoverImage"
+        app:layout_constraintEnd_toEndOf="@+id/hoverImage"
+        app:layout_constraintStart_toStartOf="@+id/hoverImage"
+        app:layout_constraintTop_toTopOf="@+id/hoverImage" />
 </androidx.constraintlayout.widget.ConstraintLayout>
