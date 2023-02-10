@@ -95,7 +95,7 @@ public class BuildRepository {
 
         documentReference = firestore.collection("/" + BUILD_COLLECTION).document("/" + uuid.toString());
         documentReference.get()
-                .addOnSuccessListener(documentSnapshot -> callback.onBuildReceived(documentSnapshot));
+                .addOnSuccessListener(documentSnapshot -> callback.onBuildReceived(documentSnapshot, false));
 
     }
 
@@ -118,13 +118,14 @@ public class BuildRepository {
                 List<DocumentSnapshot> documents = new ArrayList<>();
 
                 for(String uuid : uuids) {
-                    documentReference = firestore.collection(BUILD_COLLECTION).document("/" + uuid.toString());
+                    documentReference = firestore.collection("/" + BUILD_COLLECTION).document("/" + uuid);
                     documentReference.get()
-                            .addOnSuccessListener(documentSnapshot -> documents.add(documentSnapshot));
-                }
+                            .addOnSuccessListener(documentSnapshot -> {
+                                documents.add(documentSnapshot);
+                                callback.onBuildReceived(documentSnapshot, created);
+                            });
 
-                if(documents.size() != 0)
-                    callback.onBuildsReceived(documents, created);
+                }
 
             }
         }).run();

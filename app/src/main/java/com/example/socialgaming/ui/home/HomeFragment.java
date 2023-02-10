@@ -110,7 +110,7 @@ public class HomeFragment extends Fragment implements IBuildCallback {
     }
 
     @Override
-    public void onBuildReceived(DocumentSnapshot documentSnapshot) {
+    public void onBuildReceived(DocumentSnapshot documentSnapshot, boolean created) {
         BuildFirestore build = new BuildFirestore();
         if(documentSnapshot.exists()) {
             build.updateWithDocument(documentSnapshot);
@@ -126,7 +126,7 @@ public class HomeFragment extends Fragment implements IBuildCallback {
             builds = new ArrayList<>();
 
         for(DocumentSnapshot d : documentsSnapshot)
-            this.onBuildReceived(d);
+            this.onBuildReceived(d, created);
     }
 
     @Override

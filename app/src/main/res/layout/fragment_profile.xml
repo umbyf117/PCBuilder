@@ -109,7 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Favorite Build"
-                android:textColor="?android:attr/textColor"
+                android:textColor="?attr/background"
                 android:background="@drawable/round_bottom"
                 android:backgroundTint="?attr/colorPrimary"/>
         </LinearLayout>
@@ -119,12 +119,12 @@
         android:id="@+id/createdScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="64dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonsLayout">
         <LinearLayout
             android:id="@+id/containerCreatedBuilds"
+            android:layout_marginBottom="64dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -136,15 +136,14 @@
         android:id="@+id/favoriteScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
+        android:layout_marginHorizontal="16dp"
         android:visibility="gone"
         android:clickable="false"
         android:focusable="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonsLayout">
         <LinearLayout
             android:id="@+id/containerFavoriteBuilds"
+            android:layout_marginBottom="64dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">

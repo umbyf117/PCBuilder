@@ -149,13 +149,8 @@ public class ProfileFragment extends Fragment implements IBuildCallback {
     }
 
     @Override
-    public void onBuildReceived(DocumentSnapshot documentSnapshot) {
-    }
-
-    @Override
-    public void onBuildsReceived(List<DocumentSnapshot> documentsSnapshot, boolean created) {
-
-        if (documentsSnapshot == null)
+    public void onBuildReceived(DocumentSnapshot documentSnapshot, boolean created) {
+        if (documentSnapshot == null)
             return;
 
         if (this.created == null)
@@ -164,15 +159,14 @@ public class ProfileFragment extends Fragment implements IBuildCallback {
         if (favorite == null)
             favorite = new ArrayList<>();
 
-        BuildFirestore buildFirestore;
+        BuildFirestore buildFirestore = new BuildFirestore();
+        buildFirestore.updateWithDocument(documentSnapshot);
+        profileViewModel.getBuildRepository().downloadBitmapFromFirebaseStorage(
+                buildFirestore.getUuid().toString(), buildFirestore, this, created);
+    }
 
-        for (DocumentSnapshot d : documentsSnapshot) {
-            if (d != null) {
-                buildFirestore = new BuildFirestore(d.getData());
-                profileViewModel.getBuildRepository().downloadBitmapFromFirebaseStorage(
-                        buildFirestore.getUuid().toString(), buildFirestore, this, created);
-            }
-        }
+    @Override
+    public void onBuildsReceived(List<DocumentSnapshot> documentsSnapshot, boolean created) {
 
     }
 
@@ -181,11 +175,11 @@ public class ProfileFragment extends Fragment implements IBuildCallback {
         build.setImage(bitmap);
         if(created) {
             this.created.add(build);
-            BubbleUtils.setBuildBubble(build, user, this, createdBuildLayout);
+            BubbleUtils.setBuildBubble(build, user, this, createdBuilds);
         }
         else {
             favorite.add(build);
-            BubbleUtils.setBuildBubble(build, user, this, favoriteBuildLayout);
+            BubbleUtils.setBuildBubble(build, user, this, favoriteBuilds);
         }
     }
 
