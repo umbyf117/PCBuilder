@@ -10,6 +10,7 @@ import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.BuildFirestore;
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.repository.callbacks.IBuildCallback;
+import com.example.socialgaming.repository.callbacks.ISearchCallback;
 import com.example.socialgaming.repository.user.UserRepository;
 import com.example.socialgaming.utils.ImageUtils;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -153,4 +154,27 @@ public class BuildRepository {
         firestore.collection("/" + BUILD_COLLECTION).document("/" + b.getUuid()).delete();
     }
 
+    public void searchBuilds(String name, String creator, ISearchCallback callback){
+        if(name.length()<=0){
+            firestore.collection("/" + BUILD_COLLECTION)
+                    .whereEqualTo("creator", creator)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots ->
+                            callback.onSearch(queryDocumentSnapshots.getDocuments()));
+        }
+        else if(creator.length()<=0){
+            firestore.collection("/" + BUILD_COLLECTION)
+                    .whereEqualTo("name", name)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots ->
+                            callback.onSearch(queryDocumentSnapshots.getDocuments()));
+        }
+        else { firestore.collection("/" + BUILD_COLLECTION)
+                .whereEqualTo("creator", creator)
+                .whereEqualTo("name", name)
+                .get()
+                    .addOnSuccessListener(queryDocumentSnapshots ->
+                            callback.onSearch(queryDocumentSnapshots.getDocuments()));}
+
+    }
 }

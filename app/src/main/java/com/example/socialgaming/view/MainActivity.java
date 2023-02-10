@@ -12,6 +12,7 @@ import android.util.TypedValue;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.socialgaming.Interfaces.OnCardSelectedListener;
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
 
     }
 
+    @SuppressLint("ResourceType")
     public void setupNavigationListener() {
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -94,7 +96,10 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
                         viewModel.getUserRepository().updateUserBuilds(user);
                         homeFragment = new HomeFragment();
                     }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container_home, homeFragment).commit();
+                    FragmentManager fm = getSupportFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    //ft.setCustomAnimations(R.transition.transition_slide_from_right, 0);
+                    ft.replace(R.id.container_home, homeFragment).commit();
                     return true;
                 case R.id.profile:
                     if(modifiedUser == true) {

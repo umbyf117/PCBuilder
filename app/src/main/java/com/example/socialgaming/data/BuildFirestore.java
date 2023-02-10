@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.socialgaming.utils.ImageUtils;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class BuildFirestore {
+public class BuildFirestore implements Serializable {
     private String name, creator;
     private UUID uuid;
     private Bitmap image;
