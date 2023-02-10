@@ -2,7 +2,9 @@ package com.example.socialgaming.utils;
 
 import android.annotation.SuppressLint;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -12,7 +14,7 @@ import com.example.socialgaming.data.BuildFirestore;
 public class BubbleUtils {
 
     @SuppressLint("SetTextI18n")
-    public static void setupInformation(BuildFirestore b, ConstraintLayout information) {
+    public static void setupInformation(BuildFirestore b, ConstraintLayout information, View templateView) {
 
         int elements = 8;
 
@@ -56,7 +58,7 @@ public class BubbleUtils {
         TextView cpuClock = information.findViewById(R.id.cpuClockSpeedValue);
         cpuClock.setText(b.getSpeedCpu());
         TextView gpuSpeed = information.findViewById(R.id.gpuSpeedValue);
-        gpuSpeed.setText(b.getSpeedGpu() + " MHz");
+        gpuSpeed.setText(b.getSpeedGpu());
         TextView gpuMemory = information.findViewById(R.id.gpuMemoryValue);
         gpuMemory.setText(b.getMemoryGpu());
         TextView power = information.findViewById(R.id.psuPowerValue);
@@ -114,7 +116,31 @@ public class BubbleUtils {
                     "\n\t\t" + b.getMemoriesDimension().get(i) + " GB");
         }
 
+        TextView value = templateView.findViewById(R.id.value);
+        value.setText(b.getValue() + "");
 
+    }
+
+    public static void setBubbleListener(View view, ConstraintLayout layout) {
+
+        ViewGroup.LayoutParams params1 = layout.getLayoutParams();
+        params1.height = 0;
+
+        layout.setLayoutParams(params1);
+        layout.requestLayout();
+
+        view.setOnClickListener(view1 -> {
+
+            if (params1.height == 0) {
+                params1.height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+            }
+            else {
+                params1.height = 0;
+            }
+            layout.setLayoutParams(params1);
+            layout.requestLayout();
+
+        });
 
     }
 

@@ -30,6 +30,8 @@
         android:text="Build Name"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/buildImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/buildImage"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,6 +42,8 @@
         android:layout_marginLeft="16dp"
         android:fontFamily="@font/jurasemibold"
         android:text="Creator"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/buildImage"
         app:layout_constraintTop_toBottomOf="@+id/nameBuild" />
 
@@ -90,19 +94,26 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
         android:layout_marginVertical="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/buildImage"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buildImage">
 
         <TextView
             android:id="@+id/title1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/juraregular"
             android:text="Board Title"
             android:textAlignment="viewStart"
+            android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/price1"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -114,9 +125,12 @@
             android:fontFamily="@font/juraregular"
             android:text="Price"
             android:textAlignment="viewEnd"
+            android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/title1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/title1" />
+            app:layout_constraintStart_toEndOf="@+id/title1" />
+
 
         <TextView
             android:id="@+id/formFactor"
@@ -127,6 +141,7 @@
             android:fontFamily="@font/juraregular"
             android:text="Form Factor:"
             android:textAlignment="viewStart"
+            android:textColor="?attr/colorPrimaryDark"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title1" />
@@ -139,6 +154,7 @@
             android:fontFamily="@font/juraregular"
             android:text="Value"
             android:textAlignment="viewEnd"
+            android:textColor="?attr/colorPrimaryDark"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/formFactor" />
@@ -152,6 +168,7 @@
             android:fontFamily="@font/juraregular"
             android:text="Chipset:"
             android:textAlignment="viewStart"
+            android:textColor="?attr/colorPrimaryDark"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/formFactor" />
@@ -164,20 +181,23 @@
             android:fontFamily="@font/juraregular"
             android:text="Value"
             android:textAlignment="viewEnd"
+            android:textColor="?attr/colorPrimaryDark"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/chipset" />
 
         <TextView
             android:id="@+id/title2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/juraregular"
             android:text="CPU Title"
             android:textAlignment="viewStart"
+            android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/price2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/chipset" />
 
@@ -189,9 +209,10 @@
             android:fontFamily="@font/juraregular"
             android:text="Price"
             android:textAlignment="viewEnd"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/title2" />
+            app:layout_constraintBottom_toBottomOf="@+id/title2"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/cpuClockSpeed"
@@ -202,6 +223,7 @@
             android:fontFamily="@font/juraregular"
             android:text="Clock Speed:"
             android:textAlignment="viewStart"
+            android:textColor="?attr/colorPrimaryDark"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title2" />
@@ -214,6 +236,7 @@
             android:fontFamily="@font/juraregular"
             android:text="Value"
             android:textAlignment="viewEnd"
+            android:textColor="?attr/colorPrimaryDark"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/cpuClockSpeed" />
@@ -227,20 +250,23 @@
             android:fontFamily="@font/juraregular"
             android:text="Rams"
             android:textAlignment="viewStart"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cpuClockSpeed" />
 
         <TextView
             android:id="@+id/ram1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/juraregular"
             android:text="> Ram"
             android:textAlignment="viewStart"
+            android:textColor="?attr/colorPrimaryDark"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/ram1Price"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title3" />
 
@@ -252,6 +278,7 @@
             android:fontFamily="@font/juraregular"
             android:text="Price"
             android:textAlignment="viewEnd"
+            android:textColor="?attr/colorPrimaryDark"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/ram1" />
@@ -265,6 +292,7 @@
             android:fontFamily="@font/juraregular"
             android:text="Price"
             android:textAlignment="viewEnd"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/title3" />
@@ -278,6 +306,7 @@
             android:fontFamily="@font/juraregular"
             android:text="Hard Disks"
             android:textAlignment="viewStart"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ram1" />
@@ -290,20 +319,23 @@
             android:fontFamily="@font/juraregular"
             android:text="Price"
             android:textAlignment="viewEnd"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/title4" />
 
         <TextView
             android:id="@+id/memory1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/juraregular"
             android:text="> Memory"
             android:textAlignment="viewStart"
+            android:textColor="?attr/colorPrimaryDark"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/memory1Price"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title4" />
 
@@ -315,20 +347,23 @@
             android:fontFamily="@font/juraregular"
             android:text="Price"
             android:textAlignment="viewEnd"
+            android:textColor="?attr/colorPrimaryDark"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/memory1" />
 
         <TextView
             android:id="@+id/title5"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/juraregular"
             android:text="GPU Title"
             android:textAlignment="viewStart"
+            android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/price5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/memory1" />
 
@@ -340,9 +375,10 @@
             android:fontFamily="@font/juraregular"
             android:text="Price"
             android:textAlignment="viewEnd"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/title5" />
+            app:layout_constraintBottom_toBottomOf="@+id/title5"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/gpuSpeed"
@@ -353,6 +389,7 @@
             android:fontFamily="@font/juraregular"
             android:text="Speed:"
             android:textAlignment="viewStart"
+            android:textColor="?attr/colorPrimaryDark"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title5" />
@@ -365,6 +402,7 @@
             android:fontFamily="@font/juraregular"
             android:text="Value"
             android:textAlignment="viewEnd"
+            android:textColor="?attr/colorPrimaryDark"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/gpuSpeed" />
@@ -378,6 +416,7 @@
             android:fontFamily="@font/juraregular"
             android:text="Memory:"
             android:textAlignment="viewStart"
+            android:textColor="?attr/colorPrimaryDark"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gpuSpeed" />
@@ -390,13 +429,14 @@
             android:fontFamily="@font/juraregular"
             android:text="Value"
             android:textAlignment="viewEnd"
+            android:textColor="?attr/colorPrimaryDark"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/gpuMemory" />
 
         <TextView
             android:id="@+id/title6"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
@@ -404,8 +444,10 @@
             android:text="Case Title"
             android:textAlignment="viewStart"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/price6"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gpuMemory" />
+            app:layout_constraintTop_toBottomOf="@+id/gpuMemory"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/price6"
@@ -415,20 +457,23 @@
             android:fontFamily="@font/juraregular"
             android:text="Price"
             android:textAlignment="viewEnd"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/title6" />
+            app:layout_constraintBottom_toBottomOf="@+id/title6"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/title7"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/juraregular"
             android:text="PSU Title"
             android:textAlignment="viewStart"
+            android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/price7"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title6" />
 
@@ -440,9 +485,10 @@
             android:fontFamily="@font/juraregular"
             android:text="Price"
             android:textAlignment="viewEnd"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/title7" />
+            app:layout_constraintBottom_toBottomOf="@+id/title7"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/psuPower"
@@ -453,6 +499,7 @@
             android:fontFamily="@font/juraregular"
             android:text="Power:"
             android:textAlignment="viewStart"
+            android:textColor="?attr/colorPrimaryDark"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title7" />
@@ -465,20 +512,23 @@
             android:fontFamily="@font/juraregular"
             android:text="Value"
             android:textAlignment="viewEnd"
+            android:textColor="?attr/colorPrimaryDark"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/psuPower" />
 
         <TextView
             android:id="@+id/title8"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/juraregular"
             android:text="Fan Title"
             android:textAlignment="viewStart"
+            android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/price8"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/psuPower" />
 
@@ -487,12 +537,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
+            android:fontFamily="@font/juraregular"
             android:text="Price"
             android:textAlignment="viewEnd"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/title8"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:fontFamily="@font/juraregular" />
+            app:layout_constraintBottom_toBottomOf="@+id/title8"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/fanRpm"
@@ -503,6 +554,7 @@
             android:fontFamily="@font/juraregular"
             android:text="RPM:"
             android:textAlignment="viewStart"
+            android:textColor="?attr/colorPrimaryDark"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title8" />
@@ -515,6 +567,7 @@
             android:fontFamily="@font/juraregular"
             android:text="Value"
             android:textAlignment="viewEnd"
+            android:textColor="?attr/colorPrimaryDark"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/fanRpm" />

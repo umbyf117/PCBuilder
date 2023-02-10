@@ -101,7 +101,7 @@ public class BuildFirestore {
         this.memoriesType = new ArrayList<>();
 
         for (Memory m : build.getHarddisks()) {
-            this.memoriesTitle.add(m.getBrand() + " " + m.getTitle());
+            this.memoriesTitle.add(m.getBrand() + " " + m.getModel());
             this.memoriesPrice.add(m.getPrice());
             this.memoriesType.add(m.getType().toString());
             this.memoriesDimension.add(m.getGBRpm());

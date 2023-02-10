@@ -117,7 +117,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         return currentView;
     }
 
-    public void setBuildBubble(LayoutInflater inflater, View view, BuildFirestore b) {
+    public void setBuildBubble(LayoutInflater inflater, BuildFirestore b) {
         // Inflate il layout incluso (template.xml)
         View templateView = inflater.inflate(R.layout.bubble_template, null);
 
@@ -205,29 +205,11 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         }
 
         ConstraintLayout information = templateView.findViewById(R.id.elementsBuildLayout);
-        BubbleUtils.setupInformation(b, information);
 
-        ViewGroup.LayoutParams params1 = information.getLayoutParams();
-        params1.height = 0;
+        BubbleUtils.setupInformation(b, information, templateView);
+        BubbleUtils.setBubbleListener(templateView, information);
 
-        information.setLayoutParams(params1);
-        information.requestLayout();
         templateView.setLayoutParams(params);
-
-        templateView.setOnClickListener(view1 -> {
-
-            if (params1.height == 0) {
-                params1.height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
-                Toast.makeText(this.getContext(), "Listener Estensione", Toast.LENGTH_SHORT).show();
-            }
-            else {
-                params1.height = 0;
-                Toast.makeText(this.getContext(), "Listener Compressione", Toast.LENGTH_SHORT).show();
-            }
-            information.setLayoutParams(params1);
-            information.requestLayout();
-
-        });
 
         buildList.addView(templateView);
 
@@ -271,47 +253,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
                 (bitmap.getHeight() - dimension) / 2,
                 dimension, dimension);
         build.setImage(croppedBitmap);
-        setBuildBubble(LayoutInflater.from(buildList.getContext()), currentView, build);
-    }
-
-    public void createpopupwindow(View templateView, BuildFirestore b) {
-        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popUpView = inflater.inflate(R.layout.popupbuild, null);
-
-        ImageView image = popUpView.findViewById(R.id.buildImage);
-        image.setImageBitmap(b.getImage());
-
-        TextView nameBuild = popUpView.findViewById(R.id.buildName);
-        nameBuild.setText(b.getName());
-        TextView motherboard = popUpView.findViewById(R.id.info1);
-        motherboard.setText("Motherboard: " + b.getBoardTitle());
-        TextView cpu = popUpView.findViewById(R.id.info2);
-        cpu.setText("CPU: " + b.getCpuTitle());
-        TextView ram = popUpView.findViewById(R.id.info3);
-        ram.setText("RAM: " + b.getRamsTitle());
-        TextView cpuFan = popUpView.findViewById(R.id.info4);
-        cpuFan.setText("CPU Fan: " + b.getFanTitle());
-        TextView gpu = popUpView.findViewById(R.id.info5);
-        gpu.setText("Graphic Card: " + b.getGpuTitle());
-        TextView storage = popUpView.findViewById(R.id.info6);
-        storage.setText("Storage: " + b.getMemoriesTitle());
-        TextView psu = popUpView.findViewById(R.id.info7);
-        psu.setText("Power Supply: " + b.getPsuTitle());
-        TextView mcase = popUpView.findViewById(R.id.info8);
-        mcase.setText("Case: " + b.getHouseTitle());
-        TextView price = popUpView.findViewById(R.id.price);
-        price.setText(b.getTotalPrice() + "");
-
-        int width = ViewGroup.LayoutParams.WRAP_CONTENT;
-        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true;
-        PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
-        templateView.post(new Runnable() {
-            @Override
-            public void run() {
-                popupWindow.showAtLocation(templateView, Gravity.CENTER, 0, 0);
-            }
-        });
+        setBuildBubble(LayoutInflater.from(buildList.getContext()), build);
     }
 
 }
