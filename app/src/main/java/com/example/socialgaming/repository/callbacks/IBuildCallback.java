@@ -10,5 +10,5 @@ import java.util.List;
 public interface IBuildCallback {
     void onBuildReceived(DocumentSnapshot documentSnapshot);
     void onBuildsReceived(List<DocumentSnapshot> documentsSnapshot, boolean created);
-    void onImageReceived(Bitmap bitmap, BuildFirestore build);
+    void onImageReceived(Bitmap bitmap, BuildFirestore build, boolean created);
 }

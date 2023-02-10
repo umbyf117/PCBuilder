@@ -53,7 +53,7 @@
         android:layout_height="24dp"
         android:layout_marginEnd="24dp"
         android:foreground="@drawable/thumbup"
-        android:foregroundTint="?attr/colorPrimaryDark"
+        android:foregroundTint="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="@+id/buildImage"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -63,7 +63,7 @@
         android:layout_height="24dp"
         android:layout_marginEnd="40dp"
         android:foreground="@drawable/thumbdown"
-        android:foregroundTint="?attr/colorPrimaryDark"
+        android:foregroundTint="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="@+id/buildImage"
         app:layout_constraintEnd_toEndOf="@id/like" />
 
@@ -84,7 +84,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="12dp"
         android:foreground="@drawable/star"
-        android:foregroundTint="?attr/colorPrimaryDark"
+        android:foregroundTint="?attr/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

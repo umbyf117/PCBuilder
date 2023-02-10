@@ -1,15 +1,25 @@
 package com.example.socialgaming.utils;
 
 import android.annotation.SuppressLint;
+import android.net.Uri;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 
 import com.example.socialgaming.R;
 import com.example.socialgaming.data.BuildFirestore;
+import com.example.socialgaming.data.User;
+import com.example.socialgaming.ui.home.HomeFragment;
+import com.example.socialgaming.ui.profile.ProfileFragment;
+import com.example.socialgaming.view.MainActivity;
 
 public class BubbleUtils {
 
@@ -141,6 +151,127 @@ public class BubbleUtils {
             layout.requestLayout();
 
         });
+
+    }
+
+    public static void setBuildBubble(BuildFirestore b, User user, Fragment fragment, LinearLayout buildList) {
+
+        MainActivity activity = (MainActivity) fragment.getActivity();
+        LayoutInflater inflater = LayoutInflater.from(buildList.getContext());
+        // Inflate il layout incluso (template.xml)
+        View templateView = inflater.inflate(R.layout.bubble_template, null);
+
+        // Imposta i parametri richiesti sulla vista inflata
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, 16, 0, 16);
+
+        ImageView image = templateView.findViewById(R.id.buildImage);
+        image.setImageBitmap(b.getImage());
+        image.setMaxWidth(125);
+        image.setMaxHeight(125);
+
+
+        TextView name = templateView.findViewById(R.id.nameBuild);
+        name.setText(b.getName());
+
+        TextView creator = templateView.findViewById(R.id.creator);
+        creator.setText(b.getCreator());
+
+        TextView rate = templateView.findViewById(R.id.value);
+        rate.setText(b.getValue() + "");
+
+        if(b.getCreator().equalsIgnoreCase(user.getUsername())) {
+            ImageView save = templateView.findViewById(R.id.saveBuild);
+            save.setImageURI(Uri.parse("android.resource://" + activity.getPackageResourcePath() + "/drawable/minus.png"));
+
+            save.setOnClickListener(view -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setMessage("Are you sure you want to delete this build?")
+                        .setPositiveButton("Yes", (dialog, id) -> {
+                            Toast.makeText(activity, b.getName() + "\nSuccessfully deleted!", Toast.LENGTH_SHORT).show();
+                            user.getCreated().remove(b.getUuid());
+                            if(fragment instanceof HomeFragment) {
+                                HomeFragment homeFragment = (HomeFragment) fragment;
+                                homeFragment.getHomeViewModel().getBuildRepository().deleteBuild(b);
+                            }
+                            else if (fragment instanceof ProfileFragment){
+                                ProfileFragment profileFragment = (ProfileFragment) fragment;
+                                profileFragment.getProfileViewModel().getBuildRepository().deleteBuild(b);
+                            }
+                        })
+                        .setNegativeButton("No", (dialog, id) -> {
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+            });
+
+            ImageView like = templateView.findViewById(R.id.like);
+            like.setVisibility(View.GONE);
+            like.setClickable(false);
+
+            ImageView dislike = templateView.findViewById(R.id.dislike);
+            dislike.setVisibility(View.GONE);
+            dislike.setClickable(false);
+        }
+
+        else {
+            ImageView like = templateView.findViewById(R.id.like);
+            ImageView dislike = templateView.findViewById(R.id.dislike);
+            ImageView star = templateView.findViewById(R.id.saveBuild);
+
+            if (b.getLike().contains(user.getUsername()))
+                like.setForegroundTintList(activity.colorDark);
+            else if (b.getDislike().contains(user.getUsername()))
+                dislike.setForegroundTintList(activity.colorDark);
+            if (user.getFavorite().contains(b))
+                star.setForegroundTintList(activity.colorDark);
+
+            like.setOnClickListener(v -> {
+                if(b.getLike().contains(user.getUsername())) {
+                    b.getLike().remove(user.getUsername());
+                    like.setForegroundTintList(activity.color);
+                }
+                else {
+                    b.getLike().add(user.getUsername());
+                    like.setForegroundTintList(activity.colorDark);
+                }
+            });
+
+            dislike.setOnClickListener(v -> {
+                if(b.getDislike().contains(user.getUsername())) {
+                    b.getDislike().remove(user.getUsername());
+                    dislike.setForegroundTintList(activity.color);
+                }
+                else {
+                    b.getDislike().add(user.getUsername());
+                    dislike.setForegroundTintList(activity.colorDark);
+                }
+            });
+
+            star.setOnClickListener(v -> {
+                if(user.getFavorite().contains(b.getUuid().toString())) {
+                    user.getFavorite().remove(b.getUuid().toString());
+                    star.setForegroundTintList(activity.color);
+                }
+                else {
+                    user.getFavorite().add(b.getUuid().toString());
+                    star.setForegroundTintList(activity.colorDark);
+                }
+            });
+
+        }
+
+        ConstraintLayout information = templateView.findViewById(R.id.elementsBuildLayout);
+
+        BubbleUtils.setupInformation(b, information, templateView);
+        BubbleUtils.setBubbleListener(templateView, information);
+
+        templateView.setLayoutParams(params);
+
+        buildList.addView(templateView);
 
     }
 

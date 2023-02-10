@@ -115,20 +115,41 @@
         </LinearLayout>
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/buildsScrollView"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/createdScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonsLayout">
         <LinearLayout
-            android:id="@+id/containerBuilds"
+            android:id="@+id/containerCreatedBuilds"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/favoriteScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:visibility="gone"
+        android:clickable="false"
+        android:focusable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonsLayout">
+        <LinearLayout
+            android:id="@+id/containerFavoriteBuilds"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

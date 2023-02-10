@@ -49,8 +49,8 @@ public class BuildFragment extends Fragment implements IUserCallback {
 
     public static final int COMPONENT_PER_VIEW = 20;
     private static final int PICK_IMAGE_REQUEST_CODE = 1;
-    public static boolean darkMode;
 
+    private MainActivity activity;
     private BuildViewModel buildViewModel;
     private CardView[] cardviews;
     private User user;
@@ -71,10 +71,10 @@ public class BuildFragment extends Fragment implements IUserCallback {
                 if(!this.equals(f))
                     this.getActivity().getSupportFragmentManager().beginTransaction().remove(f);
         }
-        else {
-            MainActivity activity = (MainActivity) getActivity();
-            activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
-        }
+
+        activity = (MainActivity) getActivity();
+        activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
+
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -203,18 +203,18 @@ public class BuildFragment extends Fragment implements IUserCallback {
     }
 
     public void updateCardViews() {
-        boolean isNightModeOn = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
         if(build.getBoard() != null) {
             TextView text = cardviews[0].findViewById(R.id.motherboard);
             text.setText(build.getBoard().getBrand() + " " + build.getBoard().getModel());
             for(int i = 1; i < cardviews.length; i++) {
-                if(!isNightModeOn) {
-                    cardviews[i].setCardBackgroundColor(ProfileFragment.BLUE);
-                    cardviews[i].setClickable(true);
-                } else {
-                    cardviews[i].setCardBackgroundColor(ProfileFragment.RED);
-                    cardviews[i].setClickable(true);
-                }
+                cardviews[i].setCardBackgroundColor(activity.color);
+                cardviews[i].setClickable(true);
+            }
+        }
+        else {
+            for(int i = 1; i < cardviews.length; i++) {
+                cardviews[i].setCardBackgroundColor(activity.colorDark);
+                cardviews[i].setClickable(false);
             }
         }
 

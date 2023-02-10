@@ -65,6 +65,14 @@ public class User {
         this.image = ImageUtils.decodeByteArrayToBitmap(byteArray);
     }
 
+    public Map<String, Object> getMap() {
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("password", password);
+        attributes.put("created", created);
+        attributes.put("favorite", favorite);
+        return attributes;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

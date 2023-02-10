@@ -5,6 +5,7 @@ import static com.example.socialgaming.data.types.ComponentType.MOTHERBOARD;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -38,12 +39,14 @@ import com.example.socialgaming.ui.home.HomeFragment;
 import com.example.socialgaming.ui.profile.ProfileFragment;
 import com.example.socialgaming.utils.BuildUtils;
 import com.example.socialgaming.utils.ImageUtils;
+import com.example.socialgaming.view.MainActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 public class ComponentsFragment extends Fragment {
 
     private static final int PX_VALUE = 400;
 
+    private MainActivity activity;
     private ComponentType type;
     private OnCardSelectedListener listener;
     private ComponentsViewModel viewModel;
@@ -58,6 +61,8 @@ public class ComponentsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        activity = (MainActivity) getActivity();
+        activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
         viewModel = new ViewModelProvider(this).get(ComponentsViewModel.class);
 
         if (getArguments() != null) {
@@ -225,38 +230,38 @@ public class ComponentsFragment extends Fragment {
 
             if (type == ComponentType.RAM) {
                 RAM ram = (RAM) component;
-                if (!title.getTextColors().equals(HomeFragment.GOLD)) {
+                if (!title.getTextColors().equals(activity.colorDark)) {
                     if (build.canAddRam(ram)) {
                         build.addRam(ram);
-                        title.setTextColor(HomeFragment.GOLD);
+                        title.setTextColor(activity.colorDark);
                     }
                 } else {
-                    title.setTextColor(ProfileFragment.TEXT_LIGHT);
+                    title.setTextColor(activity.textColor);
                     build.removeRam(ram);
                 }
             } else if (type == ComponentType.MEMORY) {
-                if (!title.getTextColors().equals(HomeFragment.GOLD)) {
-                    title.setTextColor(HomeFragment.GOLD);
+                if (!title.getTextColors().equals(activity.colorDark)) {
+                    title.setTextColor(activity.colorDark);
                     build.addComponent(component, type);
                 } else {
-                    title.setTextColor(ProfileFragment.TEXT_LIGHT);
+                    title.setTextColor(activity.textColor);
                     build.removeComponent(component, type);
                 }
             } else {
-                if (!title.getTextColors().equals(HomeFragment.GOLD)) {
-                    title.setTextColor(HomeFragment.GOLD);
+                if (!title.getTextColors().equals(activity.colorDark)) {
+                    title.setTextColor(activity.colorDark);
                     ComponentBase c = build.getComponent(type);
                     if (build.addComponent(component, type) && c != null && type != ComponentType.MEMORY)
                         for (int i = 0; i < containerComponents.getChildCount(); i++) {
                             View v = containerComponents.getChildAt(i);
                             if (!templateView.equals(v)) {
                                 TextView t = containerComponents.getChildAt(i).findViewById(R.id.nameComponent);
-                                t.setTextColor(ProfileFragment.TEXT_LIGHT);
+                                t.setTextColor(activity.textColor);
                             }
                         }
 
                 } else {
-                    title.setTextColor(ProfileFragment.TEXT_LIGHT);
+                    title.setTextColor(activity.textColor);
                     build.removeComponent(component, type);
                 }
             }

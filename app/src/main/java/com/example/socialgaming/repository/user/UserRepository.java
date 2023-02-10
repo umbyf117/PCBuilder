@@ -1,12 +1,17 @@
 package com.example.socialgaming.repository.user;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.example.socialgaming.data.Build;
+import com.example.socialgaming.data.BuildFirestore;
 import com.example.socialgaming.data.User;
+import com.example.socialgaming.repository.callbacks.IBuildCallback;
 import com.example.socialgaming.repository.callbacks.IUserCallback;
 import com.example.socialgaming.repository.component.BuildRepository;
 import com.example.socialgaming.utils.ImageUtils;
@@ -16,6 +21,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -90,33 +98,37 @@ public class UserRepository {
 
     public void updateUserBuilds(User user) {
 
-        Map<String, Object> favoriteMap = new HashMap<>();
-        for (int i = 0; i < user.getFavorite().size(); i++) {
-            favoriteMap.put(String.valueOf(i), user.getFavorite().get(i));
-        }
-
-        Map<String, Object> createdMap = new HashMap<>();
-        for (int i = 0; i < user.getCreated().size(); i++) {
-            createdMap.put(String.valueOf(i), user.getCreated().get(i));
-        }
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("favorite", favoriteMap);
-        data.put("created", createdMap);
-
         new Thread(new Runnable() {
             @Override
             public void run() {
 
                 documentReference = firestore.collection(USERS_COLLECTION).document(user.getUsername());
+                documentReference.update(user.getMap());
 
-                Map<String, Object> upload = new HashMap<>();
-                upload.put("/users/" + user.getUsername(), data);
-
-                database.updateChildren(upload);
+                Log.i("[CREATION]", "User creation updated");
 
             }
         }).run();
+
+    }
+
+    public void uploadBitmapToFirebaseStorage(Bitmap bitmap, final String imageName) {
+        // Get the reference to the Firebase Storage
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        // Create a reference to the file to be uploaded with the given name
+        StorageReference bitmapRef = storageRef.child("user/" + imageName + ".jpeg");
+        UploadTask uploadTask = bitmapRef.putBytes(ImageUtils.encodeBitmapToByteArray(bitmap));
+    }
+
+    public void downloadBitmapFromFirebaseStorage(String imageName, BuildFirestore build, IBuildCallback callback, boolean created) {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference()
+                .child("user/").child(imageName + ".jpeg");
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        storageReference.getBytes(ONE_MEGABYTE * 5).addOnSuccessListener(bytes -> {
+            callback.onImageReceived(BitmapFactory.decodeByteArray(bytes, 0, bytes.length), build, created);
+        });
 
     }
 

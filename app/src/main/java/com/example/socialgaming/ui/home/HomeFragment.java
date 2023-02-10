@@ -63,14 +63,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@SuppressLint("ResourceType")
 public class HomeFragment extends Fragment implements IUserCallback, IBuildCallback {
 
     private static final int BUILD_PER_LOAD = 10;
 
-    public static final ColorStateList BLUE_DARK = ColorStateList.valueOf(Color.parseColor("#1b263b"));
-    public static final ColorStateList GOLD = ColorStateList.valueOf(Color.parseColor("#FFD700"));
-    public static final ColorStateList RED = ColorStateList.valueOf(Color.RED);
-    public static final ColorStateList GREEN = ColorStateList.valueOf(Color.GREEN);
+    private MainActivity activity;
 
     private HomeFragmentViewModel homeViewModel;
     private View currentView;
@@ -90,6 +88,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        activity = (MainActivity) this.getActivity();
         currentView = inflater.inflate(R.layout.fragment_home, container, false);
 
         homeViewModel = new HomeFragmentViewModel(getActivity().getApplication());
@@ -117,103 +116,8 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         return currentView;
     }
 
-    public void setBuildBubble(LayoutInflater inflater, BuildFirestore b) {
-        // Inflate il layout incluso (template.xml)
-        View templateView = inflater.inflate(R.layout.bubble_template, null);
+    @SuppressLint("ResourceType")
 
-        // Imposta i parametri richiesti sulla vista inflata
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        );
-        params.setMargins(0, 16, 0, 16);
-
-        ImageView image = templateView.findViewById(R.id.buildImage);
-        image.setImageBitmap(b.getImage());
-        image.setMaxWidth(125);
-        image.setMaxHeight(125);
-
-
-        TextView name = templateView.findViewById(R.id.nameBuild);
-        name.setText(b.getName());
-
-        TextView creator = templateView.findViewById(R.id.creator);
-        creator.setText(b.getCreator());
-
-        TextView rate = templateView.findViewById(R.id.value);
-        rate.setText(b.getValue() + "");
-
-        if(b.getCreator().equalsIgnoreCase(user.getUsername())) {
-            ImageView save = templateView.findViewById(R.id.saveBuild);
-            save.setVisibility(View.INVISIBLE);
-            save.setClickable(false);
-
-            ImageView like = templateView.findViewById(R.id.like);
-            like.setVisibility(View.INVISIBLE);
-            like.setClickable(false);
-
-            ImageView dislike = templateView.findViewById(R.id.dislike);
-            dislike.setVisibility(View.INVISIBLE);
-            dislike.setClickable(false);
-        }
-
-        else {
-            ImageView like = templateView.findViewById(R.id.like);
-            ImageView dislike = templateView.findViewById(R.id.dislike);
-            ImageView star = templateView.findViewById(R.id.saveBuild);
-
-            if (b.getLike().contains(user.getUsername()))
-                like.setForegroundTintList(GREEN);
-            else if (b.getDislike().contains(user.getUsername()))
-                dislike.setForegroundTintList(RED);
-            if (user.getFavorite().contains(b))
-                star.setForegroundTintList(GOLD);
-
-            like.setOnClickListener(v -> {
-                if(b.getLike().contains(user.getUsername())) {
-                    b.getLike().remove(user.getUsername());
-                    like.setForegroundTintList(BLUE_DARK);
-                }
-                else {
-                    b.getLike().add(user.getUsername());
-                    like.setForegroundTintList(GREEN);
-                }
-            });
-
-            dislike.setOnClickListener(v -> {
-                if(b.getDislike().contains(user.getUsername())) {
-                    b.getDislike().remove(user.getUsername());
-                    dislike.setForegroundTintList(BLUE_DARK);
-                }
-                else {
-                    b.getDislike().add(user.getUsername());
-                    dislike.setForegroundTintList(RED);
-                }
-            });
-
-            star.setOnClickListener(v -> {
-                if(user.getFavorite().contains(b.getUuid().toString())) {
-                    user.getFavorite().remove(b.getUuid().toString());
-                    star.setForegroundTintList(BLUE_DARK);
-                }
-                else {
-                    user.getFavorite().add(b.getUuid().toString());
-                    star.setForegroundTintList(GOLD);
-                }
-            });
-
-        }
-
-        ConstraintLayout information = templateView.findViewById(R.id.elementsBuildLayout);
-
-        BubbleUtils.setupInformation(b, information, templateView);
-        BubbleUtils.setBubbleListener(templateView, information);
-
-        templateView.setLayoutParams(params);
-
-        buildList.addView(templateView);
-
-    }
 
     @Override
     public void onUserReceived(DocumentSnapshot documentSnapshot) {
@@ -232,7 +136,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
             build.updateWithDocument(documentSnapshot);
             builds.add(build);
             homeViewModel.getBuildRepository()
-                    .downloadBitmapFromFirebaseStorage(build.getUuid().toString(), build, this);
+                    .downloadBitmapFromFirebaseStorage(build.getUuid().toString(), build, this, false);
         }
     }
 
@@ -246,14 +150,17 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
     }
 
     @Override
-    public void onImageReceived(Bitmap bitmap, BuildFirestore build) {
+    public void onImageReceived(Bitmap bitmap, BuildFirestore build, boolean created) {
         int dimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
         Bitmap croppedBitmap = Bitmap.createBitmap(bitmap,
                 (bitmap.getWidth() - dimension) / 2,
                 (bitmap.getHeight() - dimension) / 2,
                 dimension, dimension);
         build.setImage(croppedBitmap);
-        setBuildBubble(LayoutInflater.from(buildList.getContext()), build);
+        BubbleUtils.setBuildBubble(build, user, this, buildList);
     }
 
+    public HomeFragmentViewModel getHomeViewModel() {
+        return homeViewModel;
+    }
 }
