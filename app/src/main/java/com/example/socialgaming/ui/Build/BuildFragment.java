@@ -128,6 +128,9 @@ public class BuildFragment extends Fragment {
             if(build.getImage() == null && User.DEFAULT_IMAGE != null) {
                 build.setImage(User.DEFAULT_IMAGE);
             }
+            if(build.getName().equals("") || build.getName() == null){
+                build.setName("GENERIC BUILD");
+            }
             build.setCreator(user.getUsername());
             if(build.isFinished()) {
                 BuildFirestore buildFirestore = new BuildFirestore(build);
