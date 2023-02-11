@@ -123,12 +123,13 @@
         app:startIconTint="?attr/colorPrimaryDark">
 
         <EditText
-            android:id="@+id/txtMailRegister"
+            android:id="@+id/txtOldPassword"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:autofillHints="emailAddress"
             android:background="@drawable/shape_round"
             android:backgroundTint="?attr/backgroundColor"
+            android:textColor="?android:attr/textColor"
             android:hint="Old Password:"
             android:inputType="textPassword"
             tools:ignore="SpeakableTextPresentCheck" />
@@ -147,12 +148,13 @@
         app:startIconTint="?attr/colorPrimaryDark">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txtUsername"
+            android:id="@+id/txtNewPassword"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/shape_round"
             android:backgroundTint="?attr/backgroundColor"
             app:passwordToggleEnabled="true"
+            android:textColor="?android:attr/textColor"
             android:hint="New Password:"
             android:inputType="textPassword"
             tools:ignore="SpeakableTextPresentCheck"
@@ -173,12 +175,13 @@
         app:startIconTint = "?attr/colorPrimaryDark">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txtPasswordRegister"
+            android:id="@+id/txtConfirmPassword"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:autofillHints="password"
             android:background="@drawable/shape_round"
             android:backgroundTint="?attr/backgroundColor"
+            android:textColor="?android:attr/textColor"
             android:hint="Confirm Password:"
             android:inputType="textPassword"
             tools:ignore="SpeakableTextPresentCheck" />
@@ -186,7 +189,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/confirmChange"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
@@ -212,7 +215,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/confirmChange" />
 
     <Button
         android:id="@+id/btnLogout"

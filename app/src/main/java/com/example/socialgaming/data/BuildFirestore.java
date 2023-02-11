@@ -122,6 +122,19 @@ public class BuildFirestore implements Serializable {
         this.setAttributes(documentSnapshot.getData());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if(this == o)
+            return true;
+        if(o instanceof BuildFirestore) {
+            BuildFirestore build = (BuildFirestore) o;
+            if(uuid.equals(build.getUuid()))
+                return true;
+        }
+
+        return false;
+    }
+
     //MAPS
     public Map<String, Object> getAttributeMap() {
         Map<String, Object> attributes = new HashMap<>();

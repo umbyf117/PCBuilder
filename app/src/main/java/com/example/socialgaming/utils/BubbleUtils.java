@@ -185,7 +185,8 @@ public class BubbleUtils {
 
         if(b.getCreator().equalsIgnoreCase(user.getUsername())) {
             ImageView save = templateView.findViewById(R.id.saveBuild);
-            save.setImageURI(Uri.parse("android.resource://com.example.socialgaming/drawable/minus.png"));
+            save.setForeground(activity.getResources().getDrawable(R.drawable.minus, fragment.getActivity().getTheme()));
+            save.setForegroundTintList(activity.colorDark);
 
             save.setOnClickListener(view -> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -196,11 +197,14 @@ public class BubbleUtils {
                             if(fragment instanceof HomeFragment) {
                                 HomeFragment homeFragment = (HomeFragment) fragment;
                                 homeFragment.getHomeViewModel().getBuildRepository().deleteBuild(b);
+                                homeFragment.getHomeViewModel().getUserRepository().updateUserBuilds(user, fragment.getContext(), "Build successfully deleted");
                             }
                             else if (fragment instanceof ProfileFragment){
                                 ProfileFragment profileFragment = (ProfileFragment) fragment;
                                 profileFragment.getProfileViewModel().getBuildRepository().deleteBuild(b);
+                                profileFragment.getProfileViewModel().getUserRepository().updateUserBuilds(user, fragment.getContext(), "Build successfully deleted");
                             }
+                            buildList.removeView(templateView);
                         })
                         .setNegativeButton("No", (dialog, id) -> {
                         });
@@ -230,25 +234,47 @@ public class BubbleUtils {
                 star.setForegroundTintList(activity.colorDark);
 
             like.setOnClickListener(v -> {
+                boolean addLike = false;
+                boolean removeDislike = false;
+                boolean removeLike = false;
+
                 if(b.getLike().contains(user.getUsername())) {
+                    removeLike = true;
                     b.getLike().remove(user.getUsername());
                     like.setForegroundTintList(activity.color);
+
                 }
                 else {
+                    addLike = true;
                     b.getLike().add(user.getUsername());
                     like.setForegroundTintList(activity.colorDark);
+                    removeDislike = b.getDislike().remove(user.getUsername());
+                    dislike.setForegroundTintList(activity.color);
                 }
+
+                activity.getViewModel().getBuildRepository().updateLikes(user, b, addLike, false, removeLike, removeDislike);
+
             });
 
             dislike.setOnClickListener(v -> {
+                boolean addDislike = false;
+                boolean removeDislike = false;
+                boolean removeLike = false;
                 if(b.getDislike().contains(user.getUsername())) {
                     b.getDislike().remove(user.getUsername());
                     dislike.setForegroundTintList(activity.color);
+                    removeDislike = true;
                 }
                 else {
                     b.getDislike().add(user.getUsername());
                     dislike.setForegroundTintList(activity.colorDark);
+                    addDislike = true;
+                    removeLike = b.getLike().remove(user.getUsername());
+                    like.setForegroundTintList(activity.color);
                 }
+
+                activity.getViewModel().getBuildRepository().updateLikes(user, b, false, addDislike, removeLike, removeDislike);
+
             });
 
             star.setOnClickListener(v -> {

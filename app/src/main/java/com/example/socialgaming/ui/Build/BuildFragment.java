@@ -76,7 +76,7 @@ public class BuildFragment extends Fragment {
 
         activity = (MainActivity) getActivity();
         user = activity.getUser();
-        activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
+        activity.setNightMode();
 
     }
 

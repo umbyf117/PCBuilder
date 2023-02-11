@@ -62,7 +62,7 @@ public class ComponentsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         activity = (MainActivity) getActivity();
-        activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
+        activity.setNightMode();
 
         if (getArguments() != null) {
             type = (ComponentType) getArguments().getSerializable("type");

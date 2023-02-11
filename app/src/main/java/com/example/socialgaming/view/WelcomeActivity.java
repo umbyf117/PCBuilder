@@ -16,7 +16,7 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        int welcomeDuration = 1500; // 1,5 secondi
+        int welcomeDuration = 1000; // 1,5 secondi
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

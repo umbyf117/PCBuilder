@@ -118,15 +118,18 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/createdScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="64dp"
-        app:layout_constraintTop_toBottomOf="@id/buttonsLayout">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonsLayout"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="16dp">
+
         <LinearLayout
             android:id="@+id/containerCreatedBuilds"
-            android:layout_marginBottom="64dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:orientation="vertical">
 
         </LinearLayout>
@@ -137,15 +140,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="64dp"
         android:visibility="gone"
         android:clickable="false"
         android:focusable="false"
-        app:layout_constraintTop_toBottomOf="@id/buttonsLayout">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonsLayout"
+        app:layout_constraintVertical_bias="0.0">
         <LinearLayout
             android:id="@+id/containerFavoriteBuilds"
-            android:layout_marginBottom="64dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
             android:orientation="vertical">
 
         </LinearLayout>

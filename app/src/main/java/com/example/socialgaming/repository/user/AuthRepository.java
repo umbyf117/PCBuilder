@@ -1,9 +1,11 @@
 package com.example.socialgaming.repository.user;
 
 import android.app.Application;
+import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -16,6 +18,7 @@ import com.example.socialgaming.utils.ImageUtils;
 import com.example.socialgaming.utils.ViewUtils;
 import com.example.socialgaming.view.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -115,6 +118,15 @@ public class AuthRepository {
                         }
                     }
                 }).addOnFailureListener(e -> ViewUtils.displayToast(application , e.getMessage()));
+    }
+
+    public void updatePassword(User user, String password, Context context) {
+        userLiveData.getValue().updatePassword(password)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(context, "Password successfully updated!", Toast.LENGTH_SHORT);
+                    user.setPassword(password);
+                })
+                .addOnFailureListener(aVoid -> Toast.makeText(context, "Error trying to update password", Toast.LENGTH_SHORT));
     }
 
     public void logOut() {

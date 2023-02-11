@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.socialgaming.Interfaces.OnCardSelectedListener;
+import com.example.socialgaming.PcBuilder;
 import com.example.socialgaming.R;
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.repository.callbacks.IUserCallback;
@@ -74,14 +75,25 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
             if(firebaseUser == null)
                 FragmentUtils.startActivity(this, new Intent(MainActivity.this, LoginActivity.class), true);
             });
-        viewModel.getUserRepository().getUserData(viewModel.getUserLiveData().getValue().getDisplayName(), this);
+        //viewModel.getUserRepository().getUserData(viewModel.getUserLiveData().getValue().getDisplayName(), this);
 
         modifiedUser = false;
-
         setContentView(R.layout.activity_main);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         setupNavigationListener();
+
+        homeFragment = new HomeFragment();
+        profileFragment = new ProfileFragment();
+        buildFragment = new BuildFragment();
+        searchFragment = new SearchFragment();
+        settingsFragment = new SettingsFragment();
+
+        currentFragment = homeFragment;
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.container_home, currentFragment);
+        fragmentTransaction.commit();
 
     }
 
@@ -93,26 +105,44 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
                 case R.id.homepage:
                     if(modifiedUser == true) {
                         modifiedUser = false;
-                        viewModel.getUserRepository().updateUserBuilds(user);
                         homeFragment = new HomeFragment();
                     }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container_home, homeFragment).commit();
+                    if(currentFragment instanceof HomeFragment) {
+                        HomeFragment current = (HomeFragment) currentFragment;
+                        current.reload();
+                    }
+                    else {
+                        FragmentManager fm = getSupportFragmentManager();
+                        FragmentTransaction ft = fm.beginTransaction();
+                        ft.setCustomAnimations(R.transition.transition_slide_from_right, 0);
+                        currentFragment = homeFragment;
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container_home, homeFragment).commit();
+                    }
                     return true;
                 case R.id.profile:
                     if(modifiedUser == true) {
                         modifiedUser = false;
-                        viewModel.getUserRepository().updateUserBuilds(user);
                         profileFragment = new ProfileFragment();
                     }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container_home, profileFragment).commit();
+                    if(currentFragment instanceof ProfileFragment) {
+                        ProfileFragment current = (ProfileFragment) currentFragment;
+                        current.reload();
+                    }
+                    else {
+                        currentFragment = profileFragment;
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container_home, profileFragment).commit();
+                    }
                     return true;
                 case R.id.create_build:
+                    currentFragment = buildFragment;
                     getSupportFragmentManager().beginTransaction().replace(R.id.container_home, buildFragment).commit();
                     return true;
                 case R.id.search_build:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container_home, new SearchFragment()).commit();
+                    currentFragment = searchFragment;
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container_home, searchFragment).commit();
                     return true;
                 case R.id.settings:
+                    currentFragment = settingsFragment;
                     getSupportFragmentManager().beginTransaction().replace(R.id.container_home, settingsFragment).commit();
                     return true;
             }
@@ -144,8 +174,11 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
         gold = ColorStateList.valueOf(typedValue.data);
     }
 
-    public void setNightMode(int mode){
-        AppCompatDelegate.setDefaultNightMode(mode);
+    public void setNightMode(){
+        if(PcBuilder.getNightMode(this.getApplicationContext()))
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        else
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
     }
 
     public FirebaseUser getUserData() {
@@ -183,6 +216,21 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
         fragmentTransaction.commit();
     }
 
+    @Override
+    public void recreate() {
+        homeFragment = new HomeFragment();
+        profileFragment = new ProfileFragment();
+        buildFragment = new BuildFragment();
+        searchFragment = new SearchFragment();
+        settingsFragment = new SettingsFragment();
+
+        getSupportFragmentManager().beginTransaction()
+                .detach(currentFragment)
+                .attach(currentFragment)
+                .commit();
+
+    }
+
     public User getUser() {
         return user;
     }
@@ -190,5 +238,15 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
     public void setUser(User user) {
         this.user = user;
         modifiedUser = true;
+
     }
+
+    public void setInizialUser(User user) {
+        this.user = user;
+    }
+
+    public MainViewModel getViewModel() {
+        return this.viewModel;
+    }
+
 }

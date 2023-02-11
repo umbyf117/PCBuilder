@@ -1,5 +1,6 @@
 package com.example.socialgaming.repository.user;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -53,63 +54,38 @@ public class UserRepository {
 
 
     //AGGIORNA LA PASSWORD SSE LA VECCHIA PASSWORD E oldPass COINCIDONO
-    public boolean updatePassword(User user, String oldPass, String newPass) {
-        documentReference = firestore.collection(USERS_COLLECTION).document(user.getUsername());
+    public void updatePassword(User user, String newPass, Context context, AuthRepository authRepository) {
 
-        if(user.changePassword(oldPass, newPass) != 0)
-            return false;
-
-        Map<String, Object> dataUpdated = new HashMap<>();
-        dataUpdated.put("password", user.getPassword());
-        Map<String, Object> upload = new HashMap<>();
-        upload.put("/users/" + user.getUsername(), dataUpdated);
-
-        database.updateChildren(upload);
-
-        return true;
+        DocumentReference document = firestore.collection(USERS_COLLECTION).document("/" + user.getUsername());
+        document.update("password", newPass)
+                .addOnSuccessListener(aVoid -> {
+                    authRepository.updatePassword(user, newPass, context);
+                })
+                .addOnFailureListener(aVoid -> Toast.makeText(context, "Error trying to update password", Toast.LENGTH_SHORT));
 
     }
 
-    public void deleteBuild(Build b) {
-        firestore.collection("/" + BuildRepository.BUILD_COLLECTION).document("/" + b.getUuid()).delete();
-    }
+    public void updateUserBuilds(User user, Context context, String msg) {
 
-    public boolean updateImage(User user) {
+        DocumentReference document = firestore.collection(USERS_COLLECTION).document("/" + user.getUsername());
+        document.update("created", user.getCreated())
+                .addOnSuccessListener(aVoid -> Toast.makeText(context, msg, Toast.LENGTH_SHORT))
+                .addOnFailureListener(aVoid -> Toast.makeText(context, "Error trying to update build", Toast.LENGTH_SHORT));
 
-        DocumentReference userRef = FirebaseFirestore.getInstance().collection("users").document(user.getUsername());
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("image", ImageUtils.encodeBitmapToByteArray(user.getImage()));
-
-        userRef.update(data);
-
-        return true;
-        /*documentReference = firestore.collection(USERS_COLLECTION).document(user.getUsername());
-
-        Map<String, Object> dataUpdated = new HashMap<>();
-        dataUpdated.put("image", image);
-        Map<String, Object> upload = new HashMap<>();
-        upload.put("/users/" + user.getUsername(), dataUpdated);
-
-        database.updateChildren(upload);
-
-        return true;*/
     }
 
     public void updateUserBuilds(User user) {
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+        DocumentReference document = firestore.collection(USERS_COLLECTION).document("/" + user.getUsername());
+        document.update("created", user.getCreated());
 
-                documentReference = firestore.collection(USERS_COLLECTION).document(user.getUsername());
-                documentReference.update(user.getMap());
+    }
 
-                Log.i("[CREATION]", "User creation updated");
-
-            }
-        }).run();
-
+    public void updateUserFavorite(User user, Context context, String msg) {
+        DocumentReference document = firestore.collection(USERS_COLLECTION).document("/" + user.getUsername());
+        document.update("favorite", user.getFavorite())
+                .addOnSuccessListener(aVoid -> Toast.makeText(context, msg, Toast.LENGTH_SHORT))
+                .addOnFailureListener(aVoid -> Toast.makeText(context, "Error trying to update build", Toast.LENGTH_SHORT));
     }
 
     public void uploadBitmapToFirebaseStorage(Bitmap bitmap, final String imageName) {

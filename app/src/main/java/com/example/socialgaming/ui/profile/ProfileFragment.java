@@ -60,7 +60,7 @@ public class ProfileFragment extends Fragment implements IBuildCallback {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (MainActivity) this.getActivity();
-        activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
+        activity.setNightMode();
         user = activity.getUser();
     }
 
@@ -181,6 +181,17 @@ public class ProfileFragment extends Fragment implements IBuildCallback {
             favorite.add(build);
             BubbleUtils.setBuildBubble(build, user, this, favoriteBuilds);
         }
+    }
+
+    public void reload() {
+        created = new ArrayList<>();
+        favorite = new ArrayList<>();
+
+        profileViewModel.getBuildRepository().getUserBuilds(user.getCreated(), this, true);
+        profileViewModel.getBuildRepository().getUserBuilds(user.getFavorite(), this, false);
+
+        createdBuildLayout.removeAllViewsInLayout();
+        favoriteBuildLayout.removeAllViewsInLayout();
     }
 
     public ProfileViewModel getProfileViewModel() {

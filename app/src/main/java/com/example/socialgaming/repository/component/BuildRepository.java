@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
@@ -176,6 +177,24 @@ public class BuildRepository {
                 .get()
                     .addOnSuccessListener(queryDocumentSnapshots ->
                             callback.onSearch(queryDocumentSnapshots.getDocuments()));}
+
+    }
+
+    public void updateLikes(User user, BuildFirestore build, boolean addLike, boolean addDislike, boolean removeLike, boolean removeDislike) {
+
+        DocumentReference docRef = firestore.collection("/" + BUILD_COLLECTION).document("/" + build.getUuid().toString());
+        if(addLike) {
+            docRef.update("like", FieldValue.arrayUnion(user.getUsername()));
+        }
+        else if(addDislike) {
+            docRef.update("dislike", FieldValue.arrayUnion(user.getUsername()));
+        }
+
+        if(removeLike)
+            docRef.update("like", FieldValue.arrayRemove(user.getUsername()));
+
+        if(removeDislike)
+            docRef.update("dislike", FieldValue.arrayRemove(user.getUsername()));
 
     }
 }

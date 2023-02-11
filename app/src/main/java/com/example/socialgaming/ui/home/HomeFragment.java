@@ -39,6 +39,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.transition.Fade;
 
 import com.example.socialgaming.R;
@@ -64,7 +65,7 @@ import java.util.List;
 import java.util.UUID;
 
 @SuppressLint("ResourceType")
-public class HomeFragment extends Fragment implements IBuildCallback {
+public class HomeFragment extends Fragment implements IUserCallback, IBuildCallback {
 
     private static final int BUILD_PER_LOAD = 10;
 
@@ -94,17 +95,8 @@ public class HomeFragment extends Fragment implements IBuildCallback {
         currentView = inflater.inflate(R.layout.fragment_home, container, false);
 
         homeViewModel = new HomeFragmentViewModel(getActivity().getApplication());
-        homeViewModel.getBuildRepository().getBuildList(BUILD_PER_LOAD, 0, this);
-
-        buildList = currentView.findViewById(R.id.buildLayout);
-
-        builds = new ArrayList<>();
-
-        username = currentView.findViewById(R.id.username);
-        username.setText(user.getUsername());
-
-        image = currentView.findViewById(R.id.prof_pic);
-        image.setImageBitmap(user.getImage());
+        homeViewModel.getUserRepository().getUserData(
+                homeViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName(), this);
 
         return currentView;
     }
@@ -112,7 +104,7 @@ public class HomeFragment extends Fragment implements IBuildCallback {
     @Override
     public void onBuildReceived(DocumentSnapshot documentSnapshot, boolean created) {
         BuildFirestore build = new BuildFirestore();
-        if(documentSnapshot.exists()) {
+        if (documentSnapshot.exists()) {
             build.updateWithDocument(documentSnapshot);
             builds.add(build);
             homeViewModel.getBuildRepository()
@@ -122,10 +114,10 @@ public class HomeFragment extends Fragment implements IBuildCallback {
 
     @Override
     public void onBuildsReceived(List<DocumentSnapshot> documentsSnapshot, boolean created) {
-        if(builds == null)
+        if (builds == null)
             builds = new ArrayList<>();
 
-        for(DocumentSnapshot d : documentsSnapshot)
+        for (DocumentSnapshot d : documentsSnapshot)
             this.onBuildReceived(d, created);
     }
 
@@ -138,6 +130,46 @@ public class HomeFragment extends Fragment implements IBuildCallback {
                 dimension, dimension);
         build.setImage(croppedBitmap);
         BubbleUtils.setBuildBubble(build, user, this, buildList);
+
+    }
+
+    @Override
+    public void onUserReceived(DocumentSnapshot documentSnapshot) {
+        if (user == null)
+            user = new User();
+        if (documentSnapshot != null) {
+            user.updateWithDocument(documentSnapshot);
+            homeViewModel.getUserRepository().downloadBitmapFromFirebaseStorage(user.getUsername(), this);
+        }
+
+    }
+
+    @Override
+    public void onImageReceived(Bitmap image) {
+        if (image != null)
+            user.setImage(image);
+        else
+            user.setImage(User.DEFAULT_IMAGE);
+
+        activity.setInizialUser(user);
+        buildList = currentView.findViewById(R.id.buildLayout);
+
+        builds = new ArrayList<>();
+
+        username = currentView.findViewById(R.id.username);
+        username.setText(user.getUsername());
+
+        this.image = currentView.findViewById(R.id.prof_pic);
+        this.image.setImageBitmap(user.getImage());
+
+        homeViewModel.getBuildRepository().getBuildList(BUILD_PER_LOAD, 0, this);
+
+    }
+
+    public void reload() {
+        builds = new ArrayList<>();
+        homeViewModel.getBuildRepository().getBuildList(BUILD_PER_LOAD, 0, this);
+        buildList.removeAllViewsInLayout();
     }
 
     public HomeFragmentViewModel getHomeViewModel() {

@@ -8,7 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,15 +22,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.socialgaming.PcBuilder;
 import com.example.socialgaming.R;
+import com.example.socialgaming.data.User;
 import com.example.socialgaming.utils.FragmentUtils;
+import com.example.socialgaming.utils.StringUtils;
 import com.example.socialgaming.view.LoginActivity;
+import com.example.socialgaming.view.MainActivity;
 
 public class SettingsFragment extends Fragment {
 
+    private View currentView;
     private androidx.appcompat.widget.SwitchCompat switchmode;
-    private static final int PICK_IMAGE_REQUEST = 1;
     private SettingsViewModel viewModel;
+    private User user;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,41 +44,82 @@ public class SettingsFragment extends Fragment {
 
     public View onCreateView(@NonNull  LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
 
-        View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        currentView = inflater.inflate(R.layout.fragment_settings, container, false);
+        viewModel = new SettingsViewModel(this.getActivity().getApplication());
+        user = ((MainActivity)this.getActivity()).getUser();
 
-        //Switch between Light and Dark mode
-        //------------------------------------------------------------------------------------------
-        switchmode = view.findViewById(R.id.switch_night_mode);
+        TextView username = currentView.findViewById(R.id.username);
+        username.setText(user.getUsername());
+
+        ImageView image = currentView.findViewById(R.id.prof_pic);
+        image.setImageBitmap(user.getImage());
+
+        setupNightMode();
+        setupChangePassword();
+        setupLogoutButton();
+
+        return currentView;
+    }
+
+    public void setupNightMode() {
+        switchmode = currentView.findViewById(R.id.switch_night_mode);
+        if(PcBuilder.getNightMode(this.getActivity().getApplicationContext()))
+            switchmode.setChecked(true);
         switchmode.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
             if(isChecked){
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                PcBuilder.setNightMode(this.getActivity().getApplicationContext(), true);
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                PcBuilder.setNightMode(this.getActivity().getApplicationContext(), false);
             }
         });
 
         boolean isNightModeOn = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
+        this.getActivity().recreate();
         switchmode.setChecked(isNightModeOn);
-        if(isNightModeOn){
-            switchmode.setText("");
-        } else {
-            switchmode.setText("");
-        }
-        //------------------------------------------------------------------------------------------
 
-        viewModel = new SettingsViewModel(this.getActivity().getApplication());
+    }
 
+    public void setupChangePassword() {
 
+        EditText oldPassword = currentView.findViewById(R.id.txtOldPassword);
+        EditText newPassword = currentView.findViewById(R.id.txtNewPassword);
+        EditText confirmPassword = currentView.findViewById(R.id.txtConfirmPassword);
+        Button confirm = currentView.findViewById(R.id.confirmChange);
 
-        Button logoutButton = view.findViewById(R.id.btnLogout);
+        confirm.setOnClickListener(view -> {
+            String old = oldPassword.getText().toString();
+            String pass = newPassword.getText().toString();
+            String confirm1 = confirmPassword.getText().toString();
+            if(old.equals(user.getPassword())) {
+                if(pass.equals(confirm1) && StringUtils.checkPassword(pass)) {
+                    viewModel.getUserRepository().updatePassword(user, pass, getContext(), viewModel.getAuthRepository());
+                    oldPassword.setText("");
+                    newPassword.setText("");
+                    confirmPassword.setText("");
+                }
+                else if (!StringUtils.checkPassword(pass)){
+                    Toast.makeText(getContext(), "Passwords must be at least 8 characters long!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getContext(), "Passwords do not match!", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else {
+                Toast.makeText(getContext(), "The old password does not match with your actual one!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    public void setupLogoutButton() {
+        Button logoutButton = currentView.findViewById(R.id.btnLogout);
         logoutButton.setOnClickListener(view1 -> {
             viewModel.getAuthRepository().logOut();
             FragmentUtils.startActivity((AppCompatActivity) this.getActivity(), new Intent(this.getContext(), LoginActivity.class), true);
         });
-
-
-        return view;
     }
 
 }
