@@ -1,5 +1,6 @@
 package com.example.socialgaming.ui.Search;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.example.socialgaming.R;
 import com.example.socialgaming.data.BuildFirestore;
 import com.example.socialgaming.data.User;
+import com.example.socialgaming.repository.callbacks.IBuildCallback;
 import com.example.socialgaming.utils.BubbleUtils;
 import com.example.socialgaming.view.MainActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
