@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.Request;
@@ -72,6 +73,8 @@ public class SearchFragment extends Fragment implements ISearchCallback {
     private User user;
     private HomeFragment hf;
     private SearchFragment searchFrag;
+    private FragmentManager fm;
+    private FragmentTransaction ft;
 
     private FirebaseFirestore firestore;
 
@@ -110,7 +113,6 @@ public class SearchFragment extends Fragment implements ISearchCallback {
                 if(searchQuery1.equals("") && searchQuery2.equals("")) return;
 
                 searchViewModel.getBuildRepository().searchBuilds(searchQuery1, searchQuery2, searchFrag);
-
             }
         });
 
@@ -145,8 +147,8 @@ public class SearchFragment extends Fragment implements ISearchCallback {
 
         newFragment.setBuildFirestores(builds);
 
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.search_fragment, newFragment);
-        transaction.commit();
+        fm = getActivity().getSupportFragmentManager();
+        ft = fm.beginTransaction().replace(R.id.search_fragment, newFragment);
+        ft.addToBackStack(null).commit();
     }
 }

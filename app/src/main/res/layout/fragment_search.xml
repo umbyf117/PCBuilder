@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/search_fragment"
     android:background="?attr/background"
-    tools:context=".view.LoginActivity">
+    tools:context=".view.MainActivity">
 
     <LinearLayout
         android:id="@+id/top_bar"

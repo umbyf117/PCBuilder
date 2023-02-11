@@ -43,6 +43,8 @@ public class ResultsFragment extends Fragment {
         for(BuildFirestore build : buildFirestores)
             BubbleUtils.setBuildBubble(build, user, this, buildsContainer);
 
+
+
         return currentView;
 
     }
