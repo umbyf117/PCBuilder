@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.socialgaming.repository.component.BuildRepository;
 import com.example.socialgaming.repository.user.AuthRepository;
 import com.example.socialgaming.repository.user.UserRepository;
 import com.google.firebase.auth.FirebaseUser;
@@ -15,12 +16,14 @@ public class MainViewModel extends AndroidViewModel {
 
     private AuthRepository authRepository;
     private UserRepository userRepository;
+    private BuildRepository buildRepository;
     private MutableLiveData<FirebaseUser> userLiveData;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
         authRepository = AuthRepository.getInstance(getApplication());
         userRepository = new UserRepository();
+        buildRepository = new BuildRepository();
         userLiveData = authRepository.getUserLiveData();
     }
 
@@ -40,5 +43,7 @@ public class MainViewModel extends AndroidViewModel {
     public UserRepository getUserRepository() {
         return userRepository;
     }
-
+    public BuildRepository getBuildRepository() {
+        return buildRepository;
+    }
 }
