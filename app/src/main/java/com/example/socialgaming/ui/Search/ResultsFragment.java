@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 
 import com.example.socialgaming.R;
@@ -30,7 +31,6 @@ public class ResultsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        buildFirestores = new ArrayList<>();
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ResultsFragment extends Fragment {
         user = ((MainActivity) getActivity()).getUser();
         buildsContainer = currentView.findViewById(R.id.buildLayout);
         for(BuildFirestore build : buildFirestores)
-        BubbleUtils.setBuildBubble(build, user, this, buildsContainer);
+            BubbleUtils.setBuildBubble(build, user, this, buildsContainer);
 
         return currentView;
 

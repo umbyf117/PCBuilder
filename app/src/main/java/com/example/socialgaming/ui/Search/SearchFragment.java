@@ -88,7 +88,7 @@ public class SearchFragment extends Fragment implements ISearchCallback {
         currentView = inflater.inflate(R.layout.fragment_search, container, false);
         MainActivity activity = (MainActivity) this.getActivity();
         user = activity.getUser();
-        activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
+        //activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
 
         searchViewModel = new SearchViewModel(getActivity().getApplication());
         //searchViewModel.getBuildRepository().getBuildList(10, 0, this);
