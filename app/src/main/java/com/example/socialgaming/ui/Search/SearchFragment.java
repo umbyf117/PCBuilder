@@ -41,6 +41,7 @@ import com.example.socialgaming.view.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.transition.MaterialFadeThrough;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -59,6 +60,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.security.auth.callback.Callback;
+
 public class SearchFragment extends Fragment implements ISearchCallback {
 
     private EditText searchBuildName;
@@ -66,8 +69,9 @@ public class SearchFragment extends Fragment implements ISearchCallback {
     private Button searchButton;
     private List<BuildFirestore> results;
     private String searchQuery1, searchQuery2;
-    private BuildRepository br;
     private User user;
+    private HomeFragment hf;
+    private SearchFragment searchFrag;
 
     private FirebaseFirestore firestore;
 
@@ -77,6 +81,7 @@ public class SearchFragment extends Fragment implements ISearchCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        searchFrag = this;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,12 +91,11 @@ public class SearchFragment extends Fragment implements ISearchCallback {
         activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
 
         searchViewModel = new SearchViewModel(getActivity().getApplication());
-        searchViewModel.getBuildRepository().getBuildList(10, 0, this);
+        //searchViewModel.getBuildRepository().getBuildList(10, 0, this);
 
         searchButton = currentView.findViewById(R.id.searchButton);
 
         firestore = FirebaseFirestore.getInstance();
-
         results = new ArrayList<>();
 
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -100,61 +104,13 @@ public class SearchFragment extends Fragment implements ISearchCallback {
 
                 searchBuildName = currentView.findViewById(R.id.search_build_name);
                 searchAuthorName = currentView.findViewById(R.id.search_build_author);
-                searchQuery1 = searchBuildName.getText().toString().toLowerCase();
-                searchQuery2 = searchAuthorName.getText().toString().toLowerCase();
+                searchQuery1 = searchBuildName.getText().toString();
+                searchQuery2 = searchAuthorName.getText().toString();
 
-                if(isEmptyName()){
-                    firestore.collection("builds")
-                            .whereEqualTo("creator", searchAuthorName)
-                            .get()
-                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                @Override
-                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                    List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
-                                    List<CardView> cardViews = new ArrayList<>();
-                                    for(DocumentSnapshot document : documents){
-                                        String title = document.getString("creator");
-                                        CardView cardView = new CardView(getContext());
+                if(searchQuery1.equals("") && searchQuery2.equals("")) return;
 
-                                        cardViews.add(cardView);
-                                    }
-                                    ResultsFragment newFragment = new ResultsFragment();
-                                    Bundle args = new Bundle();
-                                    args.putSerializable("card_views", (Serializable) cardViews);
-                                    newFragment.setArguments(args);
-                                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                                    transaction.replace(R.id.search_fragment, newFragment);
-                                    transaction.commit();
-                                }
-                            });
-                }
-                else if(isEmptyAuthor()){
-                    firestore.collection("builds")
-                            .whereEqualTo("name", searchBuildName)
-                            .get()
-                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                @Override
-                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                    List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
-                                    List<CardView> cardViews = new ArrayList<>();
-                                    for(DocumentSnapshot document : documents){
-                                        String title = document.getString("name");
-                                        CardView cardView = new CardView(getContext());
-                                        cardViews.add(cardView);
-                                    }
-                                    ResultsFragment newFragment = new ResultsFragment();
-                                    Bundle args = new Bundle();
-                                    args.putSerializable("card_views", (Serializable) cardViews);
-                                    newFragment.setArguments(args);
-                                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                                    transaction.replace(R.id.search_fragment, newFragment);
-                                    transaction.commit();
-                                }
-                            });
-                }
-                else if(!isEmptyName() && !isEmptyAuthor()){
+                searchViewModel.getBuildRepository().searchBuilds(searchQuery1, searchQuery2, searchFrag);
 
-                }
             }
         });
 
@@ -162,12 +118,12 @@ public class SearchFragment extends Fragment implements ISearchCallback {
     }
 
     private boolean isEmptyName(){
-        if(searchBuildName.toString().equals("") || searchBuildName.toString().equals(null)) return true;
+        if(searchBuildName.getText().toString().equals("") || searchBuildName.toString().equals(null)) return true;
         else return false;
     }
 
     private boolean isEmptyAuthor(){
-        if(searchAuthorName.toString().equals("") || searchAuthorName.toString() == null) return true;
+        if(searchAuthorName.getText().toString().equals("") || searchAuthorName.toString() == null) return true;
         else return false;
     }
 
@@ -184,10 +140,11 @@ public class SearchFragment extends Fragment implements ISearchCallback {
             build.updateWithDocument(document);
             builds.add(build);
         }
+        searchViewModel.getBuildRepository().searchBuilds(searchQuery1, searchQuery2, this);
         ResultsFragment newFragment = new ResultsFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("documents", documents);
-        newFragment.setArguments(args);
+
+        newFragment.setBuildFirestores(builds);
+
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.search_fragment, newFragment);
         transaction.commit();

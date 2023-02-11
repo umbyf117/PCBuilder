@@ -96,10 +96,7 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
                         viewModel.getUserRepository().updateUserBuilds(user);
                         homeFragment = new HomeFragment();
                     }
-                    FragmentManager fm = getSupportFragmentManager();
-                    FragmentTransaction ft = fm.beginTransaction();
-                    //ft.setCustomAnimations(R.transition.transition_slide_from_right, 0);
-                    ft.replace(R.id.container_home, homeFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container_home, homeFragment).commit();
                     return true;
                 case R.id.profile:
                     if(modifiedUser == true) {
@@ -113,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
                     getSupportFragmentManager().beginTransaction().replace(R.id.container_home, buildFragment).commit();
                     return true;
                 case R.id.search_build:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container_home, searchFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container_home, new SearchFragment()).commit();
                     return true;
                 case R.id.settings:
                     getSupportFragmentManager().beginTransaction().replace(R.id.container_home, settingsFragment).commit();
