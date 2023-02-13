@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.example.socialgaming.R;
 import com.example.socialgaming.data.BuildFirestore;
 import com.example.socialgaming.data.User;
+import com.example.socialgaming.repository.user.UserRepository;
 import com.example.socialgaming.ui.home.HomeFragment;
 import com.example.socialgaming.ui.profile.ProfileFragment;
 import com.example.socialgaming.view.MainActivity;
@@ -183,7 +184,7 @@ public class BubbleUtils {
         TextView rate = templateView.findViewById(R.id.value);
         rate.setText(b.getValue() + "");
 
-        if(b.getCreator().equalsIgnoreCase(user.getUsername())) {
+        if(b.getCreator().equals(user.getUsername())) {
             ImageView save = templateView.findViewById(R.id.saveBuild);
             save.setForeground(activity.getResources().getDrawable(R.drawable.minus, fragment.getActivity().getTheme()));
             save.setForegroundTintList(activity.colorDark);
@@ -197,12 +198,12 @@ public class BubbleUtils {
                             if(fragment instanceof HomeFragment) {
                                 HomeFragment homeFragment = (HomeFragment) fragment;
                                 homeFragment.getHomeViewModel().getBuildRepository().deleteBuild(b);
-                                homeFragment.getHomeViewModel().getUserRepository().updateUserBuilds(user, fragment.getContext(), "Build successfully deleted");
+                                homeFragment.getHomeViewModel().getUserRepository().removeBuildsUpdate(b, user, fragment.getContext(), "Build successfully deleted");
                             }
                             else if (fragment instanceof ProfileFragment){
                                 ProfileFragment profileFragment = (ProfileFragment) fragment;
                                 profileFragment.getProfileViewModel().getBuildRepository().deleteBuild(b);
-                                profileFragment.getProfileViewModel().getUserRepository().updateUserBuilds(user, fragment.getContext(), "Build successfully deleted");
+                                profileFragment.getProfileViewModel().getUserRepository().removeBuildsUpdate(b, user, fragment.getContext(), "Build successfully deleted");
                             }
                             buildList.removeView(templateView);
                         })
@@ -278,13 +279,18 @@ public class BubbleUtils {
             });
 
             star.setOnClickListener(v -> {
+
                 if(user.getFavorite().contains(b.getUuid().toString())) {
                     user.getFavorite().remove(b.getUuid().toString());
                     star.setForegroundTintList(activity.color);
+                    activity.getViewModel().getUserRepository()
+                            .updateUserFavorite(user, b, fragment.getContext(), "Build removed to favorite!", false);
                 }
                 else {
                     user.getFavorite().add(b.getUuid().toString());
                     star.setForegroundTintList(activity.colorDark);
+                    activity.getViewModel().getUserRepository()
+                            .updateUserFavorite(user, b, fragment.getContext(), "Build added to favorite!", true);
                 }
             });
 
