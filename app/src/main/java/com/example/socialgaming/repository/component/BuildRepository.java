@@ -155,7 +155,7 @@ public class BuildRepository {
                 .child("images/").child(imageName + ".jpeg");
 
         final long ONE_MEGABYTE = 1024 * 1024;
-        storageReference.getBytes(ONE_MEGABYTE * 5).addOnSuccessListener(bytes -> {
+        storageReference.getBytes(ONE_MEGABYTE * 1).addOnSuccessListener(bytes -> {
             callback.onImageReceived(BitmapFactory.decodeByteArray(bytes, 0, bytes.length), build);
         });
 
