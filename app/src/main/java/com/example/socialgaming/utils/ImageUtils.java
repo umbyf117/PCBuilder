@@ -17,6 +17,8 @@ import java.util.concurrent.CountDownLatch;
 
 public class ImageUtils {
 
+    private static final int MAX_DIMENSION = 500;
+
     public static byte[] encodeBitmapToByteArray(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -72,5 +74,20 @@ public class ImageUtils {
         return imageWrapper.image;
     }
 
+    public static Bitmap resize(Bitmap image, double width, double height) {
+        return Bitmap.createBitmap(image, (int) width, (int) height, (int) width, (int) height);
+    }
+
+    public static Bitmap resize(Bitmap image, double ratio) {
+        return resize(image, image.getWidth() * ratio, image.getHeight() * ratio);
+    }
+
+    public static Bitmap resize(Bitmap bitmap) {
+        Bitmap croppedBitmap = Bitmap.createBitmap(bitmap,
+                (bitmap.getWidth() - MAX_DIMENSION) / 2,
+                (bitmap.getHeight() - MAX_DIMENSION) / 2,
+                MAX_DIMENSION, MAX_DIMENSION);
+        return croppedBitmap;
+    }
 
 }

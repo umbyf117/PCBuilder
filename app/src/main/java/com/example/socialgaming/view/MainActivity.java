@@ -65,8 +65,10 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+        setNightMode();
+
+        super.onCreate(savedInstanceState);
         getWindow().setWindowAnimations(R.anim.anim);
 
         User.DEFAULT_IMAGE = BitmapFactory.decodeResource(this.getResources(), R.drawable.logo);
@@ -82,8 +84,6 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
         modifiedUser = false;
         setContentView(R.layout.activity_main);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        setupNavigationListener();
 
         homeFragment = new HomeFragment();
         profileFragment = new ProfileFragment();
@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
                                         R.anim.fade_in, //popEnter
                                         R.anim.slide_out //popExit
                                 )
-                                .replace(R.id.container_home, profileFragment).commit();
+                                .replace(R.id.container_home, currentFragment).commit();
                     }
                     return true;
                 case R.id.create_build:
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
                                     R.anim.fade_in, //popEnter
                                     R.anim.slide_out //popExit
                             )
-                            .replace(R.id.container_home, buildFragment).commit();
+                            .replace(R.id.container_home, currentFragment).commit();
                     return true;
                 case R.id.search_build:
                     currentFragment = searchFragment;
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
                                     R.anim.fade_in, //popEnter
                                     R.anim.slide_out //popExit
                             )
-                            .replace(R.id.container_home, searchFragment).commit();
+                            .replace(R.id.container_home, currentFragment).commit();
                     return true;
                 case R.id.settings:
                     currentFragment = settingsFragment;
@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
                                     R.anim.fade_in, //popEnter
                                     R.anim.slide_out //popExit
                             )
-                            .replace(R.id.container_home, settingsFragment).commit();
+                            .replace(R.id.container_home, currentFragment).commit();
                     return true;
             }
             return false;
@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
 
     }
 
-    private void instantiateColors() {
+    public void instantiateColors() {
         Resources.Theme theme = this.getTheme();
         TypedValue typedValue = new TypedValue();
 
@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
     }
 
     public void setNightMode(){
-        if(PcBuilder.getNightMode(this.getApplicationContext()))
+        if(PcBuilder.isNightMode(this.getApplicationContext()))
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         else
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -253,16 +253,13 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
 
     @Override
     public void recreate() {
-        homeFragment = new HomeFragment();
-        profileFragment = new ProfileFragment();
-        buildFragment = new BuildFragment();
-        searchFragment = new SearchFragment();
-        settingsFragment = new SettingsFragment();
 
-        getSupportFragmentManager().beginTransaction()
-                .detach(currentFragment)
-                .attach(currentFragment)
-                .commit();
+        finish();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        startActivity(getIntent());
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+        this.user = ((PcBuilder)getApplication()).getUser();
 
     }
 
@@ -278,10 +275,18 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
 
     public void setInizialUser(User user) {
         this.user = user;
+
+
+        settingsFragment.setUser(user);
+
+        setupNavigationListener();
     }
 
     public MainViewModel getViewModel() {
         return this.viewModel;
     }
 
+    public HomeFragment getHomeFragment() {
+        return homeFragment;
+    }
 }

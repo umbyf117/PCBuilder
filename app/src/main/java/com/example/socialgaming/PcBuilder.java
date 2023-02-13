@@ -4,8 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import androidx.appcompat.app.AppCompatDelegate;
-
+import com.example.socialgaming.data.User;
 import com.example.socialgaming.view.MainActivity;
 import com.example.socialgaming.utils.ViewUtils;
 
@@ -14,11 +13,14 @@ public class PcBuilder extends Application {
     private static final String PREFS_NAME = "NightModePrefs";
     private static final String KEY_IS_NIGHT_MODE = "isNightMode";
 
+    private User user;
+
     private MainActivity mainActivity;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
     }
 
     public void showError(String msg) {
@@ -40,8 +42,16 @@ public class PcBuilder extends Application {
     }
 
     // Ottieni lo stato del modo notte/modo chiaro dalle preferenze condivise
-    public static boolean getNightMode(Context context) {
+    public static boolean isNightMode(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getBoolean(KEY_IS_NIGHT_MODE, false);
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -43,6 +43,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.transition.Fade;
 
+import com.example.socialgaming.PcBuilder;
 import com.example.socialgaming.R;
 import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.BuildFirestore;
@@ -93,13 +94,15 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         activity = (MainActivity) this.getActivity();
-        user = activity.getUser();
+        homeViewModel = new HomeFragmentViewModel(activity.getApplication());
+
+        if(activity.getUser() != null)
+            user = activity.getUser();
+        else
+            homeViewModel.getUserRepository().getUserData(
+                    homeViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName(), this);
 
         currentView = inflater.inflate(R.layout.fragment_home, container, false);
-
-        homeViewModel = new HomeFragmentViewModel(getActivity().getApplication());
-        homeViewModel.getUserRepository().getUserData(
-                homeViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName(), this);
 
         return currentView;
     }
@@ -155,6 +158,9 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
             user.setImage(User.DEFAULT_IMAGE);
 
         activity.setInizialUser(user);
+        PcBuilder application = (PcBuilder) activity.getApplication();
+        application.setUser(user);
+
         buildList = currentView.findViewById(R.id.buildLayout);
 
         builds = new ArrayList<>();
@@ -175,7 +181,7 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         buildList.removeAllViewsInLayout();
     }
 
-    public HomeFragmentViewModel getHomeViewModel() {
-        return homeViewModel;
+    public User getUser() {
+        return user;
     }
 }

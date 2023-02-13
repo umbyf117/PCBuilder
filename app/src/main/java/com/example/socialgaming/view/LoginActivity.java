@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        if(PcBuilder.getNightMode(this.getApplicationContext()))
+        if(PcBuilder.isNightMode(this.getApplicationContext()))
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         else
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -85,26 +85,5 @@ public class LoginActivity extends AppCompatActivity {
     public static View.OnClickListener getSwitchListener() {
         return switchListener;
     }
-    /*
-    private void clearControls() {
-        login.getEmailTextLogin().getText().clear();
-        login.getPasswordTextLogin().getText().clear();
-        register.getEmailTextRegister().getText().clear();
-        register.getPasswordTextRegister().getText().clear();
-        register.getUsernameTextRegister().getText().clear();
-
-    }
-
-    private String switchControls() {
-
-        String email;
-        if(loginScreen)
-            email = login.getEmailTextLogin().getText().toString();
-        else
-            email = register.getEmailTextRegister().getText().toString();
-
-        clearControls();
-        return email;
-    }*/
 
 }

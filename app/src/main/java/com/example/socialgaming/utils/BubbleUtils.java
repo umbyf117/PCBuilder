@@ -157,6 +157,10 @@ public class BubbleUtils {
     public static void setBuildBubble(BuildFirestore b, User user, Fragment fragment, LinearLayout buildList) {
 
         MainActivity activity = (MainActivity) fragment.getActivity();
+
+        if(activity == null)
+            return;
+
         LayoutInflater inflater = LayoutInflater.from(buildList.getContext());
         // Inflate il layout incluso (template.xml)
         View templateView = inflater.inflate(R.layout.bubble_template, null);

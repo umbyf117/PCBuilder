@@ -30,11 +30,7 @@ public class FragmentUtils {
         fragmentTransaction.commit(); // save the changes
     }
     public static void loadFragment(Fragment fragment, FragmentManager fragmentManager, String fragmentTag, Context context) {
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();/*
-        if(fragmentManager.findFragmentByTag(context.getString(R.string.add_fragment))!=null)
-            fragmentTransaction.remove(fragmentManager.findFragmentByTag(context.getString(R.string.add_fragment)));
-        if(fragmentManager.findFragmentByTag(context.getString(R.string.recipe_fragment))!=null)
-            fragmentTransaction.remove(fragmentManager.findFragmentByTag(context.getString(R.string.recipe_fragment)));*/
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         for (Fragment f: fragmentManager.getFragments())
             fragmentTransaction.hide(f);
         fragmentTransaction.commitNow();

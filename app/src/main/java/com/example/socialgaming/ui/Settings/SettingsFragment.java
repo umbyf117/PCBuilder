@@ -1,9 +1,12 @@
 package com.example.socialgaming.ui.Settings;
 
+import android.app.UiModeManager;
 import android.content.Intent;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,17 +46,22 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        boolean isDarkMode = sharedPreferences.getBoolean("isDarkMode", false);
-        //TransitionInflater inflater = TransitionInflater.from(requireContext());
-        //setExitTransition(inflater.inflateTransition(R.transition.fade));
+        MainActivity activity = (MainActivity) this.getActivity();
+
+        user = activity.getUser();
+
     }
 
     public View onCreateView(@NonNull  LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
 
         currentView = inflater.inflate(R.layout.fragment_settings, container, false);
         viewModel = new SettingsViewModel(this.getActivity().getApplication());
-        user = ((MainActivity)this.getActivity()).getUser();
+
+        MainActivity activity = (MainActivity) this.getActivity();
+        PcBuilder application = (PcBuilder) activity.getApplication();
+        if(user == null) {
+            user = application.getUser();
+        }
 
         TextView username = currentView.findViewById(R.id.username);
         username.setText(user.getUsername());
@@ -70,25 +78,21 @@ public class SettingsFragment extends Fragment {
 
     public void setupNightMode() {
         switchmode = currentView.findViewById(R.id.switch_night_mode);
-        if(PcBuilder.getNightMode(this.getActivity().getApplicationContext()))
+        if(PcBuilder.isNightMode(this.getActivity().getApplicationContext()))
             switchmode.setChecked(true);
-        switchmode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                }
+        else
+            switchmode.setChecked(false);
+        switchmode.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("isDarkMode", isChecked);
-                editor.apply();
+            if(isChecked){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
-        });
 
-        this.getActivity().recreate();
+            PcBuilder.setNightMode(this.getActivity().getApplicationContext(), isChecked);
+
+        });
 
     }
 
@@ -130,6 +134,13 @@ public class SettingsFragment extends Fragment {
             viewModel.getAuthRepository().logOut();
             FragmentUtils.startActivity((AppCompatActivity) this.getActivity(), new Intent(this.getContext(), LoginActivity.class), true);
         });
+    }
+
+    public void setUser(User user) {
+        if(user == null)
+            return;
+
+        this.user = user;
     }
 
 }

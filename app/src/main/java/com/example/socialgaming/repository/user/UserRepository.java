@@ -120,7 +120,7 @@ public class UserRepository {
         StorageReference storageRef = storage.getReference();
         // Create a reference to the file to be uploaded with the given name
         StorageReference bitmapRef = storageRef.child("users/" + imageName + ".png");
-        UploadTask uploadTask = bitmapRef.putBytes(ImageUtils.encodeBitmapToByteArray(bitmap));
+        UploadTask uploadTask = bitmapRef.putBytes(ImageUtils.encodeBitmapToByteArray(ImageUtils.resize(bitmap)));
     }
 
     public void downloadBitmapFromFirebaseStorage(String imageName, IUserCallback callback) {
