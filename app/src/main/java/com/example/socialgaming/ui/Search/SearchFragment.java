@@ -144,6 +144,7 @@ public class SearchFragment extends Fragment implements ISearchCallback {
             BuildFirestore build = new BuildFirestore();
             build.updateWithDocument(document);
             builds.add(build);
+            searchViewModel.getBuildRepository().downloadBitmapFromFirebaseStorage(build.getUuid().toString(), build, this);
         }
         searchViewModel.getBuildRepository().searchBuilds(searchQuery1, searchQuery2, this);
         ResultsFragment newFragment = new ResultsFragment();
@@ -151,5 +152,11 @@ public class SearchFragment extends Fragment implements ISearchCallback {
         newFragment.setBuildFirestores(builds);
 
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.search_fragment, newFragment).addToBackStack(null).commit();
+
+    }
+
+    @Override
+    public void onImageReceived(Bitmap bitmap, BuildFirestore build) {
+        build.setImage(bitmap);
     }
 }

@@ -82,7 +82,7 @@ public class BubbleUtils {
                 "\n\t\tQuantity:" +
                 "\n\t\tSize:" +
                 "\n\t\tType:");
-        for(int i = 1; i < b.getRamsTitle().size(); i++) {
+        for (int i = 1; i < b.getRamsTitle().size(); i++) {
             rams.setText(rams.getText() +
                     "\n" + b.getRamsTitle().get(i) +
                     "\n\t\tQuantity:" +
@@ -96,7 +96,7 @@ public class BubbleUtils {
                 "\n\t\t" + b.getSizeRams().get(0) + " GB" +
                 "\n\t\t" + b.getRamsType().get(0));
 
-        for(int i = 1; i < b.getRamsTitle().size(); i++) {
+        for (int i = 1; i < b.getRamsTitle().size(); i++) {
             ramsValues.setText(ramsValues.getText() +
                     "\n€" + b.getRamsPrice().get(i) +
                     "\n" + b.getQuantityRams().get(i) +
@@ -108,7 +108,7 @@ public class BubbleUtils {
         hds.setText(b.getRamsTitle().get(0) +
                 "\n\t\tType:" +
                 "\n\t\tSize:");
-        for(int i = 1; i < b.getMemoriesTitle().size(); i++) {
+        for (int i = 1; i < b.getMemoriesTitle().size(); i++) {
             hds.setText(hds.getText() +
                     "\n" + b.getMemoriesTitle().get(i) +
                     "\n\t\tType:" +
@@ -120,7 +120,7 @@ public class BubbleUtils {
                 "\n\t\t" + b.getMemoriesType().get(0) +
                 "\n\t\t" + b.getMemoriesDimension().get(0) + " GB");
 
-        for(int i = 1; i < b.getRamsTitle().size(); i++) {
+        for (int i = 1; i < b.getRamsTitle().size(); i++) {
             hdsValues.setText(hdsValues.getText() +
                     "\n€" + b.getMemoriesPrice().get(i) +
                     "\n\t\t" + b.getMemoriesType().get(i) +
@@ -144,8 +144,7 @@ public class BubbleUtils {
 
             if (params1.height == 0) {
                 params1.height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
-            }
-            else {
+            } else {
                 params1.height = 0;
             }
             layout.setLayoutParams(params1);
@@ -184,7 +183,7 @@ public class BubbleUtils {
         TextView rate = templateView.findViewById(R.id.value);
         rate.setText(b.getValue() + "");
 
-        if(b.getCreator().equals(user.getUsername())) {
+        if (b.getCreator().equals(user.getUsername())) {
             ImageView save = templateView.findViewById(R.id.saveBuild);
             save.setForeground(activity.getResources().getDrawable(R.drawable.minus, fragment.getActivity().getTheme()));
             save.setForegroundTintList(activity.colorDark);
@@ -195,16 +194,8 @@ public class BubbleUtils {
                         .setPositiveButton("Yes", (dialog, id) -> {
                             Toast.makeText(activity, b.getName() + "\nSuccessfully deleted!", Toast.LENGTH_SHORT).show();
                             user.getCreated().remove(b.getUuid());
-                            if(fragment instanceof HomeFragment) {
-                                HomeFragment homeFragment = (HomeFragment) fragment;
-                                homeFragment.getHomeViewModel().getBuildRepository().deleteBuild(b);
-                                homeFragment.getHomeViewModel().getUserRepository().removeBuildsUpdate(b, user, fragment.getContext(), "Build successfully deleted");
-                            }
-                            else if (fragment instanceof ProfileFragment){
-                                ProfileFragment profileFragment = (ProfileFragment) fragment;
-                                profileFragment.getProfileViewModel().getBuildRepository().deleteBuild(b);
-                                profileFragment.getProfileViewModel().getUserRepository().removeBuildsUpdate(b, user, fragment.getContext(), "Build successfully deleted");
-                            }
+                            activity.getViewModel().getBuildRepository().deleteBuild(b);
+                            activity.getViewModel().getUserRepository().removeBuildsUpdate(b, user, fragment.getContext(), "Build successfully deleted");
                             buildList.removeView(templateView);
                         })
                         .setNegativeButton("No", (dialog, id) -> {
@@ -220,9 +211,7 @@ public class BubbleUtils {
             ImageView dislike = templateView.findViewById(R.id.dislike);
             dislike.setVisibility(View.GONE);
             dislike.setClickable(false);
-        }
-
-        else {
+        } else {
             ImageView like = templateView.findViewById(R.id.like);
             ImageView dislike = templateView.findViewById(R.id.dislike);
             ImageView star = templateView.findViewById(R.id.saveBuild);
@@ -231,7 +220,7 @@ public class BubbleUtils {
                 like.setForegroundTintList(activity.colorDark);
             else if (b.getDislike().contains(user.getUsername()))
                 dislike.setForegroundTintList(activity.colorDark);
-            if (user.getFavorite().contains(b))
+            if (user.getFavorite().contains(b.getUuid().toString()))
                 star.setForegroundTintList(activity.colorDark);
 
             like.setOnClickListener(v -> {
@@ -239,13 +228,12 @@ public class BubbleUtils {
                 boolean removeDislike = false;
                 boolean removeLike = false;
 
-                if(b.getLike().contains(user.getUsername())) {
+                if (b.getLike().contains(user.getUsername())) {
                     removeLike = true;
                     b.getLike().remove(user.getUsername());
                     like.setForegroundTintList(activity.color);
 
-                }
-                else {
+                } else {
                     addLike = true;
                     b.getLike().add(user.getUsername());
                     like.setForegroundTintList(activity.colorDark);
@@ -261,12 +249,11 @@ public class BubbleUtils {
                 boolean addDislike = false;
                 boolean removeDislike = false;
                 boolean removeLike = false;
-                if(b.getDislike().contains(user.getUsername())) {
+                if (b.getDislike().contains(user.getUsername())) {
                     b.getDislike().remove(user.getUsername());
                     dislike.setForegroundTintList(activity.color);
                     removeDislike = true;
-                }
-                else {
+                } else {
                     b.getDislike().add(user.getUsername());
                     dislike.setForegroundTintList(activity.colorDark);
                     addDislike = true;
@@ -280,13 +267,12 @@ public class BubbleUtils {
 
             star.setOnClickListener(v -> {
 
-                if(user.getFavorite().contains(b.getUuid().toString())) {
+                if (user.getFavorite().contains(b.getUuid().toString())) {
                     user.getFavorite().remove(b.getUuid().toString());
                     star.setForegroundTintList(activity.color);
                     activity.getViewModel().getUserRepository()
                             .updateUserFavorite(user, b, fragment.getContext(), "Build removed to favorite!", false);
-                }
-                else {
+                } else {
                     user.getFavorite().add(b.getUuid().toString());
                     star.setForegroundTintList(activity.colorDark);
                     activity.getViewModel().getUserRepository()

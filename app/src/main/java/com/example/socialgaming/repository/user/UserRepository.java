@@ -128,7 +128,7 @@ public class UserRepository {
                 .child("users/").child(imageName + ".png");
 
         final long ONE_MEGABYTE = 1024 * 1024;
-        storageReference.getBytes(ONE_MEGABYTE * 5).addOnSuccessListener(bytes -> {
+        storageReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
             callback.onImageReceived(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
         });
 
