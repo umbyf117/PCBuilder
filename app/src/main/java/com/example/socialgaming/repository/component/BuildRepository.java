@@ -125,9 +125,7 @@ public class BuildRepository {
                                 documents.add(documentSnapshot);
                                 callback.onBuildReceived(documentSnapshot, created);
                             });
-
                 }
-
             }
         }).run();
     }

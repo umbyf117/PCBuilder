@@ -122,20 +122,6 @@ public class SearchFragment extends Fragment implements ISearchCallback {
         return currentView;
     }
 
-    private boolean isEmptyName(){
-        if(searchBuildName.getText().toString().equals("") || searchBuildName.toString().equals(null)) return true;
-        else return false;
-    }
-
-    private boolean isEmptyAuthor(){
-        if(searchAuthorName.getText().toString().equals("") || searchAuthorName.toString() == null) return true;
-        else return false;
-    }
-
-    private void switchToBuild(Build build){
-
-    }
-
     @Override
     public void onSearch(List<DocumentSnapshot> documents) {
         if(documents == null) return;

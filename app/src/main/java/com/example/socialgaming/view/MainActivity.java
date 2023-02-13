@@ -289,4 +289,6 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
     public HomeFragment getHomeFragment() {
         return homeFragment;
     }
+
+    public SearchFragment getSearchFragment(){return searchFragment;}
 }

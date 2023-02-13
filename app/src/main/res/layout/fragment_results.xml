@@ -77,13 +77,18 @@
         tools:ignore="MissingConstraints" />
 
     <Button
-        android:id="@+id/backtoSearch"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="64dp"
-        android:layout_width="wrap_content"
+        android:id="@+id/backToSearch"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Back"/>
+        android:layout_marginBottom="64dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="@drawable/shape_round"
+        android:backgroundTint="?attr/colorPrimary"
+        android:text="Back"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="?attr/background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
