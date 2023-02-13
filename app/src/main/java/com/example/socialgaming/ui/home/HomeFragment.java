@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Layout;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -84,6 +85,8 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //TransitionInflater inflater = TransitionInflater.from(requireContext());
+        //setExitTransition(inflater.inflateTransition(R.transition.fade));
     }
 
     @Nullable

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,6 +85,8 @@ public class SearchFragment extends Fragment implements ISearchCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //TransitionInflater inflater = TransitionInflater.from(requireContext());
+        //setExitTransition(inflater.inflateTransition(R.transition.fade));
         searchFrag = this;
     }
 

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,6 +65,8 @@ public class BuildFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //TransitionInflater inflater = TransitionInflater.from(requireContext());
+        //setExitTransition(inflater.inflateTransition(R.transition.fade));
         if(getArguments() != null) {
             if(getArguments().getSerializable("build") != null)
                 build = (Build) getArguments().getSerializable("build");

@@ -4,6 +4,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,8 @@ public class ProfileFragment extends Fragment implements IBuildCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //TransitionInflater inflater = TransitionInflater.from(requireContext());
+        //setExitTransition(inflater.inflateTransition(R.transition.fade));
         activity = (MainActivity) this.getActivity();
         activity.setNightMode();
         user = activity.getUser();
