@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +23,8 @@ import com.example.socialgaming.R;
 import com.example.socialgaming.data.BuildFirestore;
 import com.example.socialgaming.data.User;
 import com.example.socialgaming.repository.callbacks.IBuildCallback;
+import com.example.socialgaming.repository.callbacks.ISearchCallback;
+import com.example.socialgaming.repository.component.BuildRepository;
 import com.example.socialgaming.utils.BubbleUtils;
 import com.example.socialgaming.utils.FragmentUtils;
 import com.example.socialgaming.view.MainActivity;
@@ -30,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ResultsFragment extends Fragment{
+public class ResultsFragment extends Fragment implements ISearchCallback {
 
     private List<BuildFirestore> buildFirestores;
     private User user;
@@ -56,12 +60,18 @@ public class ResultsFragment extends Fragment{
         currentView = inflater.inflate(R.layout.fragment_results, container, false);
 
         fm = getActivity().getSupportFragmentManager();
-        user = ((MainActivity) getActivity()).getUser();
+        if(user == null)
+            user = ((MainActivity) getActivity()).getUser();
+
+        TextView username = currentView.findViewById(R.id.username);
+        username.setText(user.getUsername());
+        ImageView image = currentView.findViewById(R.id.prof_pic);
+        image.setImageBitmap(user.getImage());
+
         buildsContainer = currentView.findViewById(R.id.buildLayout);
-        for(BuildFirestore build : buildFirestores)
-            BubbleUtils.setBuildBubble(build, user, this, buildsContainer);
-
-
+        for(BuildFirestore build : buildFirestores) {
+            new BuildRepository().downloadBitmapFromFirebaseStorage(build.getUuid().toString(), build, this);
+        }
 
         return currentView;
     }
@@ -70,16 +80,26 @@ public class ResultsFragment extends Fragment{
         MainActivity activity = (MainActivity) getActivity();
         FragmentManager fm = getActivity().getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.resultsFrag, new SearchFragment());
-        ft.addToBackStack(null);
+        ft.replace(this.getId(), activity.getSearchFragment());
         ft.commit();
-    }
-
-    public List<BuildFirestore> getBuildFirestores() {
-        return buildFirestores;
     }
 
     public void setBuildFirestores(List<BuildFirestore> buildFirestores) {
         this.buildFirestores = buildFirestores;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public void onSearch(List<DocumentSnapshot> documents) {
+
+    }
+
+    @Override
+    public void onImageReceived(Bitmap decodeByteArray, BuildFirestore build) {
+        build.setImage(decodeByteArray);
+        BubbleUtils.setBuildBubble(build, user, this, buildsContainer);
     }
 }

@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/juraregular"
-        android:text="Username"
+        android:text=""
         android:textAlignment="center"
         android:textColor="?attr/colorPrimaryDark"
         android:textSize="16sp"
@@ -68,27 +68,12 @@
         android:id="@+id/prof_pic"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/profpic"
+        android:src="@drawable/logo"
         app:civ_border_color="?attr/colorPrimary"
         app:civ_circle_background_color="?attr/colorPrimary"
         app:civ_border_width="7dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
-
-    <Button
-        android:id="@+id/backToSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
-        android:layout_marginHorizontal="16dp"
-        android:background="@drawable/shape_round"
-        android:backgroundTint="?attr/colorPrimary"
-        android:text="Back"
-        android:textAlignment="center"
-        android:textAllCaps="true"
-        android:textColor="?attr/background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

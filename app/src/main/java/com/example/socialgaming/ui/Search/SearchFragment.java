@@ -1,68 +1,31 @@
 package com.example.socialgaming.ui.Search;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.TextView;
+import android.widget.Toast;
 
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.socialgaming.R;
-import com.example.socialgaming.api.ComponentsFetcher;
-import com.example.socialgaming.data.Build;
 import com.example.socialgaming.data.BuildFirestore;
 import com.example.socialgaming.data.User;
-import com.example.socialgaming.repository.callbacks.IBuildCallback;
 import com.example.socialgaming.repository.callbacks.ISearchCallback;
-import com.example.socialgaming.repository.component.BuildRepository;
 import com.example.socialgaming.ui.home.HomeFragment;
 import com.example.socialgaming.view.MainActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.transition.MaterialFadeThrough;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.StorageReference;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
-import javax.security.auth.callback.Callback;
 
 public class SearchFragment extends Fragment implements ISearchCallback {
 
@@ -86,8 +49,6 @@ public class SearchFragment extends Fragment implements ISearchCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //TransitionInflater inflater = TransitionInflater.from(requireContext());
-        //setExitTransition(inflater.inflateTransition(R.transition.fade));
         searchFrag = this;
     }
 
@@ -95,10 +56,8 @@ public class SearchFragment extends Fragment implements ISearchCallback {
         currentView = inflater.inflate(R.layout.fragment_search, container, false);
         MainActivity activity = (MainActivity) this.getActivity();
         user = activity.getUser();
-        //activity.setNightMode(AppCompatDelegate.getDefaultNightMode());
 
         searchViewModel = new SearchViewModel(getActivity().getApplication());
-        //searchViewModel.getBuildRepository().getBuildList(10, 0, this);
 
         searchButton = currentView.findViewById(R.id.searchButton);
 
@@ -114,7 +73,7 @@ public class SearchFragment extends Fragment implements ISearchCallback {
                 searchQuery1 = searchBuildName.getText().toString();
                 searchQuery2 = searchAuthorName.getText().toString();
 
-                if(searchQuery1.equals("") && searchQuery2.equals("")) return;
+                if (searchQuery1.equals("") && searchQuery2.equals("")) return;
 
                 searchViewModel.getBuildRepository().searchBuilds(searchQuery1, searchQuery2, searchFrag);
             }
@@ -125,28 +84,27 @@ public class SearchFragment extends Fragment implements ISearchCallback {
 
     @Override
     public void onSearch(List<DocumentSnapshot> documents) {
-        if(documents == null) return;
+        if (documents == null) return;
         List<BuildFirestore> builds = new ArrayList<>();
-        for(DocumentSnapshot document : documents){
+        for (DocumentSnapshot document : documents) {
             BuildFirestore build = new BuildFirestore();
             build.updateWithDocument(document);
             builds.add(build);
-            searchViewModel.getBuildRepository().downloadBitmapFromFirebaseStorage(build.getUuid().toString(), build, this);
         }
 
-        imageLeft = builds.size();
+        if(builds.size() == 0)
+            Toast.makeText(this.getContext(), "Do not found any builds with that parameters", Toast.LENGTH_SHORT).show();
 
-        while(imageLeft > 0);
-
-        ResultsFragment newFragment = new ResultsFragment();
-        newFragment.setBuildFirestores(builds);
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.search_fragment, newFragment).addToBackStack(null).commit();
+        else {
+            ResultsFragment newFragment = new ResultsFragment();
+            newFragment.setBuildFirestores(builds);
+            newFragment.setUser(user);
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(this.getId(), newFragment).addToBackStack(null).commit();
+        }
 
     }
 
     @Override
-    public void onImageReceived(Bitmap bitmap, BuildFirestore build) {
-        build.setImage(bitmap);
-        imageLeft--;
-    }
+    public void onImageReceived(Bitmap decodeByteArray, BuildFirestore build) {}
 }

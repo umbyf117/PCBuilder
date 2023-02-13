@@ -10,5 +10,5 @@ import java.util.List;
 public interface ISearchCallback {
 
     void onSearch(List<DocumentSnapshot> documents);
-    void onImageReceived(Bitmap bitmap, BuildFirestore build);
+    void onImageReceived(Bitmap decodeByteArray, BuildFirestore build);
 }
