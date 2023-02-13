@@ -60,7 +60,7 @@
             android:backgroundTint="?attr/backgroundColor"
             android:hint="Build Name:"
             android:inputType="textEmailAddress"
-            android:textColor="?attr/colorPrimaryDark"
+            android:textColor="?android:attr/textColor"
             tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,7 +83,7 @@
             android:backgroundTint="?attr/backgroundColor"
             android:hint="Creator:"
             android:inputType="text"
-            android:textColor="?attr/colorPrimaryDark"
+            android:textColor="?android:attr/textColor"
             tools:ignore="SpeakableTextPresentCheck" />
 
     </com.google.android.material.textfield.TextInputLayout>
