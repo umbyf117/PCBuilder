@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -22,6 +23,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceManager;
 
 import com.example.socialgaming.PcBuilder;
 import com.example.socialgaming.R;
@@ -41,6 +43,8 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        boolean isDarkMode = sharedPreferences.getBoolean("isDarkMode", false);
         //TransitionInflater inflater = TransitionInflater.from(requireContext());
         //setExitTransition(inflater.inflateTransition(R.transition.fade));
     }
@@ -68,23 +72,23 @@ public class SettingsFragment extends Fragment {
         switchmode = currentView.findViewById(R.id.switch_night_mode);
         if(PcBuilder.getNightMode(this.getActivity().getApplicationContext()))
             switchmode.setChecked(true);
-        switchmode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        switchmode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }
 
-            if(isChecked){
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                PcBuilder.setNightMode(this.getActivity().getApplicationContext(), true);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                PcBuilder.setNightMode(this.getActivity().getApplicationContext(), false);
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("isDarkMode", isChecked);
+                editor.apply();
             }
         });
 
-        Boolean state = true;
-        SharedPrefManager.getInstance(getActivity().getApplicationContext()).setNighModeState(state);
-        //boolean isNightModeOn = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
         this.getActivity().recreate();
-        //switchmode.setChecked(isNightModeOn);
-
 
     }
 
