@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.animation.AnimationUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -23,6 +24,7 @@ import com.example.socialgaming.repository.callbacks.IUserCallback;
 import com.example.socialgaming.ui.Build.BuildFragment;
 import com.example.socialgaming.ui.Search.SearchFragment;
 import com.example.socialgaming.ui.Settings.SettingsFragment;
+import com.example.socialgaming.ui.Settings.SharedPrefManager;
 import com.example.socialgaming.ui.home.HomeFragment;
 import com.example.socialgaming.ui.profile.ProfileFragment;
 import com.example.socialgaming.utils.FragmentUtils;
@@ -101,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
     public void setupNavigationListener() {
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
+            //bottomNavigationView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim));
             switch(item.getItemId()){
                 case R.id.homepage:
                     if(modifiedUser == true) {
@@ -112,11 +115,15 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
                         current.reload();
                     }
                     else {
-                        FragmentManager fm = getSupportFragmentManager();
-                        FragmentTransaction ft = fm.beginTransaction();
-                        ft.setCustomAnimations(R.transition.transition_slide_from_right, 0);
                         currentFragment = homeFragment;
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container_home, homeFragment).commit();
+                        getSupportFragmentManager().beginTransaction()
+                                .setCustomAnimations(
+                                        R.anim.slide_in, //enter
+                                        R.anim.fade_out, //exit
+                                        R.anim.fade_in, //popEnter
+                                        R.anim.slide_out //popExit
+                                )
+                                .replace(R.id.container_home, homeFragment).commit();
                     }
                     return true;
                 case R.id.profile:
@@ -130,20 +137,48 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
                     }
                     else {
                         currentFragment = profileFragment;
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container_home, profileFragment).commit();
+                        getSupportFragmentManager().beginTransaction()
+                                .setCustomAnimations(
+                                        R.anim.slide_in, //enter
+                                        R.anim.fade_out, //exit
+                                        R.anim.fade_in, //popEnter
+                                        R.anim.slide_out //popExit
+                                )
+                                .replace(R.id.container_home, profileFragment).commit();
                     }
                     return true;
                 case R.id.create_build:
                     currentFragment = buildFragment;
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container_home, buildFragment).commit();
+                    getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(
+                                    R.anim.slide_in, //enter
+                                    R.anim.fade_out, //exit
+                                    R.anim.fade_in, //popEnter
+                                    R.anim.slide_out //popExit
+                            )
+                            .replace(R.id.container_home, buildFragment).commit();
                     return true;
                 case R.id.search_build:
                     currentFragment = searchFragment;
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container_home, searchFragment).commit();
+                    getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(
+                                    R.anim.slide_in, //enter
+                                    R.anim.fade_out, //exit
+                                    R.anim.fade_in, //popEnter
+                                    R.anim.slide_out //popExit
+                            )
+                            .replace(R.id.container_home, searchFragment).commit();
                     return true;
                 case R.id.settings:
                     currentFragment = settingsFragment;
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container_home, settingsFragment).commit();
+                    getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(
+                                    R.anim.slide_in, //enter
+                                    R.anim.fade_out, //exit
+                                    R.anim.fade_in, //popEnter
+                                    R.anim.slide_out //popExit
+                            )
+                            .replace(R.id.container_home, settingsFragment).commit();
                     return true;
             }
             return false;

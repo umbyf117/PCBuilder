@@ -76,9 +76,12 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        boolean isNightModeOn = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
+        Boolean state = true;
+        SharedPrefManager.getInstance(getActivity().getApplicationContext()).setNighModeState(state);
+        //boolean isNightModeOn = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
         this.getActivity().recreate();
-        switchmode.setChecked(isNightModeOn);
+        //switchmode.setChecked(isNightModeOn);
+
 
     }
 

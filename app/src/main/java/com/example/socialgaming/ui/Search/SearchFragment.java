@@ -147,8 +147,6 @@ public class SearchFragment extends Fragment implements ISearchCallback {
 
         newFragment.setBuildFirestores(builds);
 
-        fm = getActivity().getSupportFragmentManager();
-        ft = fm.beginTransaction().replace(R.id.search_fragment, newFragment);
-        ft.addToBackStack(null).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.search_fragment, newFragment).addToBackStack(null).commit();
     }
 }

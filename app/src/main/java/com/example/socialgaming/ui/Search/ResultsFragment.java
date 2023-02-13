@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.cardview.widget.CardView;
@@ -29,6 +30,7 @@ public class ResultsFragment extends Fragment {
     private User user;
     private View currentView;
     private LinearLayout buildsContainer;
+    private Button button;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -45,10 +47,9 @@ public class ResultsFragment extends Fragment {
         for(BuildFirestore build : buildFirestores)
             BubbleUtils.setBuildBubble(build, user, this, buildsContainer);
 
-
+        button = currentView.findViewById(R.id.backtoSearch);
 
         return currentView;
-
     }
 
     public List<BuildFirestore> getBuildFirestores() {
