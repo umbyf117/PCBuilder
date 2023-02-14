@@ -199,14 +199,14 @@ public class ProfileFragment extends Fragment implements IBuildCallback {
     }
 
     public void reload() {
+        createdBuilds.removeAllViewsInLayout();
+        favoriteBuilds.removeAllViewsInLayout();
+
         created = new ArrayList<>();
         favorite = new ArrayList<>();
 
         profileViewModel.getBuildRepository().getUserBuilds(user.getCreated(), this, true);
         profileViewModel.getBuildRepository().getUserBuilds(user.getFavorite(), this, false);
-
-        createdBuildLayout.removeAllViewsInLayout();
-        favoriteBuildLayout.removeAllViewsInLayout();
     }
 
     @Override

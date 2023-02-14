@@ -108,10 +108,6 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
             //bottomNavigationView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim));
             switch(item.getItemId()){
                 case R.id.homepage:
-                    if(modifiedUser == true) {
-                        modifiedUser = false;
-                        homeFragment = new HomeFragment();
-                    }
                     if(currentFragment instanceof HomeFragment) {
                         HomeFragment current = (HomeFragment) currentFragment;
                         current.reload();
@@ -125,14 +121,10 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
                                         R.anim.fade_in, //popEnter
                                         R.anim.slide_out //popExit
                                 )
-                                .replace(R.id.container_home, homeFragment).commit();
+                                .replace(R.id.container_home, currentFragment).commit();
                     }
                     return true;
                 case R.id.profile:
-                    if(modifiedUser == true) {
-                        modifiedUser = false;
-                        profileFragment = new ProfileFragment();
-                    }
                     if(currentFragment instanceof ProfileFragment) {
                         ProfileFragment current = (ProfileFragment) currentFragment;
                         current.reload();
@@ -146,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
                                         R.anim.fade_in, //popEnter
                                         R.anim.slide_out //popExit
                                 )
-                                .replace(R.id.container_home, currentFragment).commit();
+                                .replace(R.id.container_home, profileFragment).commit();
                     }
                     return true;
                 case R.id.create_build:

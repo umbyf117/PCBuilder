@@ -86,8 +86,8 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //TransitionInflater inflater = TransitionInflater.from(requireContext());
-        //setExitTransition(inflater.inflateTransition(R.transition.fade));
+        if(user != null)
+            setupUser();
     }
 
     @Nullable
@@ -96,8 +96,10 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         activity = (MainActivity) this.getActivity();
         homeViewModel = new HomeFragmentViewModel(activity.getApplication());
 
-        if(activity.getUser() != null)
+        if(activity.getUser() != null) {
             user = activity.getUser();
+            setupUser();
+        }
         else
             homeViewModel.getUserRepository().getUserData(
                     homeViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName(), this);
@@ -105,6 +107,24 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         currentView = inflater.inflate(R.layout.fragment_home, container, false);
 
         return currentView;
+    }
+
+    public void setupUser() {
+
+        buildList = currentView.findViewById(R.id.buildLayout);
+
+        builds = new ArrayList<>();
+
+        username = currentView.findViewById(R.id.username);
+        username.setText(user.getUsername());
+
+        this.image = currentView.findViewById(R.id.prof_pic);
+        this.image.setImageBitmap(user.getImage());
+
+        homeViewModel.getBuildRepository().getBuildList(BUILD_PER_LOAD, 0, this);
+
+
+
     }
 
     @Override
@@ -161,21 +181,12 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         PcBuilder application = (PcBuilder) activity.getApplication();
         application.setUser(user);
 
-        buildList = currentView.findViewById(R.id.buildLayout);
-
-        builds = new ArrayList<>();
-
-        username = currentView.findViewById(R.id.username);
-        username.setText(user.getUsername());
-
-        this.image = currentView.findViewById(R.id.prof_pic);
-        this.image.setImageBitmap(user.getImage());
-
-        homeViewModel.getBuildRepository().getBuildList(BUILD_PER_LOAD, 0, this);
+        setupUser();
 
     }
 
     public void reload() {
+        setupUser();
         builds = new ArrayList<>();
         homeViewModel.getBuildRepository().getBuildList(BUILD_PER_LOAD, 0, this);
         buildList.removeAllViewsInLayout();
