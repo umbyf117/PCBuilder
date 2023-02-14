@@ -107,7 +107,9 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
                 homeViewModel.getUserRepository().getUserData(
                         homeViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName(), this);
         }
+
         currentView = inflater.inflate(R.layout.fragment_home, container, false);
+        setupHome();
 
         return currentView;
     }
@@ -121,18 +123,22 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
 
     public void setupUser() {
 
-        buildList = currentView.findViewById(R.id.buildLayout);
-
-        builds = new ArrayList<>();
-
         username = currentView.findViewById(R.id.username);
         username.setText(user.getUsername());
 
         this.image = currentView.findViewById(R.id.prof_pic);
         this.image.setImageBitmap(user.getImage());
 
-        homeViewModel.getBuildRepository().getBuildList(BUILD_PER_LOAD, 0, this);
+    }
 
+    public void setupHome() {
+
+        buildList = currentView.findViewById(R.id.buildLayout);
+        buildList.removeAllViews();
+
+        builds = new ArrayList<>();
+
+        homeViewModel.getBuildRepository().getBuildList(BUILD_PER_LOAD, 0, this);
     }
 
     @Override
