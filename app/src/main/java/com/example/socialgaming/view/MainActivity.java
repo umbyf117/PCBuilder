@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
         instantiateColors();
 
         viewModel = new MainViewModel(getApplication());
+        //viewModel.logout();
+        //FragmentUtils.startActivity(this, new Intent(MainActivity.this, LoginActivity.class), true);
         viewModel.getUserLiveData().observe(this, firebaseUser -> {
             if(firebaseUser == null)
                 FragmentUtils.startActivity(this, new Intent(MainActivity.this, LoginActivity.class), true);

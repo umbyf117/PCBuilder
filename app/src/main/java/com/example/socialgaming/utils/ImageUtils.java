@@ -83,10 +83,14 @@ public class ImageUtils {
     }
 
     public static Bitmap resize(Bitmap bitmap) {
+        if(bitmap.getHeight() - MAX_DIMENSION <= 0 || bitmap.getWidth() - MAX_DIMENSION <= 0)
+            return bitmap;
+
         Bitmap croppedBitmap = Bitmap.createBitmap(bitmap,
                 (bitmap.getWidth() - MAX_DIMENSION) / 2,
                 (bitmap.getHeight() - MAX_DIMENSION) / 2,
                 MAX_DIMENSION, MAX_DIMENSION);
+
         return croppedBitmap;
     }
 

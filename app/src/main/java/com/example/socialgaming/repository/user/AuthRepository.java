@@ -84,33 +84,6 @@ public class AuthRepository {
                         if(taskFS.getResult().exists())
                             Log.i(MainActivity.TAG, application.getString(R.string.authentication_input_username_exist));
                         else {
-
-                            FirebaseFirestore.getInstance().collection("/" + application.getString(R.string.firestore_users_collection))
-                                    .document("/" + username).set(new HashMap<String, Object>() {
-                                        {
-                                            put("mail", email);
-                                            put("password", password);
-                                            put("username", username);
-                                            put("favorite", new ArrayList<Build>());
-                                            put("created", new ArrayList<Build>());
-                                        }
-                                    }).addOnCompleteListener(task -> {
-                                        FirebaseStorage storage = FirebaseStorage.getInstance();
-                                        StorageReference storageRef = storage.getReference();
-                                        StorageReference bitmapRef = storageRef.child("users/" + username + ".png");
-                                        Bitmap profile = BitmapFactory.decodeFile("android.resource://com.example.socialgaming/" + R.drawable.logo);
-                                        UploadTask uploadTask = bitmapRef.putBytes(ImageUtils.encodeBitmapToByteArray(ImageUtils.resize(profile)));
-                                        uploadTask.addOnCompleteListener(task1 -> firebaseAuth.createUserWithEmailAndPassword(email, password)
-                                                .addOnCompleteListener(application.getMainExecutor(), taskFA -> {
-                                                    if (taskFA.isSuccessful()) {
-                                                        FirebaseUser user = firebaseAuth.getCurrentUser();
-                                                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                                                .setDisplayName(username)
-                                                                .build();
-                                                    }
-                                                }));
-                                    });
-                            /*
                             firebaseAuth.createUserWithEmailAndPassword(email, password)
                                     .addOnCompleteListener(application.getMainExecutor(), taskFA -> {
                                         if (taskFA.isSuccessful()) {
@@ -125,8 +98,6 @@ public class AuthRepository {
                                                             Log.d("[UPDATE]", "User profile updated.");
                                                         }
                                                     });
-                                            userLiveData.setValue(user); // Set mutable
-                                            loggedOutLiveData.setValue(false);
                                             FirebaseFirestore.getInstance().collection("/" + application.getString(R.string.firestore_users_collection))
                                                     .document("/" + username).set(new HashMap<String, Object>() {
                                                         {
@@ -137,14 +108,21 @@ public class AuthRepository {
                                                             put("created", new ArrayList<Build>());
                                                         }
                                                     }).addOnCompleteListener(task -> {
-                                                        Objects.requireNonNull(userLiveData.getValue());
-
-                                                        user.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(username).build());
+                                                        Bitmap bitmap = BitmapFactory.decodeResource(application.getResources(), R.drawable.logo);
+                                                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                                                        StorageReference storageRef = storage.getReference();
+                                                        StorageReference bitmapRef = storageRef.child("users/" + username + ".png");
+                                                        UploadTask uploadTask = bitmapRef.putBytes(ImageUtils.encodeBitmapToByteArray(ImageUtils.resize(bitmap)));
+                                                        uploadTask.addOnCompleteListener(task1 -> {
+                                                            userLiveData.setValue(user); // Set mutable
+                                                            loggedOutLiveData.setValue(false);
+                                                            user.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(username).build());
+                                                        });
                                                     })
                                                     .addOnFailureListener(e -> ViewUtils.displayToast(application,e.getMessage()));
 
                                             }
-                                    }).addOnFailureListener(e -> ViewUtils.displayToast(application,e.getMessage()));*/
+                                    }).addOnFailureListener(e -> ViewUtils.displayToast(application,e.getMessage()));
                         }
                     }
                 }).addOnFailureListener(e -> ViewUtils.displayToast(application , e.getMessage()));
