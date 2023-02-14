@@ -422,7 +422,7 @@ public class BuildFirestore implements Serializable {
         if (dislike.size() == 0)
             return 100.0;
 
-        return ((like.size() * 10) / (dislike.size() * 10)) * 100;
+        return ((like.size() * 10) / ((dislike.size()+like.size()) * 10)) * 100;
     }
 
     public String getName() {
