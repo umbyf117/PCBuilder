@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.socialgaming.R;
 import com.example.socialgaming.utils.StringUtils;
@@ -67,16 +67,18 @@ public class RegisterFragment extends Fragment {
     private void listernersSetup() {
 
         //SIGN UP BUTTON
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String mail = emailTextRegister.getText().toString().trim();
-                String pass = passwordTextRegister.getText().toString();
-                String username = usernameTextRegister.getText().toString().trim();
-                if (checkCredentials(mail, pass, username))
-                    viewModel.register(mail, pass, username);
-
+        signUpButton.setOnClickListener(view -> {
+            String mail = emailTextRegister.getText().toString().trim();
+            String pass = passwordTextRegister.getText().toString();
+            String username = usernameTextRegister.getText().toString().trim();
+            if (checkCredentials(mail, pass, username)) {
+                viewModel.register(mail, pass, username);
+                emailTextRegister.setText("");
+                passwordTextRegister.setText("");
+                usernameTextRegister.setText("");
+                Toast.makeText(getContext(), "Wait we are setting up your information!", Toast.LENGTH_SHORT);
             }
+
         });
 
         signInText.setOnClickListener(LoginActivity.getSwitchListener());
