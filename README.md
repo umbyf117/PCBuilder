@@ -1,4 +1,4 @@
-# SocialGaming
+# PCBuilder
 Gruppo:
 - Biancini Mattia 865966
 - Bishara Giovanni 869532
