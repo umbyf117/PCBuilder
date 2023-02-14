@@ -2,6 +2,7 @@ package com.example.socialgaming.repository.user;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
@@ -24,6 +25,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -80,6 +84,33 @@ public class AuthRepository {
                         if(taskFS.getResult().exists())
                             Log.i(MainActivity.TAG, application.getString(R.string.authentication_input_username_exist));
                         else {
+
+                            FirebaseFirestore.getInstance().collection("/" + application.getString(R.string.firestore_users_collection))
+                                    .document("/" + username).set(new HashMap<String, Object>() {
+                                        {
+                                            put("mail", email);
+                                            put("password", password);
+                                            put("username", username);
+                                            put("favorite", new ArrayList<Build>());
+                                            put("created", new ArrayList<Build>());
+                                        }
+                                    }).addOnCompleteListener(task -> {
+                                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                                        StorageReference storageRef = storage.getReference();
+                                        StorageReference bitmapRef = storageRef.child("users/" + username + ".png");
+                                        Bitmap profile = BitmapFactory.decodeFile("android.resource://com.example.socialgaming/" + R.drawable.logo);
+                                        UploadTask uploadTask = bitmapRef.putBytes(ImageUtils.encodeBitmapToByteArray(ImageUtils.resize(profile)));
+                                        uploadTask.addOnCompleteListener(task1 -> firebaseAuth.createUserWithEmailAndPassword(email, password)
+                                                .addOnCompleteListener(application.getMainExecutor(), taskFA -> {
+                                                    if (taskFA.isSuccessful()) {
+                                                        FirebaseUser user = firebaseAuth.getCurrentUser();
+                                                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                                .setDisplayName(username)
+                                                                .build();
+                                                    }
+                                                }));
+                                    });
+                            /*
                             firebaseAuth.createUserWithEmailAndPassword(email, password)
                                     .addOnCompleteListener(application.getMainExecutor(), taskFA -> {
                                         if (taskFA.isSuccessful()) {
@@ -107,14 +138,13 @@ public class AuthRepository {
                                                         }
                                                     }).addOnCompleteListener(task -> {
                                                         Objects.requireNonNull(userLiveData.getValue());
-                                                        new UserRepository().uploadBitmapToFirebaseStorage(
-                                                                BitmapFactory.decodeFile("android.resource://com.example.socialgaming/" + R.drawable.logo), username);
+
                                                         user.updateProfile(new UserProfileChangeRequest.Builder().setDisplayName(username).build());
                                                     })
                                                     .addOnFailureListener(e -> ViewUtils.displayToast(application,e.getMessage()));
 
                                             }
-                                    }).addOnFailureListener(e -> ViewUtils.displayToast(application,e.getMessage()));
+                                    }).addOnFailureListener(e -> ViewUtils.displayToast(application,e.getMessage()));*/
                         }
                     }
                 }).addOnFailureListener(e -> ViewUtils.displayToast(application , e.getMessage()));
