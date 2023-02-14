@@ -33,6 +33,7 @@ import com.example.socialgaming.repository.callbacks.IBuildCallback;
 import com.example.socialgaming.repository.callbacks.IUserCallback;
 import com.example.socialgaming.ui.home.HomeFragment;
 import com.example.socialgaming.utils.BubbleUtils;
+import com.example.socialgaming.utils.ImageUtils;
 import com.example.socialgaming.view.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -216,6 +217,7 @@ public class ProfileFragment extends Fragment implements IBuildCallback {
             Uri uri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                bitmap = ImageUtils.resize(bitmap);
                 image.setImageBitmap(bitmap);
                 user.setImage(bitmap);
                 this.profileViewModel.getUserRepository().uploadBitmapToFirebaseStorage(bitmap, user.getUsername(), this.getActivity());

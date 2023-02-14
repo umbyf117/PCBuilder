@@ -75,8 +75,8 @@ public class ImageUtils {
     }
 
     public static Bitmap resize(Bitmap bitmap) {
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
+        double width = bitmap.getWidth();
+        double height = bitmap.getHeight();
 
         if(width < height) {
             height = height * (MAX_DIMENSION / width);
@@ -87,12 +87,7 @@ public class ImageUtils {
             height = MAX_DIMENSION;
         }
 
-        Bitmap croppedBitmap = Bitmap.createBitmap(bitmap,
-                width/ 2,
-                height / 2,
-                MAX_DIMENSION, MAX_DIMENSION);
-
-        return croppedBitmap;
+        return Bitmap.createScaledBitmap(bitmap, (int) width, (int) height, false);
     }
 
 }

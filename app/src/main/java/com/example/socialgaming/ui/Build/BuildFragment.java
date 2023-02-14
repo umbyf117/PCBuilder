@@ -35,6 +35,7 @@ import com.example.socialgaming.repository.callbacks.IUserCallback;
 import com.example.socialgaming.ui.Lists.ComponentsFragment;
 import com.example.socialgaming.ui.Settings.SettingsFragment;
 import com.example.socialgaming.ui.profile.ProfileFragment;
+import com.example.socialgaming.utils.ImageUtils;
 import com.example.socialgaming.view.MainActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -311,6 +312,7 @@ public class BuildFragment extends Fragment {
             Uri uri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                bitmap = ImageUtils.resize(bitmap);
                 image.setImageBitmap(bitmap);
                 build.setImage(bitmap);
             } catch (IOException e) {
