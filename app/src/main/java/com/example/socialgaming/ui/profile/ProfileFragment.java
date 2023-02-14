@@ -1,9 +1,14 @@
 package com.example.socialgaming.ui.profile;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,10 +38,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileFragment extends Fragment implements IBuildCallback {
+
+    private static final int PICK_IMAGE_REQUEST_CODE = 1;
 
     private MainActivity activity;
     private ImageView image;
@@ -72,6 +80,10 @@ public class ProfileFragment extends Fragment implements IBuildCallback {
         profileViewModel = new ProfileViewModel(getActivity().getApplication());
 
         image = view.findViewById(R.id.prof_pic);
+        image.setOnClickListener(listener ->{
+            Intent pickImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST_CODE);
+                });
 
         createdBuild = view.findViewById(R.id.createdBuildButton);
         favoriteBuild = view.findViewById(R.id.favoriteBuildButton);
@@ -197,7 +209,20 @@ public class ProfileFragment extends Fragment implements IBuildCallback {
         favoriteBuildLayout.removeAllViewsInLayout();
     }
 
-    public ProfileViewModel getProfileViewModel() {
-        return profileViewModel;
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri uri = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                image.setImageBitmap(bitmap);
+                user.setImage(bitmap);
+                this.profileViewModel.getUserRepository().uploadBitmapToFirebaseStorage(bitmap, user.getUsername(), this.getActivity());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
+
 }

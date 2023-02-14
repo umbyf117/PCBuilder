@@ -1,5 +1,6 @@
 package com.example.socialgaming.repository.user;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,8 +17,10 @@ import com.example.socialgaming.repository.callbacks.IBuildCallback;
 import com.example.socialgaming.repository.callbacks.IUserCallback;
 import com.example.socialgaming.repository.component.BuildRepository;
 import com.example.socialgaming.utils.ImageUtils;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
@@ -121,6 +124,21 @@ public class UserRepository {
         // Create a reference to the file to be uploaded with the given name
         StorageReference bitmapRef = storageRef.child("users/" + imageName + ".png");
         UploadTask uploadTask = bitmapRef.putBytes(ImageUtils.encodeBitmapToByteArray(ImageUtils.resize(bitmap)));
+    }
+
+    public void uploadBitmapToFirebaseStorage(Bitmap bitmap, final String imageName, Activity activity) {
+        // Get the reference to the Firebase Storage
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        // Create a reference to the file to be uploaded with the given name
+        StorageReference bitmapRef = storageRef.child("users/" + imageName + ".png");
+        UploadTask uploadTask = bitmapRef.putBytes(ImageUtils.encodeBitmapToByteArray(ImageUtils.resize(bitmap)));
+        uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                Toast.makeText(activity.getApplicationContext(), "Profile Picture updated successfully!", Toast.LENGTH_SHORT);
+            }
+        });
     }
 
     public void downloadBitmapFromFirebaseStorage(String imageName, IUserCallback callback) {
