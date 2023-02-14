@@ -127,9 +127,8 @@ public class UserRepository {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference()
                 .child("users/").child(imageName + ".png");
 
-        final long ONE_MEGABYTE = 1024 * 1024;
-        storageReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
-            callback.onImageReceived(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+        storageReference.getDownloadUrl().addOnSuccessListener(result -> {
+            callback.onImageReceived(ImageUtils.getBitmapFromURL(result.toString()));
         });
 
     }

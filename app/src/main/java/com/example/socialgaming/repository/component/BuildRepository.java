@@ -143,9 +143,8 @@ public class BuildRepository {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference()
                 .child("images/").child(imageName + ".jpeg");
 
-        final long ONE_MEGABYTE = 1024 * 1024;
-        storageReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
-            callback.onImageReceived(BitmapFactory.decodeByteArray(bytes, 0, bytes.length), build, created);
+        storageReference.getDownloadUrl().addOnSuccessListener(result -> {
+            callback.onImageReceived(ImageUtils.getBitmapFromURL(result.toString()), build, created);
         });
 
     }
@@ -154,9 +153,8 @@ public class BuildRepository {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference()
                 .child("images/").child(imageName + ".jpeg");
 
-        final long ONE_MEGABYTE = 1024 * 1024;
-        storageReference.getBytes(ONE_MEGABYTE * 1).addOnSuccessListener(bytes -> {
-            callback.onImageReceived(BitmapFactory.decodeByteArray(bytes, 0, bytes.length), build);
+        storageReference.getDownloadUrl().addOnSuccessListener(result -> {
+            callback.onImageReceived(ImageUtils.getBitmapFromURL(result.toString()), build);
         });
 
     }

@@ -96,8 +96,8 @@ public class AuthRepository {
                                                     });
                                             userLiveData.setValue(user); // Set mutable
                                             loggedOutLiveData.setValue(false);
-                                            FirebaseFirestore.getInstance().collection(application.getString(R.string.firestore_users_collection))
-                                                    .document(username).set(new HashMap<String, Object>() {
+                                            FirebaseFirestore.getInstance().collection("/" + application.getString(R.string.firestore_users_collection))
+                                                    .document("/" + username).set(new HashMap<String, Object>() {
                                                         {
                                                             put("mail", email);
                                                             put("password", password);
@@ -136,7 +136,6 @@ public class AuthRepository {
     }
 
     public MutableLiveData<FirebaseUser> getUserLiveData() { return userLiveData; }
-
     public MutableLiveData<Boolean> getLoggedOutLiveData() { return loggedOutLiveData; }
 
 }
