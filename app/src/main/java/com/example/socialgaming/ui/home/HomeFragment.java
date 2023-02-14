@@ -96,17 +96,27 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         activity = (MainActivity) this.getActivity();
         homeViewModel = new HomeFragmentViewModel(activity.getApplication());
 
-        if(activity.getUser() != null) {
-            user = activity.getUser();
+        if(user != null) {
             setupUser();
         }
-        else
-            homeViewModel.getUserRepository().getUserData(
-                    homeViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName(), this);
-
+        else {
+            if (activity.getUser() != null) {
+                user = activity.getUser();
+                setupUser();
+            } else
+                homeViewModel.getUserRepository().getUserData(
+                        homeViewModel.getAuthRepository().getUserLiveData().getValue().getDisplayName(), this);
+        }
         currentView = inflater.inflate(R.layout.fragment_home, container, false);
 
         return currentView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (user != null)
+            setupUser();
     }
 
     public void setupUser() {
@@ -122,8 +132,6 @@ public class HomeFragment extends Fragment implements IUserCallback, IBuildCallb
         this.image.setImageBitmap(user.getImage());
 
         homeViewModel.getBuildRepository().getBuildList(BUILD_PER_LOAD, 0, this);
-
-
 
     }
 

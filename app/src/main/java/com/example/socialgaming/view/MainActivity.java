@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
                     }
                     else {
                         currentFragment = homeFragment;
+                        homeFragment.setupUser();
                         getSupportFragmentManager().beginTransaction()
                                 .setCustomAnimations(
                                         R.anim.slide_in, //enter
@@ -121,7 +122,8 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
                                         R.anim.fade_in, //popEnter
                                         R.anim.slide_out //popExit
                                 )
-                                .replace(R.id.container_home, currentFragment).commit();
+                                .replace(R.id.container_home, homeFragment)
+                                .addToBackStack(null).commit();
                     }
                     return true;
                 case R.id.profile:
@@ -138,7 +140,8 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
                                         R.anim.fade_in, //popEnter
                                         R.anim.slide_out //popExit
                                 )
-                                .replace(R.id.container_home, profileFragment).commit();
+                                .replace(R.id.container_home, profileFragment)
+                                .addToBackStack(null).commit();
                     }
                     return true;
                 case R.id.create_build:
@@ -150,7 +153,8 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
                                     R.anim.fade_in, //popEnter
                                     R.anim.slide_out //popExit
                             )
-                            .replace(R.id.container_home, currentFragment).commit();
+                            .replace(R.id.container_home, currentFragment)
+                            .addToBackStack(null).commit();
                     return true;
                 case R.id.search_build:
                     currentFragment = searchFragment;
@@ -161,7 +165,8 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
                                     R.anim.fade_in, //popEnter
                                     R.anim.slide_out //popExit
                             )
-                            .replace(R.id.container_home, currentFragment).commit();
+                            .replace(R.id.container_home, currentFragment)
+                            .addToBackStack(null).commit();
                     return true;
                 case R.id.settings:
                     currentFragment = settingsFragment;
@@ -172,7 +177,8 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
                                     R.anim.fade_in, //popEnter
                                     R.anim.slide_out //popExit
                             )
-                            .replace(R.id.container_home, currentFragment).commit();
+                            .replace(R.id.container_home, currentFragment)
+                            .addToBackStack(null).commit();
                     return true;
             }
             return false;
@@ -270,8 +276,7 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
     public void setInizialUser(User user) {
         this.user = user;
 
-
-        settingsFragment.setUser(user);
+        homeFragment.setupUser();
 
         setupNavigationListener();
     }
@@ -279,10 +284,5 @@ public class MainActivity extends AppCompatActivity implements IUserCallback {
     public MainViewModel getViewModel() {
         return this.viewModel;
     }
-
-    public HomeFragment getHomeFragment() {
-        return homeFragment;
-    }
-
     public SearchFragment getSearchFragment(){return searchFragment;}
 }
