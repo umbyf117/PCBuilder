@@ -16,12 +16,13 @@ public class WelcomeActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        WelcomeActivity activity = this;
 
         int welcomeDuration = 1000; // time misured in ms
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                FragmentUtils.startActivity(new MainActivity(), new Intent(WelcomeActivity.this, LoginActivity.class), true);
+                FragmentUtils.startActivity(activity, new Intent(WelcomeActivity.this, LoginActivity.class), true);
             }
         }, welcomeDuration);
     }
