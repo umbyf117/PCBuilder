@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.socialgaming.R;
+import com.example.socialgaming.utils.FragmentUtils;
 
 public class WelcomeActivity extends AppCompatActivity {
     @Override
@@ -16,12 +17,11 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        int welcomeDuration = 1000; // 1,5 secondi
+        int welcomeDuration = 1000; // time misured in ms
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(WelcomeActivity.this, LoginActivity.class);
-                startActivity(i);
+                FragmentUtils.startActivity(new MainActivity(), new Intent(WelcomeActivity.this, LoginActivity.class), true);
             }
         }, welcomeDuration);
     }
